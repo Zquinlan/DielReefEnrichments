@@ -2177,6 +2177,6 @@ write_csv(pco_all, "~/Documents/GitHub/DORCIERR/data/plots/PCo_scores.dat")
 write_csv(fcm_graphing, "~/Documents/GitHub/DORCIERR/data/plots/fcm_graphing.dat")
 write_csv(tukey_model_fcm, "~/Documents/GitHub/DORCIERR/data/plots/fcm_stats.dat")
 write_csv(labile_RA, "~/Documents/GitHub/DORCIERR/data/plots/labile_graphing.dat")
-write_csv(sig_genera, "~/Documents/SDSU/DORCIERR/Datasets/plots/sig_microbes.dat")
+write_csv(sig_genera, "~/Documents/GitHub/DORCIERR/data/plots/sig_microbes.dat")
 
 
