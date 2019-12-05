@@ -1395,7 +1395,7 @@ write_csv(hc_df%>%
 # GRAPHING -- Bicluster ---------------------------------------------------
 my_palette <- colorRampPalette(c("blue", "white", "red"))(n = 200) #customize colors for the heat map
 
-tiff("hc_combined.tiff", units="in", width=15, height=12, res=400)
+tiff("~/Documents/GitHub/DORCIERR/data/plots/hc_combined.tiff", units="in", width=15, height=12, res=300)
 heatmap.2(as.matrix(hc_df[2:ncol(hc_df)]),#I indexed the data I wanted to show on my heatmap
           main = "bicluster", # heat map title
           density.info= 'none',  # turns off density plot inside color legend
@@ -1541,7 +1541,7 @@ pcoa_microbe$values[1:10,]%>%
   geom_bar(stat = "identity") +
   geom_text(size = 3, color = "red", vjust = -0.5)
 
-pdf("microbe_pcoa.pdf", width = 6, height = 5)
+pdf("~/Documents/GitHub/DORCIERR/data/plots/microbe_pcoa.pdf", width = 6, height = 5)
 pcoa_microbe$vectors%>%
   as.data.frame()%>%
   rownames_to_column("sample")%>%
@@ -1667,7 +1667,7 @@ net141_xic_cot <- net141_xic%>%
 
 
 ##Plotting
-pdf("why_not_change_over_time_net141.pdf", width = 6, height = 5)
+pdf("~/Documents/GitHub/DORCIERR/data/plots/why_not_change_over_time_net141.pdf", width = 6, height = 5)
 ggplot(net141, aes(x = reorder(Organism, - ra), y = ra, fill = feature_number))+
   geom_bar(stat = "summary", fun.y = "mean", position = "dodge")+
   facet_wrap(~DayNight) +
