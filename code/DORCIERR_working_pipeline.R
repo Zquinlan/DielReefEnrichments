@@ -1395,23 +1395,6 @@ hc_df <- hc_compounds%>%
 
 write_csv(hc_df%>%
             select(everything(), sample), "~/Documents/GitHub/DORCIERR/data/plots/combined_hc_df.csv")
-
-# GRAPHING -- Bicluster ---------------------------------------------------
-my_palette <- colorRampPalette(c("blue", "white", "red"))(n = 200) #customize colors for the heat map
-
-tiff("~/Documents/GitHub/DORCIERR/data/plots/hc_combined.tiff", units="in", width=15, height=12, res=300)
-heatmap.2(as.matrix(hc_df[2:ncol(hc_df)]),#I indexed the data I wanted to show on my heatmap
-          main = "bicluster", # heat map title
-          density.info= 'none',  # turns off density plot inside color legend
-          trace='none',         # turns off trace lines inside the heat map
-          margins =c(10,13),     # widens margins around plot
-          col= my_palette,       # use on color palette defined earlier
-          #breaks=col_breaks,    # enable color transition at specified limits, you can define these but I didn’t in this plot
-          dendrogram='both',     #draws both column and row dendrograms
-          Rowv=T, Colv=T, labRow=hc_df$sample, cexCol =0.3, cexRow = 0.8,
-          na.rm = TRUE)  #labels for rows on my dendogram
-dev.off()
-
 # GRAPHING —- PCoAs DOM --------------------------------------
 #looking at exudate features
 dom_pco <- dom_stats_wdf%>%
