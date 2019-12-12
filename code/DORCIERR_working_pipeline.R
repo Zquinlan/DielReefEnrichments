@@ -1048,17 +1048,17 @@ dev.off()
 rf_microbe_sigs <- (rf_microbe_mda%>%
   group_by(DayNight)%>%
   nest()%>%
-    mutate(dic = map(data, ~ top_n(.x, 10, Dictyota)%>%
+    mutate(dic = map(data, ~ top_n(.x, 20, Dictyota)%>%
                        select(otu)),
-           cca = map(data, ~ top_n(.x, 10, CCA)%>%
+           cca = map(data, ~ top_n(.x, 20, CCA)%>%
                        select(otu)),
-           trf = map(data, ~ top_n(.x, 10, Turf)%>%
+           trf = map(data, ~ top_n(.x, 20, Turf)%>%
                        select(otu)),
-           poc = map(data, ~ top_n(.x, 10, `Pocillopora verrucosa`)%>%
+           poc = map(data, ~ top_n(.x, 20, `Pocillopora verrucosa`)%>%
                        select(otu)),
-           por = map(data, ~ top_n(.x, 10, `Porites lobata`)%>%
+           por = map(data, ~ top_n(.x, 20, `Porites lobata`)%>%
                        select(otu)),
-           wat = map(data, ~ top_n(.x, 10, `Water control`)%>%
+           wat = map(data, ~ top_n(.x, 20, `Water control`)%>%
                        select(otu)))%>%
     select(-data)%>%
     gather(species, importance, dic:wat)%>%
@@ -1365,7 +1365,9 @@ correlation_microbe_labile <- correlation_microbe%>%
 hc_microbe <- mic_organism_post_hoc%>%
   filter(OTU %in% rf_microbe_sigs)%>%
   ungroup()%>%
+  group_by(OTU)%>%
   mutate(zscore = zscore(asin))%>%
+  ungroup()%>%
   dplyr::select(c(Organism, DayNight, Replicate, OTU, zscore))%>%
   unite(sample, c("Organism", "DayNight", "Replicate"), sep = "_")%>%
   left_join(microbe_taxonomy, by = "OTU")%>%
@@ -1381,7 +1383,9 @@ hc_compounds <- dom_organism_post_hoc%>%
   mutate(mean_t0 = mean(T0, na.rm = TRUE),
          feature_difference = TF-mean_t0)%>%
   ungroup()%>%
+  group_by(feature_number)%>%
   mutate(zscore = zscore(feature_difference))%>%
+  ungroup()%>%
   unite(sample, c("Organism", "DayNight", "Replicate"), sep = "_")%>%
   dplyr::select(-c(TF, T0, mean_t0, Experiment, feature_difference))%>%
   spread(feature_number, zscore)
