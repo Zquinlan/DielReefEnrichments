@@ -102,16 +102,19 @@ feature_table_raw <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics
 ms_sample_codes <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/Mo'orea 2017 Mass spec sample codes - Sheet1.csv")%>%
   rename('run_code' = 'Sample ID',
          'sample_code' = 'Sample Name')
-#Networking information for analyzing stats
+# Networking information for analyzing stats
 network_id <- feature_metadata%>%
   dplyr::select('feature_number', 'network', 'LibraryID', 'Compound_NameAnalog_', 'ZodiacMF', 'ZodiacScore',
                 'canopus_annotation', 'level', 'canopus_probability', 'CLASS_STRING')
 network_id$feature_number <- as.character(network_id$feature_number)
 
-#16s rRNA sequences
+# 16s rRNA sequences
 microbe_abundance_raw <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/microbes/MCR2017.16S.Nelson.Pipeline.October2019/abundance_table_100.shared.tsv")
 microbe_taxonomy <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/microbes/MCR2017.16S.Nelson.Pipeline.October2019/annotations_100.taxonomy.tsv")
 
+# NAP
+nap_df <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/moorea2017_NAP.tsv")%>%
+  rename("feature_number" = "cluster.index")
 
 # CLEANING -- SIRIUS_Zodiac elemental composition of molecular formulas -------------------------------------------
 networking_elements <- sirius_zodiac_anotations%>%
@@ -176,12 +179,15 @@ metadata <- full_join(node_info,
                                           by = "feature_number"),
                                 by = "feature_number"),
                       by = "feature_number")%>%
+  left_join(nap_df, by = "feature_number", suffix = c("", "_nap"))%>%
   add_column(binary_ID = .$LibraryID, .before = 1)%>%
   mutate(binary_ID = case_when(binary_ID != "N/A" ~ "1",
                                Compound_NameAnalog_ != "NA" ~ "2",
+                               !is.na(ConsensusSC) ~ "3",
                                TRUE ~ as.character(binary_ID)))%>%
   add_column(combined_ID = .$LibraryID, .before = 1)%>%
   mutate(combined_ID = case_when(binary_ID == "1" ~ LibraryID,
+                                 binary_ID == "3" ~ ConsensusSC,
                                  binary_ID == "2" ~ Compound_NameAnalog_,
                                  binary_ID == "N/A" ~ canopus_annotation,
                                  TRUE ~ as.character(binary_ID)))%>%
@@ -305,11 +311,47 @@ feature_table_no_back_trans <- feature_table_dirty%>%
   gather(feature_number, val, 2:ncol(.))%>%
   spread(sample, val)
 
-# RELATIVIZATION AND NORMALIZATION -- RA_asin -> Not grouped by ambient or exudate -----------------
-feature_table_relnorm <- feature_table_no_back_trans%>%
+
+# FILTERING -- LOG2 bottleneck --------------------------------------------
+## Everything has to double from T0 to TF (1 > log2(TF/T0) < 1)
+log2_features <- (feature_table_no_back_trans%>%
   gather(sample_name, xic, 2:ncol(.))%>%
   ungroup()%>%
-  mutate(xic = xic + (min(xic[which(xic > 0)])/2))%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+  filter(!Experiment %like% "%Blank%",
+         !Organism %like% "%Blank")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                       Experiment == "M" ~ "mordor",
+                                       Experiment == "R" ~ "RR3",
+                                       TRUE ~ as.character(Experiment)),
+         Organism = case_when(Organism == "CC" ~ "CCA",
+                                     Organism == "DT" ~ "Dictyota",
+                                     Organism == "PL" ~ "Porites lobata",
+                                     Organism == "PV" ~ "Pocillopora verrucosa",
+                                     Organism == "TR" ~ "Turf",
+                                     Organism == "WA" ~ "Water control",
+                                     TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"),
+         xic = case_when(xic == 0 ~ 1,
+                         TRUE ~ as.numeric(xic)))%>%
+  spread(Timepoint, xic)%>%
+  group_by(Organism, DayNight, feature_number)%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  mutate(log2 = log2(TF/T0))%>%
+  filter(log2 >= 1 | log2 <= -1)%>%
+  ungroup())$feature_number%>%
+  unique()%>%
+  as.vector()
+
+# RELATIVIZATION AND NORMALIZATION -- RA_asin -> Not grouped by ambient or exudate -----------------
+feature_table_relnorm <- feature_table_no_back_trans%>%
+  filter(feature_number %in% log2_features)%>%
+  gather(sample_name, xic, 2:ncol(.))%>%
+  ungroup()%>%
+  mutate(xic = case_when(xic == 0 ~ 1,
+                         TRUE ~ as.numeric(xic)))%>%
   group_by(sample_name)%>%
   mutate(TIC = sum(xic),
          RA = xic/TIC,
@@ -791,7 +833,7 @@ time_aov_sigs <- aov_time%>%
 time_aov_sig_features <- as.vector(time_aov_sigs$combined)
 
 
-# STATS POST-HOC -- Dunnetts -------------------------------------------------------------
+# STATS POST-HOC -- compounds Dunnetts -------------------------------------------------------------
 organism_order <- as.factor(dom_organism_post_hoc$Organism)%>%
   relevel("Water control")%>%
   levels()%>%
@@ -834,7 +876,7 @@ org_dunnetts_exudates <- dom_organism_post_hoc%>%
 
 
 
-# STATS P-VALUE -- Dunnetts ----------------------------
+# STATS P-VALUE -- compounds Dunnetts ----------------------------
 dunnets_pvals <- org_dunnetts_exudates%>%
   dplyr::select(c(1:3, dunnett_summary))%>%
   unnest(dunnett_summary)%>%
@@ -845,31 +887,13 @@ dunnets_pvals <- org_dunnetts_exudates%>%
   mutate(lhs = gsub(" - Water control", "", lhs))%>%
   unite(combined, c(lhs, feature_number, DayNight), sep = "_")
 
-# dunnett_sig_all <- (dunnets_pvals%>%
-#   separate(combined, c("lhs", "feature_number", "DayNight"), sep = "_"))$feature_number%>%
-#   as.vector()%>%
-#   unique()
-# 
-# dom_organism_post_hoc[is.na(dom_organism_post_hoc)] <- 0
-# 
-# dunnett_hc <- dom_organism_post_hoc%>%
-#   filter(feature_number %in% dunnett_sig_all)%>%
-#   spread(Timepoint, asin)%>%
-#   mutate(zscore = zscore(TF-T0))%>%
-#   unite(sample,c(Organism, DayNight, Replicate), sep = "_")%>%
-#   select(-c(Experiment, TF, T0))%>%
-#   filter(zscore != "NaN")%>%
-#   spread(feature_number, zscore)
-# #
-# write_csv(dunnett_hc, "hc_dunnett_all.csv")
-
 significant_exudates <- dunnets_pvals%>%
   filter(Timepoint == "T0")
 
 significant_accumulites <- dunnets_pvals%>%
   filter(Timepoint == "TF")
 
-# STATS POST-HOC -- Day and Night Dunnetts TF MICROBES -----------------------------
+# STATS POST-HOC -- MICROBES Dunnetts -----------------------------
 organism_order_micro <- as.factor(mic_organism_post_hoc$Organism)%>%
   relevel("Water control")%>%
   levels()%>%
@@ -896,7 +920,7 @@ dunnett_microbe_pvals <- mic_organism_post_hoc%>%
   add_column(FDR = p.adjust(.$p.value, method = "BH"))%>%
   filter(FDR < 0.05)
 
-# STATS POST-HOC -- DayNight MICROBES anova grouped by organism --------------------
+# STATS POST-HOC -- DayNight MICROBES t-test organism --------------------
 daynight_microbe_pvals <- mic_organism_post_hoc%>%
   group_by(Organism, OTU)%>%
   mutate(sum = sum(asin))%>%
@@ -912,6 +936,16 @@ daynight_microbe_pvals <- mic_organism_post_hoc%>%
   add_column(FDR = p.adjust(.$p.value, method = "BH"))%>%
   filter(FDR < 0.05)
 
+# POST-CLEANING -- benthic exudates column --------------------------------
+benthic_exudates <- significant_exudates$feature_number
+
+microbial_accumulite <- significant_accumulites$feature_number
+
+networking <- networking%>%
+  mutate(benthic_exudate = case_when(feature_number %in% benthic_exudates ~ "benthic_exudate",
+                                     TRUE ~ "background"),
+         microbial_accumulite = case_when(feature_number %in% microbial_accumulite ~ "microbial_accumulite",
+                                          TRUE ~ "background"))
 # META-STATS -- microbes --------------------------------------------------
 dunnett_micro_analysis <- dunnett_microbe_pvals%>%
   dplyr::select(-p.value)%>%
@@ -1386,9 +1420,13 @@ hc_compounds <- dom_organism_post_hoc%>%
   group_by(feature_number)%>%
   mutate(zscore = zscore(feature_difference))%>%
   ungroup()%>%
+  left_join(networking%>%
+              select(feature_number, combined_ID), 
+            by = "feature_number")%>%
   unite(sample, c("Organism", "DayNight", "Replicate"), sep = "_")%>%
+  unite(feature, c(feature_number, combined_ID), sep = "_")%>%
   dplyr::select(-c(TF, T0, mean_t0, Experiment, feature_difference))%>%
-  spread(feature_number, zscore)
+  spread(feature, zscore)
 
 hc_df <- hc_compounds%>%
   left_join(hc_microbe, by = "sample")
@@ -1438,6 +1476,7 @@ pco_scores_all <- dorc_all_pcoa$vectors%>%
   separate(sample, c("experiemnt", "Organism", "replicate", "DayNight"), sep = "_")
 
 # Dorc_all_labile_exudates plot
+pdf("./plots/dom_pcoa.pdf", width = 6, height = 5)
 dorc_all_pcoa$vectors%>%
   as.data.frame()%>%
   rownames_to_column(var = "sample")%>%
@@ -1454,9 +1493,9 @@ dorc_all_pcoa$vectors%>%
     legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
     legend.text = element_text(face = "italic")) +
   xlab(str_c("Axis 1", " (", round(dorc_all_pcoa$values$Relative_eig[1], digits = 4)*100, "%)", sep = "")) +
-  ylab(str_c("Axis 2", " (", round(dorc_all_pcoa$values$Relative_eig[2], digits = 4)*100, "%)", sep = ""))
+  ylab(str_c("Axis 2", " (", round(dorc_all_pcoa$values$Relative_eig[2], digits = 4)*100, "%)", sep = "")) +
   ggtitle("Labile Exudates")
-
+dev.off()
 ## split between day and night
 # dorc_split <- dom_pco%>%
 #   group_by(DayNight)%>%
@@ -1655,7 +1694,7 @@ net141_xic_cot <- net141_xic%>%
 
 ##Plotting
 pdf("~/Documents/GitHub/DORCIERR/data/plots/why_not_change_over_time_net141.pdf", width = 6, height = 5)
-ggplot(net141, aes(x = reorder(Organism, - ra), y = ra, fill = feature_number))+
+ggplot(net141, aes(x = reorder(Organism, - ra), y = ra, fill = Timepoint))+
   geom_bar(stat = "summary", fun.y = "mean", position = "dodge")+
   facet_wrap(~DayNight) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1),
