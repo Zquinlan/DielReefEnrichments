@@ -700,6 +700,84 @@ daynight_microbe_pvals <- mic_organism_post_hoc%>%
   add_column(FDR = p.adjust(.$p.value, method = "BH"))%>%
   filter(FDR < 0.05)
 
+# META-STATS --Compounds prevalance ---------------------------------------
+compound_prevalance <- t_pvals%>%
+  mutate(exudate_type = 1)%>%
+  select(c(1:3, activity, FDR_greater))%>%
+  group_by(DayNight, activity)%>%
+  nest()%>%
+  mutate(data = map(data, ~ spread(.x, Organism, FDR_greater)%>%
+                      add_column(number_exudate_organisms = rowSums(.[2:ncol(.)] >= 0, na.rm = TRUE))%>%
+                      mutate(exudate_type = case_when(is.na(CCA) == FALSE & 
+                                                        is.na(Dictyota) &
+                                                        is.na(Turf) &
+                                                        is.na(`Pocillopora verrucosa`)  &
+                                                        is.na(`Porites lobata`) ~ "CCA",
+                                                      is.na(CCA)  & 
+                                                        is.na(Dictyota) == FALSE &
+                                                        is.na(Turf) &
+                                                        is.na(`Pocillopora verrucosa`)  &
+                                                        is.na(`Porites lobata`) ~ "Dictyota",
+                                                      is.na(CCA)  & 
+                                                        is.na(Dictyota) &
+                                                        is.na(Turf) == FALSE &
+                                                        is.na(`Pocillopora verrucosa`)  &
+                                                        is.na(`Porites lobata`) ~ "Turf",
+                                                      is.na(CCA) & 
+                                                        is.na(Dictyota) &
+                                                        is.na(Turf) &
+                                                        is.na(`Pocillopora verrucosa`) == FALSE &
+                                                        is.na(`Porites lobata`) ~ "Pocillopora verrucosa",
+                                                      is.na(CCA) & 
+                                                        is.na(Dictyota) &
+                                                        is.na(Turf) &
+                                                        is.na(`Pocillopora verrucosa`)  &
+                                                        is.na(`Porites lobata`) == FALSE ~ "Porites lobata",
+                                                      is.na(`Pocillopora verrucosa`) == FALSE &
+                                                        is.na(CCA) == FALSE & 
+                                                        is.na(Dictyota) &
+                                                        is.na(Turf)  |
+                                                        is.na(`Porites lobata`) == FALSE &
+                                                        is.na(CCA) == FALSE &
+                                                        is.na(Dictyota) &
+                                                        is.na(Turf) ~ "Corraline",
+                                                      is.na(`Pocillopora verrucosa`) &
+                                                        is.na(CCA) == FALSE & 
+                                                        is.na(Dictyota) == FALSE &
+                                                        is.na(`Porites lobata`) |
+                                                        is.na(CCA) == FALSE &
+                                                        is.na(Turf) == FALSE &
+                                                        is.na(`Porites lobata`) &
+                                                        is.na(`Pocillopora verrucosa`) ~ "Algae",
+                                                      is.na(`Dictyota`) &
+                                                        is.na(CCA)  &
+                                                        is.na(Turf) &
+                                                        is.na(`Porites lobata`) == FALSE &
+                                                        is.na(`Pocillopora verrucosa`) == FALSE ~ "Coral",
+                                                      is.na(`Dictyota`) == FALSE &
+                                                        is.na(CCA)  &
+                                                        is.na(Turf) == FALSE &
+                                                        is.na(`Porites lobata`) &
+                                                        is.na(`Pocillopora verrucosa`) ~ "Fleshy Algae",
+                                                      is.na(CCA)  & 
+                                                        is.na(Dictyota) &
+                                                        is.na(Turf) == FALSE &
+                                                        is.na(`Pocillopora verrucosa`)  &
+                                                        is.na(`Porites lobata`) ~ "Turf",
+                                                      number_exudate_organisms > 3 & 
+                                                        number_exudate_organisms < 6 ~ "Primary Producers",
+                                                      number_exudate_organisms == 6 ~ "Planktonic",
+                                                      TRUE ~ "Cosmo"))))%>%
+                      unnest(data)
+
+t_test_features <- compound_prevalance%>%
+  left_join(networking, by = "feature_number")
+
+grouped_t_test_features <- t_test_features%>%
+  group_by(exudate_type, DayNight, activity)%>%
+  nest()
+
+
 # META-STATS -- microbes --------------------------------------------------
 dunnett_micro_analysis <- dunnett_microbe_pvals%>%
   dplyr::select(-p.value)%>%
@@ -1072,6 +1150,14 @@ summary_ttest <- t_pvals%>%
   summarize_if(is.numeric, sum)%>%
   spread(DayNight, count)
 
+summary_ttest_meta <- grouped_t_test_features%>%
+  mutate(data = map(data, ~ mutate(.x, count = 1)%>%
+                      select(count)%>%
+                      summarize_if(is.numeric, sum)))%>%
+  unnest(data)%>%
+  unite(active, c(DayNight, activity), sep = "_")%>%
+  spread(active, count)
+
 # summary_ttest <- t_pvals%>%
 #   mutate(depletolites = map(data, ~ filter(.x, activity == "depletolites")$feature_number%>%
 #                               length()),
@@ -1087,17 +1173,27 @@ summary_ttest <- t_pvals%>%
 #   group_by(DayNight, activity, anova)%>%
 #   summarize_if(is.numeric, sum)
 
-
-t_test_features <- t_pvals%>%
-  left_join(networking, by = "feature_number")
-
 t_test_features%>%
   filter(`characterization scores` == "Good")%>%
-  ggplot(aes(Organism, y = log10(.$N/.$P), col = activity)) +
+  ggplot(aes(exudate_type, y = .$N/.$P, col = activity)) +
   facet_wrap(~DayNight) +
-  geom_point(stat = "summary", fun.y = mean)
+  # geom_boxplot() +
+  geom_point(stat = "summary", fun.y = mean) +
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+    # legend.position = "none"# get rid of legend panel bg
+  )
   
-write_csv(t_test_features, "~/Documents/GitHub/DORCIERR/data/analysis/t_test_features.csv")
+write_csv(t_test_features%>%
+            filter(`characterization scores` == "Good"), "~/Documents/GitHub/DORCIERR/data/analysis/t_test_features.csv")
 
 
 
