@@ -703,10 +703,12 @@ daynight_microbe_pvals <- mic_organism_post_hoc%>%
 # META-STATS --Compounds prevalance ---------------------------------------
 compound_prevalance <- t_pvals%>%
   mutate(exudate_type = 1)%>%
-  select(c(1:3, activity, FDR_greater))%>%
+  mutate(fdr_mixed = case_when(FDR_greater < 0.05 ~ FDR_greater,
+                               FDR_lesser < 0.05 ~ FDR_lesser))%>%
+  select(c(1:3, activity, fdr_mixed))%>%
   group_by(DayNight, activity)%>%
   nest()%>%
-  mutate(data = map(data, ~ spread(.x, Organism, FDR_greater)%>%
+  mutate(data = map(data, ~ spread(.x, Organism, fdr_mixed)%>%
                       add_column(number_exudate_organisms = rowSums(.[2:ncol(.)] >= 0, na.rm = TRUE))%>%
                       mutate(exudate_type = case_when(is.na(CCA) == FALSE & 
                                                         is.na(Dictyota) &
@@ -776,6 +778,16 @@ t_test_features <- compound_prevalance%>%
 grouped_t_test_features <- t_test_features%>%
   group_by(exudate_type, DayNight, activity)%>%
   nest()
+
+t_test_feature_inchi <- t_test_features%>%
+  filter(activity != "recalcitrant")%>%
+  ungroup()%>%
+  select(feature_number, inchi_key)%>%
+  unique()%>%
+  filter(!is.na(inchi_key))
+
+write_tsv(t_test_feature_inchi, "~/Documents/GitHub/DORCIERR/data/analysis/inchi_key_norecal.tsv")
+
 
 
 # META-STATS -- microbes --------------------------------------------------
@@ -1153,7 +1165,7 @@ summary_ttest <- t_pvals%>%
 summary_ttest_meta <- grouped_t_test_features%>%
   mutate(data = map(data, ~ mutate(.x, count = 1)%>%
                       select(count)%>%
-                      summarize_if(is.numeric, sum)))%>%
+                      summarize_if(is.numeric, sum, na.rm = TRUE)))%>%
   unnest(data)%>%
   unite(active, c(DayNight, activity), sep = "_")%>%
   spread(active, count)
