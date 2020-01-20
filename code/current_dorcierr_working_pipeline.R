@@ -104,12 +104,6 @@ ms_sample_codes <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/M
   rename('run_code' = 'Sample ID',
          'sample_code' = 'Sample Name')
 
-# Networking information for analyzing stats
-network_id <- feature_metadata%>%
-  dplyr::select('feature_number', 'network', 'LibraryID', 'Compound_NameAnalog_', 'ZodiacMF', 'ZodiacScore',
-                'canopus_annotation', 'level', 'canopus_probability', 'CLASS_STRING')
-network_id$feature_number <- as.character(network_id$feature_number)
-
 # 16s rRNA sequences
 microbe_abundance_raw <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/microbes/MCR2017.16S.Nelson.Pipeline.October2019/abundance_table_100.shared.tsv")
 microbe_taxonomy <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/microbes/MCR2017.16S.Nelson.Pipeline.October2019/annotations_100.taxonomy.tsv")
@@ -136,7 +130,7 @@ networking_energy <- networking_elements%>%
   add_column(NOSC = (-((4*.$C + .$H - 3*.$N - 2*.$O + 5*.$P - 2*.$S)/.$C)+4))%>%
   add_column(dG = 60.3-28.5*.$NOSC)%>%
   filter(NOSC < 4 & NOSC > -4)%>%
-  filter(P < 2)
+  filter(P <= 2)
 
 # CLEANING -- Canopus---------------------------
 
@@ -614,15 +608,14 @@ t_pvals <- t_test%>%
                                 is.na(FDR_lesser) & is.na(FDR_greater) ~ "recalcitrant"))
 
 # # STATS -- ANOVA metabolties Organism T0 -------------------------------------------------------
-# anova_dom_t0_df <- t_pvals%>%
-#   unnest(data)%>%
-#   select(c(DayNight, feature_number, activity))%>%
-#   left_join(dom_stats_wdf, by = c("feature_number", "DayNight"))%>%
-#   filter(Timepoint == "T0")%>%
-#   group_by(feature_number, DayNight, activity)%>%
-#   nest()
-# 
+anova_dom_t0_df <- t_pvals%>%
+  select(c(DayNight, feature_number, activity))%>%
+  left_join(dom_stats_wdf, by = c("feature_number", "DayNight"))%>%
+  filter(Timepoint == "T0")
+
 # anova_dom_t0 <- anova_dom_t0_df%>%
+#   group_by(feature_number, DayNight, activity)
+#   nest()%>%
 #   mutate(data = map(data, ~ aov(log ~ Organism, data = .x)%>%
 #                       tidy()%>%
 #                       filter(!term == "Residuals")%>%
@@ -633,10 +626,6 @@ t_pvals <- t_test%>%
 #          anova = case_when(FDR < 0.05 ~ "producer_specific",
 #                            !FDR < 0.05 | is.na(FDR) ~ "background"))
 # 
-producer_specific_change <- (t_pvals%>%
-  filter(activity != "recalcitrant"))$feature_number%>%
-  as.vector()%>%
-  unique
 
 # PRE-POST-HOC CLEANING -- Microbe Dunnetts and DayNight anova -------------------------------
 mic_organism_post_hoc <- microbe_no_rare%>%
@@ -657,6 +646,41 @@ tukey_model_fcm <-fcm_stats_df%>%
                       tidy()))%>%
   unnest(data)%>%
   filter(adj.p.value < 0.05)
+
+# STATS POST-HOC -- DOM Dunnetts T0 ---------------------------------------
+organism_order_dom <- as.factor(anova_dom_t0_df$Organism)%>%
+  relevel("Water control")%>%
+  levels()%>%
+  as.vector()
+
+
+dom_dunnetts <- anova_dom_t0_df%>%
+  group_by(feature_number, DayNight, activity)%>%
+  mutate(sum = sum(log, na.rm = TRUE))%>%
+  filter(min(log) != max(log),
+         sum != 0,
+         activity != "recalcitrant")%>%
+  dplyr::select(-sum)%>%
+  mutate(Organism = factor(Organism))%>%
+  mutate(Organism = fct_relevel(Organism, organism_order_dom))%>%
+  nest()%>%
+  mutate(data = map(data, ~ aov(log ~ Organism, data = .x)%>%
+                      glht(linfct = mcp(Organism = "Dunnett"))),
+         dunnett_summary = map(data, ~summary(.x)%>%
+                                 tidy()))%>%
+  select(-data)%>%
+  unnest(dunnett_summary)%>%
+  mutate(lhs = gsub(" - Water control", "", lhs))%>%
+  rename("Organism" = "lhs")%>%
+  ungroup()%>%   
+  add_column(FDR = p.adjust(.$p.value, method = "BH"))%>%
+  filter(FDR < 0.05)
+
+producer_specific_change <- (dom_dunnetts%>%
+                               filter(activity != "recalcitrant"))$feature_number%>%
+  as.vector()%>%
+  unique
+
 # STATS POST-HOC -- MICROBES Dunnetts -----------------------------
 organism_order_micro <- as.factor(mic_organism_post_hoc$Organism)%>%
   relevel("Water control")%>%
@@ -706,78 +730,22 @@ compound_prevalance <- t_pvals%>%
   mutate(fdr_mixed = case_when(FDR_greater < 0.05 ~ FDR_greater,
                                FDR_lesser < 0.05 ~ FDR_lesser))%>%
   select(c(1:3, activity, fdr_mixed))%>%
-  group_by(DayNight, activity)%>%
+  unite(org_act, c(Organism, activity), sep = "_")%>%
+  spread(org_act, fdr_mixed)%>%
+  group_by(DayNight, feature_number)%>%
   nest()%>%
-  mutate(data = map(data, ~ spread(.x, Organism, fdr_mixed)%>%
-                      add_column(number_exudate_organisms = rowSums(.[2:ncol(.)] >= 0, na.rm = TRUE))%>%
-                      mutate(exudate_type = case_when(is.na(CCA) == FALSE & 
-                                                        is.na(Dictyota) &
-                                                        is.na(Turf) &
-                                                        is.na(`Pocillopora verrucosa`)  &
-                                                        is.na(`Porites lobata`) ~ "CCA",
-                                                      is.na(CCA)  & 
-                                                        is.na(Dictyota) == FALSE &
-                                                        is.na(Turf) &
-                                                        is.na(`Pocillopora verrucosa`)  &
-                                                        is.na(`Porites lobata`) ~ "Dictyota",
-                                                      is.na(CCA)  & 
-                                                        is.na(Dictyota) &
-                                                        is.na(Turf) == FALSE &
-                                                        is.na(`Pocillopora verrucosa`)  &
-                                                        is.na(`Porites lobata`) ~ "Turf",
-                                                      is.na(CCA) & 
-                                                        is.na(Dictyota) &
-                                                        is.na(Turf) &
-                                                        is.na(`Pocillopora verrucosa`) == FALSE &
-                                                        is.na(`Porites lobata`) ~ "Pocillopora verrucosa",
-                                                      is.na(CCA) & 
-                                                        is.na(Dictyota) &
-                                                        is.na(Turf) &
-                                                        is.na(`Pocillopora verrucosa`)  &
-                                                        is.na(`Porites lobata`) == FALSE ~ "Porites lobata",
-                                                      is.na(`Pocillopora verrucosa`) == FALSE &
-                                                        is.na(CCA) == FALSE & 
-                                                        is.na(Dictyota) &
-                                                        is.na(Turf)  |
-                                                        is.na(`Porites lobata`) == FALSE &
-                                                        is.na(CCA) == FALSE &
-                                                        is.na(Dictyota) &
-                                                        is.na(Turf) ~ "Corraline",
-                                                      is.na(`Pocillopora verrucosa`) &
-                                                        is.na(CCA) == FALSE & 
-                                                        is.na(Dictyota) == FALSE &
-                                                        is.na(`Porites lobata`) |
-                                                        is.na(CCA) == FALSE &
-                                                        is.na(Turf) == FALSE &
-                                                        is.na(`Porites lobata`) &
-                                                        is.na(`Pocillopora verrucosa`) ~ "Algae",
-                                                      is.na(`Dictyota`) &
-                                                        is.na(CCA)  &
-                                                        is.na(Turf) &
-                                                        is.na(`Porites lobata`) == FALSE &
-                                                        is.na(`Pocillopora verrucosa`) == FALSE ~ "Coral",
-                                                      is.na(`Dictyota`) == FALSE &
-                                                        is.na(CCA)  &
-                                                        is.na(Turf) == FALSE &
-                                                        is.na(`Porites lobata`) &
-                                                        is.na(`Pocillopora verrucosa`) ~ "Fleshy Algae",
-                                                      is.na(CCA)  & 
-                                                        is.na(Dictyota) &
-                                                        is.na(Turf) == FALSE &
-                                                        is.na(`Pocillopora verrucosa`)  &
-                                                        is.na(`Porites lobata`) ~ "Turf",
-                                                      number_exudate_organisms > 3 & 
-                                                        number_exudate_organisms < 6 ~ "Primary Producers",
-                                                      number_exudate_organisms == 6 ~ "Planktonic",
-                                                      TRUE ~ "Cosmo"))))%>%
-                      unnest(data)
-
-t_test_features <- compound_prevalance%>%
-  left_join(networking, by = "feature_number")
-
-grouped_t_test_features <- t_test_features%>%
-  group_by(exudate_type, DayNight, activity)%>%
+  mutate(data = map(data, ~ mutate(.x, reactivity = paste(colnames(.)[!is.na(.) > 0], sep = ", ", collapse = ", "))))%>%
+  unnest(data)%>%
+  left_join(networking, by = "feature_number")%>%
+  group_by(DayNight, reactivity)%>%
   nest()
+
+# t_test_features <- compound_prevalance%>%
+#   left_join(networking, by = "feature_number")
+# 
+# grouped_t_test_features <- t_test_features%>%
+#   group_by(exudate_type, DayNight, activity)%>%
+#   nest()
 
 t_test_feature_inchi <- t_test_features%>%
   filter(activity != "recalcitrant")%>%
@@ -960,11 +928,14 @@ hc_microbe <- mic_organism_post_hoc%>%
 
 hc_compounds <- dom_stats_wdf%>%
   filter(feature_number %in% producer_specific_change)%>%
+  mutate(log = case_when(is.na(log) ~ 1000,
+                         TRUE ~ as.numeric(log)))%>%
   spread(Timepoint, log)%>%
   group_by(Organism, DayNight, feature_number)%>%
   mutate(mean_t0 = mean(T0, na.rm = TRUE),
          feature_difference = TF-mean_t0)%>%
   ungroup()%>%
+  mutate(feature_difference = feature_difference + min(feature_difference))%>%
   group_by(feature_number)%>%
   mutate(zscore = zscore(feature_difference))%>%
   ungroup()%>%
@@ -979,13 +950,16 @@ hc_compounds <- dom_stats_wdf%>%
 hc_df <- hc_compounds%>%
   left_join(hc_microbe, by = "sample")
 
-hc_df[is.na(hc_df)] <- 0
+hc_compounds[is.na(hc_compounds)] <- 0
 
 write_csv(hc_df%>%
             select(everything(), sample), "~/Documents/GitHub/DORCIERR/data/plots/combined_hc_df.csv")
 
 write_csv(hc_microbe%>%
             select(everything(), sample), "~/Documents/GitHub/DORCIERR/data/plots/microbe_hc_df.csv")
+
+write_csv(hc_compounds%>%
+            select(everything(), sample), "~/Documents/GitHub/DORCIERR/data/plots/compounds_hc_df.csv")
 
 # GRAPHING —- PCoAs DOM --------------------------------------
 #looking at exudate features
@@ -1045,7 +1019,7 @@ dorc_all_pcoa$vectors%>%
     legend.text = element_text(face = "italic")) +
   xlab(str_c("Axis 1", " (", round(dorc_all_pcoa$values$Relative_eig[1], digits = 4)*100, "%)", sep = "")) +
   ylab(str_c("Axis 2", " (", round(dorc_all_pcoa$values$Relative_eig[2], digits = 4)*100, "%)", sep = "")) +
-  ggtitle("Labile Exudates")
+  ggtitle("All DOM features")
 dev.off()
 ## split between day and night
 # dorc_split <- dom_pco%>%
@@ -1162,13 +1136,50 @@ summary_ttest <- t_pvals%>%
   summarize_if(is.numeric, sum)%>%
   spread(DayNight, count)
 
-summary_ttest_meta <- grouped_t_test_features%>%
+summary_ttest_meta <- compound_prevalance%>%
   mutate(data = map(data, ~ mutate(.x, count = 1)%>%
                       select(count)%>%
                       summarize_if(is.numeric, sum, na.rm = TRUE)))%>%
-  unnest(data)%>%
-  unite(active, c(DayNight, activity), sep = "_")%>%
-  spread(active, count)
+  unnest(data)
+
+summary_average_xic <- feature_table_no_back_trans%>%
+  gather(sample_name, xic, 2:ncol(.))%>%
+  ungroup()%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+  filter(!Experiment %like% "%Blank%",
+         !Organism %like% "%Blank")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                Experiment == "M" ~ "mordor",
+                                Experiment == "R" ~ "RR3",
+                                TRUE ~ as.character(Experiment)),
+         Organism = case_when(Organism == "CC" ~ "CCA",
+                              Organism == "DT" ~ "Dictyota",
+                              Organism == "PL" ~ "Porites lobata",
+                              Organism == "PV" ~ "Pocillopora verrucosa",
+                              Organism == "TR" ~ "Turf",
+                              Organism == "WA" ~ "Water control",
+                              TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"),
+         xic = case_when(xic == 0 ~ 1000,
+                         TRUE ~ as.numeric(xic)))%>%
+  spread(Timepoint, xic)%>%
+  group_by(Organism, DayNight, feature_number)%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  mutate(log2_change = log2(TF/T0))%>%
+  ungroup()%>%
+  select(-c(T0, TF))%>%
+  spread(Organism, log2_change)%>%
+  right_join(t_pvals, by = c("DayNight", "feature_number"))
+
+summary_dunnett <- dom_dunnetts%>%
+  right_join(dom_stats_wdf%>%
+              select(c(feature_number, Timepoint, DayNight, Organism, log))%>%
+              group_by(feature_number,Timepoint, DayNight, Organism)%>%
+              summarize_if(is.numeric, mean, na.rm = TRUE), by = c("feature_number", "DayNight", "Organism"))%>%
+  left_join(networking, by = "feature_number")%>%
+  select(-c(rhs:p.value))
 
 # summary_ttest <- t_pvals%>%
 #   mutate(depletolites = map(data, ~ filter(.x, activity == "depletolites")$feature_number%>%
@@ -1185,12 +1196,12 @@ summary_ttest_meta <- grouped_t_test_features%>%
 #   group_by(DayNight, activity, anova)%>%
 #   summarize_if(is.numeric, sum)
 
-t_test_features%>%
+summary_dunnett%>%
   filter(`characterization scores` == "Good")%>%
-  ggplot(aes(exudate_type, y = .$N/.$P, col = activity)) +
+  ggplot(aes(Organism, y = .$N/.$C, col = activity, size = log)) +
   facet_wrap(~DayNight) +
   # geom_boxplot() +
-  geom_point(stat = "summary", fun.y = mean) +
+  geom_point(stat = "identity") +
   theme(
     # legend.position = "none",
     # plot.margin = margin(2,.8,2,.8, "cm"),
@@ -1207,7 +1218,9 @@ t_test_features%>%
 write_csv(t_test_features%>%
             filter(`characterization scores` == "Good"), "~/Documents/GitHub/DORCIERR/data/analysis/t_test_features.csv")
 
-
+write_csv(summary_dunnett%>%
+            unite(sample, c(Organism, DayNight, Timepoint), sep = "_")%>%
+            spread(sample, log), "~/Documents/GitHub/DORCIERR/data/analysis/cytoscape_dunnetts.csv")
 
 # SUMMARY -- Microbe filtering --------------------------------------------
 microbe_summary <- microbe_combined%>%
