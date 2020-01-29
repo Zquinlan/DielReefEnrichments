@@ -1076,9 +1076,9 @@ pcoa_microbe <- microbe_no_rare%>%
   group_by(sample, OTU)%>%
   summarize_if(is.numeric, sum)%>%
   ungroup()%>%
-  mutate(zscore = (asin -mean(asin))/sd(asin))%>%
-  mutate(zscore = zscore + 0.28)%>%
-  select(-asin)%>%
+  mutate(zscore = (log10 -mean(log10))/sd(log10))%>%
+  mutate(zscore = zscore + 0.75)%>%
+  select(-c(log10, `Cells µL-1`, cell_abun))%>%
   spread(OTU, zscore)%>%
   column_to_rownames("sample")%>%
   vegdist(na.rm = TRUE)%>%
@@ -1180,6 +1180,12 @@ summary_dunnett <- dom_dunnetts%>%
               summarize_if(is.numeric, mean, na.rm = TRUE), by = c("feature_number", "DayNight", "Organism"))%>%
   left_join(networking, by = "feature_number")%>%
   select(-c(rhs:p.value))
+
+summary_count_dunnett <- dom_dunnetts%>%
+  select(activity, Organism, DayNight)%>%
+  group_by(activity, Organism, DayNight)%>%
+  mutate(count = 1)%>%
+  summarize_if(is.numeric, sum)
 
 # summary_ttest <- t_pvals%>%
 #   mutate(depletolites = map(data, ~ filter(.x, activity == "depletolites")$feature_number%>%
