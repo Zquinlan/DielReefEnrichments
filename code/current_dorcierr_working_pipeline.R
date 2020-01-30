@@ -647,40 +647,6 @@ tukey_model_fcm <-fcm_stats_df%>%
   unnest(data)%>%
   filter(adj.p.value < 0.05)
 
-# STATS POST-HOC -- DOM Dunnetts T0 ---------------------------------------
-organism_order_dom <- as.factor(anova_dom_t0_df$Organism)%>%
-  relevel("Water control")%>%
-  levels()%>%
-  as.vector()
-
-
-dom_dunnetts <- anova_dom_t0_df%>%
-  group_by(feature_number, DayNight, activity)%>%
-  mutate(sum = sum(log, na.rm = TRUE))%>%
-  filter(min(log) != max(log),
-         sum != 0,
-         activity != "recalcitrant")%>%
-  dplyr::select(-sum)%>%
-  mutate(Organism = factor(Organism))%>%
-  mutate(Organism = fct_relevel(Organism, organism_order_dom))%>%
-  nest()%>%
-  mutate(data = map(data, ~ aov(log ~ Organism, data = .x)%>%
-                      glht(linfct = mcp(Organism = "Dunnett"))),
-         dunnett_summary = map(data, ~summary(.x)%>%
-                                 tidy()))%>%
-  select(-data)%>%
-  unnest(dunnett_summary)%>%
-  mutate(lhs = gsub(" - Water control", "", lhs))%>%
-  rename("Organism" = "lhs")%>%
-  ungroup()%>%   
-  add_column(FDR = p.adjust(.$p.value, method = "BH"))%>%
-  filter(FDR < 0.05)
-
-producer_specific_change <- (dom_dunnetts%>%
-                               filter(activity != "recalcitrant"))$feature_number%>%
-  as.vector()%>%
-  unique
-
 # STATS POST-HOC -- MICROBES Dunnetts -----------------------------
 organism_order_micro <- as.factor(mic_organism_post_hoc$Organism)%>%
   relevel("Water control")%>%
@@ -757,6 +723,47 @@ t_test_feature_inchi <- t_test_features%>%
 write_tsv(t_test_feature_inchi, "~/Documents/GitHub/DORCIERR/data/analysis/inchi_key_norecal.tsv")
 
 
+
+# META-STATS -- Major Depleteolites ---------------------------------------
+major_deplete <- feature_table_no_back_trans%>%
+  gather(sample_name, xic, 2:ncol(.))%>%
+  ungroup()%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+  filter(!Experiment %like% "%Blank%",
+         !Organism %like% "%Blank")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                Experiment == "M" ~ "mordor",
+                                Experiment == "R" ~ "RR3",
+                                TRUE ~ as.character(Experiment)),
+         Organism = case_when(Organism == "CC" ~ "CCA",
+                              Organism == "DT" ~ "Dictyota",
+                              Organism == "PL" ~ "Porites lobata",
+                              Organism == "PV" ~ "Pocillopora verrucosa",
+                              Organism == "TR" ~ "Turf",
+                              Organism == "WA" ~ "Water control",
+                              TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"),
+         xic = case_when(xic == 0 ~ 1000,
+                         TRUE ~ as.numeric(xic)))%>%
+  spread(Timepoint, xic)%>%
+  group_by(Organism, DayNight, feature_number)%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  mutate(log2_change = log2(TF/T0))%>%
+  ungroup()%>%
+  select(-c(T0, TF))%>%
+  spread(Organism, log2_change)%>%
+  right_join(t_pvals, by = c("DayNight", "feature_number"))%>%
+  left_join(networking, by = "feature_number")%>%
+  filter(activity == "depletolite")%>%
+  group_by(DayNight, feature_number, Organism)
+  
+major_deplete$max_log <- apply(major_deplete[3:8], 1, min)
+
+major_depletolites <- major_deplete%>%
+  filter(max_log < -3.3)%>%
+  filter(Organism == "Pocillopora verrucosa" | Organism == "Dictyota" | Organism == "CCA")
 
 # META-STATS -- microbes --------------------------------------------------
 dunnett_micro_analysis <- dunnett_microbe_pvals%>%
@@ -961,6 +968,10 @@ write_csv(hc_microbe%>%
 write_csv(hc_compounds%>%
             select(everything(), sample), "~/Documents/GitHub/DORCIERR/data/plots/compounds_hc_df.csv")
 
+
+# GRAPHING -- Major depletolites ------------------------------------------
+
+
 # GRAPHING —- PCoAs DOM --------------------------------------
 #looking at exudate features
 dom_pco <- dom_stats_wdf%>%
@@ -1164,6 +1175,8 @@ summary_average_xic <- feature_table_no_back_trans%>%
                               TRUE ~ "Night"),
          xic = case_when(xic == 0 ~ 1000,
                          TRUE ~ as.numeric(xic)))%>%
+  # filter(Timepoint == "T0")%>%
+  # select(-Timepoint)%>%
   spread(Timepoint, xic)%>%
   group_by(Organism, DayNight, feature_number)%>%
   summarize_if(is.numeric, mean, na.rm = TRUE)%>%
