@@ -353,8 +353,31 @@ log2_features <- feature_table_no_back_trans%>%
 feature_table_relnorm <- feature_table_no_back_trans%>%
   gather(sample_name, xic, 2:ncol(.))%>%
   ungroup()%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_", remove = FALSE)%>%
+  filter(!Experiment %like% "%Blank%",
+         !Organism %like% "%Blank")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                Experiment == "M" ~ "mordor",
+                                Experiment == "R" ~ "RR3",
+                                TRUE ~ as.character(Experiment)),
+         Organism = case_when(Organism == "CC" ~ "CCA",
+                              Organism == "DT" ~ "Dictyota",
+                              Organism == "PL" ~ "Porites lobata",
+                              Organism == "PV" ~ "Pocillopora verrucosa",
+                              Organism == "TR" ~ "Turf",
+                              Organism == "WA" ~ "Water control",
+                              TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"))%>%
   mutate(xic = case_when(xic == 0 ~ 1000,
                          TRUE ~ as.numeric(xic)))%>%
+  group_by(Organism, Timepoint, DayNight, feature_number)%>%
+  mutate(Replicate = as.numeric(Replicate),
+         xic = case_when(sum(xic) == 4000 ~ xic + Replicate,
+                         TRUE ~ as.numeric(xic)))%>%
+  ungroup()%>%
+  select(-c("Experiment", "Organism", "Replicate", "Timepoint", "DayNight"))%>%
   group_by(sample_name)%>%
   mutate(log10 = log10(xic),
          ra = xic/sum(xic),
@@ -584,8 +607,8 @@ t_test <- dom_stats_wdf%>%
   spread(Timepoint, log)%>%
   select(-c(Experiment, Replicate))%>%
   nest()%>%
-  mutate(greater = map(data, ~ try(t.test(.$TF, mu = mean(.$T0, na.rm=TRUE), alternative = "greater"), silent = TRUE)),
-         lesser = map(data, ~ try(t.test(.$TF, mu = mean(.$T0, na.rm=TRUE), alternative = "less"), silent = TRUE)))
+  mutate(greater = map(data, ~ t.test(.$TF, mu = mean(.$T0, na.rm=TRUE), alternative = "greater")),
+         lesser = map(data, ~ t.test(.$TF, mu = mean(.$T0, na.rm=TRUE), alternative = "less")))
 
 t_pvals <- t_test%>%
   select(-data)%>%
@@ -613,19 +636,19 @@ anova_dom_t0_df <- t_pvals%>%
   left_join(dom_stats_wdf, by = c("feature_number", "DayNight"))%>%
   filter(Timepoint == "T0")
 
-# anova_dom_t0 <- anova_dom_t0_df%>%
-#   group_by(feature_number, DayNight, activity)
-#   nest()%>%
-#   mutate(data = map(data, ~ aov(log ~ Organism, data = .x)%>%
-#                       tidy()%>%
-#                       filter(!term == "Residuals")%>%
-#                       dplyr::select(term, p.value)))%>%
-#   unnest(data)%>%
-#   ungroup()%>%
-#   mutate(FDR = p.adjust(p.value, method = "BH"),
-#          anova = case_when(FDR < 0.05 ~ "producer_specific",
-#                            !FDR < 0.05 | is.na(FDR) ~ "background"))
-# 
+anova_dom_t0 <- anova_dom_t0_df%>%
+  group_by(feature_number, DayNight, activity)
+  nest()%>%
+  mutate(data = map(data, ~ aov(log ~ Organism, data = .x)%>%
+                      tidy()%>%
+                      filter(!term == "Residuals")%>%
+                      dplyr::select(term, p.value)))%>%
+  unnest(data)%>%
+  ungroup()%>%
+  mutate(FDR = p.adjust(p.value, method = "BH"),
+         anova = case_when(FDR < 0.05 ~ "producer_specific",
+                           !FDR < 0.05 | is.na(FDR) ~ "background"))
+
 
 # PRE-POST-HOC CLEANING -- Microbe Dunnetts and DayNight anova -------------------------------
 mic_organism_post_hoc <- microbe_no_rare%>%
