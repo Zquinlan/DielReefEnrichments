@@ -572,6 +572,13 @@ ra_bigger_TF <- microbe_no_rare%>%
   filter(difference > 0)%>%
   dplyr::select(c(DayNight, OTU, Organism))
 
+average_ra <- microbe_no_rare%>%
+  filter(Timepoint == "TF")%>%
+  select(-c(sample_code, Experiment, Replicate, numOtus, reads))%>%
+  group_by(OTU, Organism, DayNight)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()
+
 
 # SET SEED ----------------------------------------------------------------
 set.seed(2005)
@@ -850,7 +857,8 @@ dunnett_micro_analysis <- dunnett_microbe_pvals%>%
                                         is.na(`Pocillopora verrucosa`)  &
                                         is.na(`Porites lobata`) ~ "Turf",
                                       number_exudate_organisms > 3 ~ "Primary Producers",
-                                      TRUE ~ "Cosmo"))
+                                      TRUE ~ "Cosmo"))%>%
+  left_join(microbe_taxonomy, by = "OTU")
 
 micro_sigs_vector <- as.vector(dunnett_micro_analysis$OTU)
 
@@ -992,7 +1000,282 @@ write_csv(hc_compounds%>%
             select(everything(), sample), "~/Documents/GitHub/DORCIERR/data/plots/compounds_hc_df.csv")
 
 
-# GRAPHING -- Major depletolites ------------------------------------------
+# GRAPHING -- [OSM] Pvalues, Log2 Volcano plot -----------------------------------------
+volcano <- feature_table_no_back_trans%>%
+  gather(sample_name, xic, 2:ncol(.))%>%
+  ungroup()%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+  filter(!Experiment %like% "%Blank%",
+         !Organism %like% "%Blank")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                Experiment == "M" ~ "mordor",
+                                Experiment == "R" ~ "RR3",
+                                TRUE ~ as.character(Experiment)),
+         Organism = case_when(Organism == "CC" ~ "CCA",
+                              Organism == "DT" ~ "Dictyota",
+                              Organism == "PL" ~ "Porites lobata",
+                              Organism == "PV" ~ "Pocillopora verrucosa",
+                              Organism == "TR" ~ "Turf",
+                              Organism == "WA" ~ "Water control",
+                              TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"),
+         xic = case_when(xic == 0 ~ 1000,
+                         TRUE ~ as.numeric(xic)))%>%
+  spread(Timepoint, xic)%>%
+  group_by(Organism, DayNight, feature_number)%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  mutate(log2_change = log2(TF/T0))%>%
+  ungroup()%>%
+  select(-c(T0, TF))%>%
+  filter(Organism != "Turf",
+         Organism != "Porites lobata",
+         Organism != "Water control")%>%
+  left_join(t_pvals, by = c("Organism", "DayNight", "feature_number"))%>%
+  mutate(fdr_combined = case_when(FDR_greater > FDR_lesser ~ FDR_lesser,
+                                  FDR_lesser > FDR_greater ~ FDR_greater,
+                                  TRUE ~ 1))
+pdf("./plots/osm_volcano.pdf", width = 6, height = 5)
+volcano%>%
+  ggplot(aes(log2_change, -log10(fdr_combined), col = Organism)) +
+  geom_point(stat = "identity", size = 2.5, shape = 1, alpha = 0.8) +
+  geom_hline(yintercept = -log10(0.05), col = "red", linetype = "dashed") +
+  geom_vline(xintercept = -3.3, col = "red", linetype = "dashed") +
+  scale_x_continuous(breaks= seq(-20, 18, 2)) +
+  scale_y_continuous(breaks = seq(0, 10, 1)) +
+  # scale_shape_manual(values = c(1,19)) +
+  scale_color_manual(values = c("#FF0000", "#50A45C", "#C49647", "#5BBCD6")) +
+  theme(
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
+    panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
+    legend.text = element_text(face = "italic"))
+dev.off()  
+
+# GRAPHING -- [OSM] Major depletolites ------------------------------------------
+major_depletolites%>%
+  # left_join(dom_stats_wdf%>%
+  #             filter(Timepoint == "T0")
+              # group_by(Organism, DayNight, feature_number)%>%
+              # summarize_if(is.numeric, mean)%>%
+              # ungroup()
+            # , by = c("DayNight", "feature_number", "Organism"))%>%
+  left_join(feature_table_no_back_trans%>%
+              gather(sample_name, xic, 2:ncol(.))%>%
+              ungroup()%>%
+              separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+              filter(!Experiment %like% "%Blank%",
+                     !Organism %like% "%Blank")%>%
+              mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                            Experiment == "M" ~ "mordor",
+                                            Experiment == "R" ~ "RR3",
+                                            TRUE ~ as.character(Experiment)),
+                     Organism = case_when(Organism == "CC" ~ "CCA",
+                                          Organism == "DT" ~ "Dictyota",
+                                          Organism == "PL" ~ "Porites lobata",
+                                          Organism == "PV" ~ "Pocillopora verrucosa",
+                                          Organism == "TR" ~ "Turf",
+                                          Organism == "WA" ~ "Water control",
+                                          TRUE ~ as.character(Organism)))%>%
+              separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+              mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                                          TRUE ~ "Night"),
+                     xic = case_when(xic == 0 ~ 1000,
+                                     TRUE ~ as.numeric(xic)))%>%
+              spread(Timepoint, xic)%>%
+              group_by(Organism, DayNight, feature_number)%>%
+              summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+              mutate(log2_change = log2(TF/T0))%>%
+              ungroup()%>%
+              select(-c(T0, TF)), by = c("DayNight", "feature_number", "Organism"))%>%
+  mutate(log2_change = as.numeric(as.character(log2_change)))%>%
+  filter(`characterization scores` == "Good")%>%
+  ggplot(aes(simplified_makeup, y = -log2_change, fill = Organism)) +
+  geom_bar(stat = "summary", fun.y = "mean") +
+  # scale_color_manual(values = wes_palette("Zissou1", 30, type = "continuous")) +
+  facet_wrap(~DayNight) +
+  # geom_boxplot() +
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+    # legend.position = "none"# get rid of legend panel bg
+  )
+
+
+
+
+# GRAPHING -- [OSM] Important OTUs --------------------------------------------------------
+osm_otus <- dunnett_microbe_pvals%>%
+  left_join(microbe_taxonomy, by = "OTU")%>%
+  filter(Organism != "Turf",
+         Organism != "Porites lobata")%>%
+  left_join(average_ra, by = c("OTU", "Organism", "DayNight"))%>%
+  separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "sp"), sep = ";")%>%
+  unite(Tax_plot, c("Family", "Genus", "OTU"), sep = " ", remove = FALSE)
+
+
+osm_otus%>%
+  filter(ra >= 0.015)%>%
+  ggplot(aes(x = Organism, y = ra, col = Tax_plot, fill = Family)) +
+  geom_bar(stat = "identity", position = "stack") +
+  facet_wrap(~DayNight) +
+  # scale_color_manual(values = "black") +
+  scale_fill_manual(values = c("#FF0000", "#32806E", "#91A737", "#F49C00", "#C49647", "#5BBCD6")) +
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+    # legend.position = "none"# get rid of legend panel bg
+  ) +
+  ggtitle("OTUs")
+
+# GRAPHING -- [OSM] FCM data ----------------------------------------------------
+fcm_graphing <- fcm_wdf%>%
+  filter(!Organism == 'Influent',
+         !Organism == 'Offshore',
+         Organism != "Turf",
+         Organism != "Porites lobata")
+
+pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_fcm_DayNight.pdf", width = 7, height = 5)
+fcm_graphing%>%
+  ggplot(aes(x= Timepoint, y = `Cells µL-1`, color = Organism))+
+  geom_point(stat = "summary", fun.y = "mean") +
+  geom_line(aes(group = Organism), stat = "summary", fun.y = "mean") +
+  facet_wrap(~ DayNight) +
+  scale_color_manual(values = c("#FF0000", "#50A45C", "#F69100", "#5BBCD6")) +
+  scale_y_continuous(limits = c(0,900), breaks= seq(0, 900, 100)) +
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major.x = element_blank(), # get rid of major grid
+    panel.grid.major.y = element_line(colour = "grey"),
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent") # get rid of legend panel bg
+  )
+dev.off()
+
+
+# GRAPHING -- [OSM] PCoAs Labile ------------------------------------------
+osm_dom_pco <- dom_stats_wdf%>%
+  spread(Timepoint, log)%>%
+  filter(Organism != "Turf",
+         Organism != "Porites lobata")%>%
+  group_by(feature_number, Organism, DayNight)%>%
+  mutate(mean_t0 = mean(T0, na.rm = TRUE))%>%
+  mutate(change = TF - mean_t0)%>%
+  ungroup()%>%
+  mutate(zscore = ((change - mean(change, na.rm = TRUE))/sd(change, na.rm = TRUE)))%>%
+  mutate(zscore = zscore + 78)%>%
+  select(-c(TF, T0, mean_t0, change))%>%
+  unite(sample, c(1:4), sep = "_")%>%
+  spread(2,3)%>%
+  column_to_rownames(var = "sample")%>%
+  vegdist(na.rm = TRUE)%>%
+  pcoa()
+
+## Plot Eigenvalues
+osm_dom_pco$values[1:10,]%>%
+  as.data.frame()%>%
+  rownames_to_column("Axis")%>%
+  mutate(axis = as.numeric(Axis))%>%
+  ggplot(aes(reorder(Axis, axis), Relative_eig, label = round(Relative_eig, digits = 3))) +
+  geom_bar(stat = "identity") +
+  geom_text(size = 3, color = "red", vjust = -0.5)
+
+## PCoA plot
+pdf("./plots/osm_dom_pcoa.pdf", width = 6, height = 5)
+osm_dom_pco$vectors%>%
+  as.data.frame()%>%
+  rownames_to_column(var = "sample")%>%
+  separate(sample, c("experiemnt", "Organism", "replicate", "DayNight"), sep = "_")%>%
+  ggplot(., aes(x = Axis.1, y = Axis.2, color = Organism, shape = DayNight)) +
+  geom_point(stat = "identity", aes(size = 0.2)) +
+  scale_shape_manual(values = c(1,19)) +
+  scale_color_manual(values = c("#FF0000", "#50A45C", "#F69100", "#5BBCD6")) +
+  theme(
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
+    panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
+    legend.text = element_text(face = "italic")) +
+  xlab(str_c("Axis 1", " (", round(osm_dom_pco$values$Relative_eig[1], digits = 4)*100, "%)", sep = "")) +
+  ylab(str_c("Axis 2", " (", round(osm_dom_pco$values$Relative_eig[2], digits = 4)*100, "%)", sep = "")) +
+  ggtitle("Labile features")
+dev.off()
+
+
+# GRAPHING -- [OSM] PCoAs microbes ------------------------------------------
+osm_pcoa_microbe <- microbe_no_rare%>%
+  filter(Timepoint == "TF",
+         Organism != "Turf",
+         Organism != "Porites lobata")%>%
+  unite(sample, c(Organism, DayNight, Replicate), sep = "_")%>%
+  select(-c(sample_code, Experiment, Timepoint,
+            numOtus, sum, reads, ra))%>%
+  group_by(sample, OTU)%>%
+  summarize_if(is.numeric, sum)%>%
+  ungroup()%>%
+  mutate(zscore = (log10 -mean(log10))/sd(log10))%>%
+  mutate(zscore = zscore + 0.75)%>%
+  select(-c(log10, `Cells µL-1`, cell_abun))%>%
+  spread(OTU, zscore)%>%
+  column_to_rownames("sample")%>%
+  vegdist(na.rm = TRUE)%>%
+  pcoa()
+
+## Plot Eigenvalues
+osm_pcoa_microbe$values[1:10,]%>%
+  as.data.frame()%>%
+  rownames_to_column("Axis")%>%
+  mutate(axis = as.numeric(Axis))%>%
+  ggplot(aes(reorder(Axis, axis), Relative_eig, label = round(Relative_eig, digits = 3))) +
+  geom_bar(stat = "identity") +
+  geom_text(size = 3, color = "red", vjust = -0.5)
+
+## PCoA plot
+pdf("./plots/osm_microbes_pcoa.pdf", width = 6, height = 5)
+osm_pcoa_microbe$vectors%>%
+  as.data.frame()%>%
+  rownames_to_column(var = "sample")%>%
+  separate(sample, c("Organism", "DayNight", "Replicate"), sep = "_")%>%
+  ggplot(., aes(x = Axis.1, y = Axis.2, color = Organism, shape = DayNight)) +
+  geom_point(stat = "identity", aes(size = 0.2)) +
+  scale_shape_manual(values = c(1,19)) +
+  scale_color_manual(values = c("#FF0000", "#50A45C", "#F69100", "#5BBCD6")) +
+  theme(
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
+    panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
+    legend.text = element_text(face = "italic")) +
+  xlab(str_c("Axis 1", " (", round(osm_pcoa_microbe$values$Relative_eig[1], digits = 4)*100, "%)", sep = "")) +
+  ylab(str_c("Axis 2", " (", round(osm_pcoa_microbe$values$Relative_eig[2], digits = 4)*100, "%)", sep = "")) +
+  ggtitle("microbial communities")
+dev.off()
+
 
 
 # GRAPHING —- PCoAs DOM --------------------------------------
@@ -1237,10 +1520,67 @@ summary_count_dunnett <- dom_dunnetts%>%
 #   mutate(anova_groups_summary = 1)%>%
 #   group_by(DayNight, activity, anova)%>%
 #   summarize_if(is.numeric, sum)
+  
+write_csv(t_test_features%>%
+            filter(`characterization scores` == "Good"), "~/Documents/GitHub/DORCIERR/data/analysis/t_test_features.csv")
 
-summary_dunnett%>%
-  filter(`characterization scores` == "Good")%>%
-  ggplot(aes(Organism, y = .$N/.$C, col = activity, size = log)) +
+write_csv(summary_dunnett%>%
+            unite(sample, c(Organism, DayNight, Timepoint), sep = "_")%>%
+            spread(sample, log), "~/Documents/GitHub/DORCIERR/data/analysis/cytoscape_dunnetts.csv")
+
+# SUMMARY -- Organism chemical activity -----------------------------------
+org_summary <- summary_average_xic%>%
+  left_join(feature_table_no_back_trans%>%
+              gather(sample_name, xic, 2:ncol(.))%>%
+              ungroup()%>%
+              separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+              filter(!Experiment %like% "%Blank%",
+                     !Organism %like% "%Blank")%>%
+              mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                            Experiment == "M" ~ "mordor",
+                                            Experiment == "R" ~ "RR3",
+                                            TRUE ~ as.character(Experiment)),
+                     Organism = case_when(Organism == "CC" ~ "CCA",
+                                          Organism == "DT" ~ "Dictyota",
+                                          Organism == "PL" ~ "Porites lobata",
+                                          Organism == "PV" ~ "Pocillopora verrucosa",
+                                          Organism == "TR" ~ "Turf",
+                                          Organism == "WA" ~ "Water control",
+                                          TRUE ~ as.character(Organism)))%>%
+              separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+              mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                                          TRUE ~ "Night"),
+                     xic = case_when(xic == 0 ~ 1000,
+                                     TRUE ~ as.numeric(xic)))%>%
+              filter(Timepoint == "T0")%>%
+              select(-Timepoint)%>%
+              # spread(Timepoint, xic)%>%
+              group_by(Organism, DayNight, feature_number)%>%
+              summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+              # mutate(log2_change = log2(TF/T0))%>%
+              ungroup()%>%
+              # select(-c(T0, TF))%>%
+              spread(Organism, xic), 
+            by = c("DayNight", "feature_number"), suffix = c("_log2", "_xic"))%>%
+  left_join(networking, by = "feature_number")
+
+poc_deplete <- org_summary%>%
+  filter(Organism == "Pocillopora verrucosa",
+         activity == "depletolite")
+
+write_csv(poc_deplete, "./analysis/pocillopora_depletolites.csv")
+
+org_summary%>%
+  select(-c(contains("_log2"), contains("_xic")))%>%
+  left_join(dom_stats_wdf%>%
+              filter(Timepoint == "T0")%>%
+              group_by(Organism, DayNight, feature_number)%>%
+              summarize_if(is.numeric, mean)%>%
+              ungroup(), by = c("DayNight", "feature_number", "Organism"))%>%
+  filter(`characterization scores` == "Good",
+         activity != "recalcitrant")%>%
+  ggplot(aes(Organism, y = .$P/.$C, col = activity, size = log)) +
+  scale_size_continuous(breaks = c(3,4,5,6,7,8,9,10), range = c(3,15)) +
   facet_wrap(~DayNight) +
   # geom_boxplot() +
   geom_point(stat = "identity") +
@@ -1256,16 +1596,11 @@ summary_dunnett%>%
     legend.box.background = element_rect(fill = "transparent")
     # legend.position = "none"# get rid of legend panel bg
   )
-  
-write_csv(t_test_features%>%
-            filter(`characterization scores` == "Good"), "~/Documents/GitHub/DORCIERR/data/analysis/t_test_features.csv")
 
-write_csv(summary_dunnett%>%
-            unite(sample, c(Organism, DayNight, Timepoint), sep = "_")%>%
-            spread(sample, log), "~/Documents/GitHub/DORCIERR/data/analysis/cytoscape_dunnetts.csv")
 
 # SUMMARY -- Microbe filtering --------------------------------------------
 microbe_summary <- microbe_combined%>%
   select(-c(Experiment, Organism, Replicate, Timepoint, DayNight, reads, asin, numOtus, sum))%>%
   spread(sample_code, ra)
+
 
