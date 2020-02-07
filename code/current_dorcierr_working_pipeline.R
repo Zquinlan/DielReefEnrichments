@@ -1036,16 +1036,13 @@ volcano <- feature_table_no_back_trans%>%
   mutate(fdr_combined = case_when(FDR_greater > FDR_lesser ~ FDR_lesser,
                                   FDR_lesser > FDR_greater ~ FDR_greater,
                                   TRUE ~ 1))
-pdf("./plots/osm_volcano.pdf", width = 6, height = 5)
-volcano%>%
-  ggplot(aes(log2_change, -log10(fdr_combined), col = Organism)) +
+volcano_themes <- function(x) {
+  ggplot(x, aes(log2_change, -log10(fdr_combined))) +
   geom_point(stat = "identity", size = 2.5, shape = 1, alpha = 0.8) +
-  geom_hline(yintercept = -log10(0.05), col = "red", linetype = "dashed") +
-  geom_vline(xintercept = -3.3, col = "red", linetype = "dashed") +
   scale_x_continuous(breaks= seq(-20, 18, 2)) +
   scale_y_continuous(breaks = seq(0, 10, 1)) +
   # scale_shape_manual(values = c(1,19)) +
-  scale_color_manual(values = c("#FF0000", "#50A45C", "#C49647", "#5BBCD6")) +
+  # scale_color_manual(values = c("#FF0000", "#50A45C", "#C49647", "#5BBCD6")) +
   theme(
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
@@ -1054,6 +1051,22 @@ volcano%>%
     legend.background = element_rect(fill = "transparent"), # get rid of legend bg
     legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
     legend.text = element_text(face = "italic"))
+}
+
+pdf("./plots/osm_volcano.pdf", width = 6, height = 5)
+volcano%>%
+  volcano_themes()
+
+volcano%>%
+  volcano_themes() +
+  geom_vline(xintercept = -3.3, col = "red", linetype = "dashed") +
+  geom_vline(xintercept = 3.3, col = "red", linetype = "dashed")
+
+volcano%>%
+  volcano_themes() +
+  geom_hline(yintercept = -log10(0.05), col = "red", linetype = "dashed") +
+  geom_vline(xintercept = 3.3, col = "red", linetype = "dashed") +
+  geom_vline(xintercept = -3.3, col = "red", linetype = "dashed")
 dev.off()  
 
 # GRAPHING -- [OSM] Major depletolites ------------------------------------------
