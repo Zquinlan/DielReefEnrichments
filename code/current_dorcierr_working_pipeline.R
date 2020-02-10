@@ -1133,12 +1133,12 @@ osm_otus <- dunnett_microbe_pvals%>%
   left_join(microbe_taxonomy, by = "OTU")%>%
   filter(Organism != "Turf",
          Organism != "Porites lobata")%>%
+  inner_join(ra_bigger_TF, by = c("DayNight", "Organism", "OTU"))%>%
   left_join(average_ra, by = c("OTU", "Organism", "DayNight"))%>%
   separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "sp"), sep = ";")%>%
   unite(Tax_plot, c("Order", "Family", "Genus", "OTU"), sep = " ", remove = FALSE)
 
 colors_otus <- c("#FF0000", #Altermonas Red
-           "#F49C00", #Halieaceae orange
            "#32806E", #Flavobacters greenish
            "#91A737", 
            "olivedrab4", 
@@ -1146,7 +1146,7 @@ colors_otus <- c("#FF0000", #Altermonas Red
            "olivedrab2",
            "olivedrab2",
            "olivedrab2",
-           "turquoise3", # Rhodobacters Blue
+           # "turquoise3", # Rhodobacters Blue
            "#5BBCD6", 
            "steelblue3", 
            "steelblue3",
@@ -1159,7 +1159,7 @@ pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_otus.pdf", width = 7, height = 5
 osm_otus%>%
   filter(ra >= 0.015)%>%
   ggplot(aes(x = Organism, y = ra, fill = Tax_plot)) +
-  geom_bar(stat = "identity", position = "stack") +
+  geom_bar(stat = "summary", fun.y = "mean", position = "stack") +
   facet_wrap(~DayNight) +
   # scale_color_manual(values = "black") +
   scale_fill_manual(values = colors_otus) +
@@ -1181,7 +1181,7 @@ osm_otus%>%
 osm_otus%>%
   filter(ra >= 0.015)%>%
   ggplot(aes(x = Organism, y = ra, fill = Tax_plot)) +
-  geom_bar(stat = "identity", position = "stack") +
+  geom_bar(stat = "summary", fun.y = "mean", position = "stack") +
   facet_wrap(~DayNight) +
   # scale_color_manual(values = "black") +
   scale_fill_manual(values = colors_otus) +
