@@ -1139,6 +1139,7 @@ osm_otus <- dunnett_microbe_pvals%>%
   unite(Tax_plot, c("Order", "Family", "Genus", "OTU"), sep = " ", remove = FALSE)
 
 colors_otus <- c("#FF0000", #Altermonas Red
+                 "firebrick4",
            "#32806E", #Flavobacters greenish
            "#91A737", 
            "olivedrab4", 
@@ -1146,7 +1147,7 @@ colors_otus <- c("#FF0000", #Altermonas Red
            "olivedrab2",
            "olivedrab2",
            "olivedrab2",
-           # "turquoise3", # Rhodobacters Blue
+           "turquoise3", # Rhodobacters Blue
            "#5BBCD6", 
            "steelblue3", 
            "steelblue3",
@@ -1157,7 +1158,7 @@ colors_otus <- c("#FF0000", #Altermonas Red
 
 pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_otus.pdf", width = 7, height = 5)
 osm_otus%>%
-  filter(ra >= 0.015)%>%
+  filter(ra >= 0.010)%>%
   ggplot(aes(x = Organism, y = ra, fill = Tax_plot)) +
   geom_bar(stat = "summary", fun.y = "mean", position = "stack") +
   facet_wrap(~DayNight) +
@@ -1179,7 +1180,7 @@ osm_otus%>%
   ggtitle("OTUs")
 
 osm_otus%>%
-  filter(ra >= 0.015)%>%
+  filter(ra >= 0.010)%>%
   ggplot(aes(x = Organism, y = ra, fill = Tax_plot)) +
   geom_bar(stat = "summary", fun.y = "mean", position = "stack") +
   facet_wrap(~DayNight) +
@@ -1312,6 +1313,7 @@ osm_dom_pco <- dom_stats_wdf%>%
   spread(Timepoint, log)%>%
   filter(Organism != "Turf",
          Organism != "Porites lobata")%>%
+  filter(DayNight == "Day")%>%
   group_by(feature_number, Organism, DayNight)%>%
   mutate(mean_t0 = mean(T0, na.rm = TRUE))%>%
   mutate(change = TF - mean_t0)%>%
@@ -1362,7 +1364,8 @@ dev.off()
 osm_pcoa_microbe <- microbe_no_rare%>%
   filter(Timepoint == "TF",
          Organism != "Turf",
-         Organism != "Porites lobata")%>%
+         Organism != "Porites lobata",
+         DayNight == "Day")%>%
   unite(sample, c(Organism, DayNight, Replicate), sep = "_")%>%
   select(-c(sample_code, Experiment, Timepoint,
             numOtus, sum, reads, ra))%>%
@@ -1370,7 +1373,7 @@ osm_pcoa_microbe <- microbe_no_rare%>%
   summarize_if(is.numeric, sum)%>%
   ungroup()%>%
   mutate(zscore = (log10 -mean(log10))/sd(log10))%>%
-  mutate(zscore = zscore + 0.75)%>%
+  mutate(zscore = zscore + 0.76)%>%
   select(-c(log10, `Cells µL-1`, cell_abun))%>%
   spread(OTU, zscore)%>%
   column_to_rownames("sample")%>%
