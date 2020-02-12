@@ -1,0 +1,472 @@
+DayNight,row m/z,feature_number,network,combined_ID,binary_ID,FinalClassify,ClassString,Dictyota_log2,ZodiacMF,characterization scores,NOSC,dG
+Day,478.3259329,10906,-1,QuinineHCl,2,Cinchona alkaloids,Organic compounds;Alkaloids and derivatives;Cinchona alkaloids,-9.385624494,C22H39N9O3,Low probability,-0.272727273,68.07272727
+Day,294.1335822,10696,-1,Cytochalasin D,2,Cytochalasans,Organic compounds;Alkaloids and derivatives;Cytochalasans,-3.700499945,C16H19N2O2,Low probability,-0.5625,76.33125
+Day,738.2811794,14416,695,Vincristine,2,Vinca alkaloids,Organic compounds;Alkaloids and derivatives;Vinca alkaloids,-6.758193687,NA,NA,NA,NA
+Day,272.1061565,11190,1153,3-Hydroxyacetaminophen,2,Acetanilides,Organic compounds;Benzenoids;Benzene and substituted derivatives;Anilides;Acetanilides,-4.501856208,C14H19NO2,Good,-0.857142857,84.72857143
+Day,342.3371927,13325,271,Ginkgolic acid II,2,Salicylic acids,Organic compounds;Benzenoids;Benzene and substituted derivatives;Benzoic acids and derivatives;Hydroxybenzoic acid derivatives;Salicylic acid and derivatives;Salicylic acids,-3.571582785,C21H43NO2,Good,-1.714285714,109.1571429
+Day,527.2299301,8212,573,MoNA:818646 Cetirizine N-Oxide,2,Diphenylmethanes,Organic compounds;Benzenoids;Benzene and substituted derivatives;Diphenylmethanes,-4.062743422,C20H40O14,Good,-0.6,77.4
+Day,236.1131559,4594,5425,Bisphenol BP,2,Bisphenols,Organic compounds;Benzenoids;Benzene and substituted derivatives;Diphenylmethanes;Bisphenols,-4.243149878,C9H17NO6,Good,-0.222222222,66.63333333
+Day,240.1498936,2958,-1,Isoproturon,2,N-phenylureas,Organic compounds;Benzenoids;Benzene and substituted derivatives;N-phenylureas,-6.99656463,C10H23N3O,Good,-1.2,94.5
+Day,301.2848457,7675,813,4-Phenylbutylamine,2,Amphetamines and derivatives,Organic compounds;Benzenoids;Benzene and substituted derivatives;Phenethylamines;Amphetamines and derivatives,-5.799388368,C17H36N2O2,Good,-1.529411765,103.8882353
+Day,246.2216707,7063,5723,"2,4,6-Tri-tert-butylaniline",1,Phenylpropanes,Organic compounds;Benzenoids;Benzene and substituted derivatives;Phenylpropanes,-4.776161519,C17H27N,Good,-1.411764706,100.5352941
+Day,264.1746928,6100,280,OxymetazolineHCl,2,Xylenols,Organic compounds;Benzenoids;Benzene and substituted derivatives;Xylenes;Xylenols,-4.934932545,C4H21N10O2,Bad quality,3.25,-32.325
+Day,218.1906704,3587,-1,N-Desalkylbuprenorphine,2,Phenanthrenes and derivatives,Organic compounds;Benzenoids;Phenanthrenes and derivatives,-3.429833219,C15H23N,Good,-1.333333333,98.3
+Day,264.135653,12268,1494,3-Hydroxy-4-methoxybenzaldehyde,2,Methoxyphenols,Organic compounds;Benzenoids;Phenols;Methoxyphenols,-9.339433308,C11H22NO4P,Good,-1.454545455,101.7545455
+Day,546.3776209,9208,1193,2-Arachidonoylglycerol,2,Endocannabinoids,Organic compounds;Lipids and lipid-like molecules;Endocannabinoids,-8.389352266,C25H53N7O2P2,Good,-1.52,103.62
+Day,494.3481553,4619,1193,"Monolinolenin (9c,12c,15c)",2,Endocannabinoids,Organic compounds;Lipids and lipid-like molecules;Endocannabinoids,-7.222963433,C28H47NO6,Good,-1.142857143,92.87142857
+Day,317.2323945,8893,919,"14,15-Dihydroxy-5Z,8Z,11Z-eicosatrienoic acid",2,Eicosanoids,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids,-6.705929495,C17H32O5,Good,-1.294117647,97.18235294
+Day,369.2646771,6705,5670,Misoprostol,2,Prostaglandins and related compounds,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids;Prostaglandins and related compounds,-7.632159115,C21H36O5,Good,-1.238095238,95.58571429
+Day,277.1797128,560,167,"7,8-Dehydropregnenolone",2,Prostaglandins and related compounds,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids;Prostaglandins and related compounds,-3.582550802,C17H24O3,Good,-1.058823529,90.47647059
+Day,305.2107622,3554,167,"8(9)-Epoxy-5Z,11Z,14Z-eicosatrienoic acid",2,Prostaglandins and related compounds,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids;Prostaglandins and related compounds,-3.915920838,C19H28O3,Good,-1.157894737,93.3
+Day,485.2729057,9563,-1,Misoprostol,2,Prostaglandins and related compounds,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids;Prostaglandins and related compounds,-8.335023106,C22H36N7O4,Low probability,-0.318181818,69.36818182
+Day,381.2459035,11110,-1,Dinor-12-oxophytodienoic acid,2,Prostaglandins and related compounds,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids;Prostaglandins and related compounds,-7.005566284,C19H36NO5,Bad quality,-1.210526316,94.8
+Day,327.1800999,10805,-1,Dinor-12-oxophytodienoic acid,2,Prostaglandins and related compounds,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids;Prostaglandins and related compounds,-4.329245726,C13H29NO6P,Good,-1.461538462,101.9538462
+Day,291.1430983,7176,1720,11-Deoxy-11-methyleneprostaglandin D2,2,Prostaglandins and related compounds,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids;Prostaglandins and related compounds,-10.2846053,C8H23N5O3P,Bad quality,-0.875,85.2375
+Day,526.2011387,14094,657,"5-Heptenoic acid, 7-[(1R,4S,5S,6R)-6-[(1E,,3S,5Z)-3-hydroxy-1,5-octadien-1-yl]-2-oxabicyclo[2.2.1]hept-5-yl]-, (5Z)-",2,Prostaglandins and related compounds,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids;Prostaglandins and related compounds,-7.834118186,C14H33N9O9S,Low probability,1,31.8
+Day,311.2213535,4020,-1,"Cyclopentaneheptanoic acid, 2-[(3R)-4-[(2-fluorophenyl)thio]-3-hydroxybutyl]-3,5-dihydroxy-, methyl ester, (1R,2R,3R,5S)-",2,Prostaglandins and related compounds,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids;Prostaglandins and related compounds,-3.438632316,C14H33NO4P,Good,-1.928571429,115.2642857
+Day,378.2487537,12462,242,Docosahexaenoic acid ethyl ester,2,Fatty acid esters,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters,-6.955656047,C19H31N5O3,Good,-0.526315789,75.3
+Day,342.2643063,3920,215,Spectral Match to Lauroyl L-carnitine from NIST14,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-7.481626211,C19H35NO4,Good,-1.263157895,96.3
+Day,344.279977,10082,21,Spectral Match to Lauroyl L-carnitine from NIST14,1,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-8.295091296,C19H37NO4,Good,-1.368421053,99.3
+Day,316.2483942,2734,21,Decanoyl-L-carnitine,1,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-8.242413534,C17H33NO4,Good,-1.294117647,97.18235294
+Day,416.3375886,9494,21,3-Hydroxyhexadecanoylcarnitine,1,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-7.254826004,C23H45NO5,Good,-1.391304348,99.95217391
+Day,316.2484604,13294,21,Decanoyl-L-carnitine,1,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-5.691221338,C17H33NO4,Good,-1.294117647,97.18235294
+Day,246.170154,2212,21,Isovaleryl-L-carnitine,1,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-3.986031728,C12H23NO4,Good,-1,88.8
+Day,386.2905799,3860,21,L-Arachidonoylcarnitine,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-8.352351643,C21H39NO5,Good,-1.238095238,95.58571429
+Day,372.2750112,11124,21,3-Hydroxyoleylcarnitine,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-8.158262765,C20H37NO5,Good,-1.2,94.5
+Day,388.3062874,14220,21,Fastigilin B,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-7.943988376,C21H41NO5,Good,-1.333333333,98.3
+Day,302.232558,11937,21,Octanoylcarnitine,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-7.707991848,C16H31NO4,Good,-1.25,95.925
+Day,388.3062877,4205,21,Oleoyl-L-carnitine,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-7.48933018,C21H41NO5,Good,-1.333333333,98.3
+Day,430.3532015,13233,21,3-Hydroxyhexadecanoylcarnitine,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-6.798530017,C24H47NO5,Good,-1.416666667,100.675
+Day,330.2639622,3121,21,Spectral Match to Lauroyl L-carnitine from NIST14,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-6.634141969,C18H35NO4,Good,-1.333333333,98.3
+Day,260.1857795,4128,21,Isovaleryl-L-carnitine,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-6.348030266,C13H25NO4,Good,-1.076923077,90.99230769
+Day,358.2956751,11227,21,Spectral Match to Lauroyl L-carnitine from NIST14,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-6.285420157,C8H33N14O2,Good,1.625,13.9875
+Day,358.2957779,17618,21,Spectral Match to Lauroyl L-carnitine from NIST14,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-6.285420157,C20H39NO4,Good,-1.4,100.2
+Day,330.2639887,12509,21,Decanoyl-L-carnitine,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-6.252042428,C18H35NO4,Good,-1.333333333,98.3
+Day,372.2750761,17950,21,L-Arachidonoylcarnitine,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-6.118856823,C20H37NO5,Good,-1.2,94.5
+Day,402.3219206,13318,21,Fastigilin B,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-6.095482717,C22H43NO5,Good,-1.363636364,99.16363636
+Day,430.3168559,11709,21,N-Oleoylglycine,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-5.606322254,C23H43NO6,Good,-1.217391304,94.99565217
+Day,386.290615,14222,21,Lipids and lipid-like molecules,3,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-5.982201033,C21H39NO5,Good,-1.238095238,95.58571429
+Day,402.3220079,13342,21,Lipids and lipid-like molecules,3,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-5.902326896,C22H43NO5,Good,-1.363636364,99.16363636
+Day,232.1545558,4277,21,NA,N/A,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-6.142764705,C11H21NO4,Good,-0.909090909,86.20909091
+Day,374.2907118,2978,-1,Adipoyl-L-carnitine,2,Acyl carnitines,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Acyl carnitines,-8.237725353,C20H39NO5,Good,-1.3,97.35
+Day,265.1476606,14055,2520,Dimethyl azelate,2,Fatty acid methyl esters,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Fatty acid methyl esters,-7.268858513,C12H26O2P2,Good,-2.666666667,136.3
+Day,161.0810172,8859,2270,Dimethyl adipate,2,Fatty acid methyl esters,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters;Fatty acid methyl esters,-5.773588907,C7H12O4,Good,-0.571428571,76.58571429
+Day,270.1700792,3273,4779,Undecanedioic acid,2,Medium-chain fatty acids,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acids and conjugates;Medium-chain fatty acids,-3.331877716,C14H23NO4,Good,-0.857142857,84.72857143
+Day,312.2530198,16138,-1,Phytomonic acid,2,Medium-chain fatty acids,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acids and conjugates;Medium-chain fatty acids,-8.571443336,C18H33NO3,Good,-1.333333333,98.3
+Day,186.1854046,14890,-1,Undecanoic acid,2,Medium-chain fatty acids,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acids and conjugates;Medium-chain fatty acids,-7.510854293,C11H23NO,Good,-1.636363636,106.9363636
+Day,211.0868235,11726,-1,trans-Traumatic acid,2,Medium-chain fatty acids,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acids and conjugates;Medium-chain fatty acids,-5.306109849,C11H15O2P,Good,-1.454545455,101.7545455
+Day,272.1857178,3780,-1,trans-Traumatic acid,2,Medium-chain fatty acids,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty acids and conjugates;Medium-chain fatty acids,-5.072933736,C14H25NO4,Good,-1,88.8
+Day,362.2333904,11169,17,N-Oleoyltaurine,2,Fatty amides,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty amides,-7.522164127,C21H31NO4,Good,-0.952380952,87.44285714
+Day,362.2360577,14615,17,N-Oleoyltaurine,2,Fatty amides,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty amides,-7.522164127,C18H37NO2P2,Good,-2.222222222,123.6333333
+Day,410.2541827,3900,17,"N-(1,1-Dimethyl-2-hydroxyethyl)-3-amino-2-hydroxypropanesulfonic acid",2,Fatty amides,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty amides,-4.097776415,C22H35NO6,Good,-0.909090909,86.20909091
+Day,364.2694058,2805,3318,Oleamide,2,Fatty amides,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty amides,-10.65198047,C18H37NO6,Good,-1.222222222,95.13333333
+Day,392.3016208,3029,-1,Oleamide,2,Fatty amides,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty amides,-9.485820182,C20H41NO6,Bad quality,-1.3,97.35
+Day,462.3427386,8863,3905,"Spectral Match to Conjugated linoleic Acid (10E,12Z) from NIST14",2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-8.524241205,C24H47NO7,Good,-1.25,95.925
+Day,377.2537374,9162,198,Lipids and lipid-like molecules,3,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-6.264014487,C19H36O7,Good,-1.157894737,93.3
+Day,363.2729905,9000,198,Lipids and lipid-like molecules#Organoheterocyclic compounds,3,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-6.160283359,C19H38O6,Good,-1.368421053,99.3
+Day,377.2536178,9144,198,Lipids and lipid-like molecules,3,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-5.746197511,C19H36O7,Good,-1.157894737,93.3
+Day,363.2300226,8879,198,"9-Oxo-10E,12Z-octadecadienoic acid",2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-7.806381908,C18H35O5P,Good,-1.666666667,107.8
+Day,405.2850331,9958,198,"9-Oxo-10E,12Z-octadecadienoic acid",2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-7.641154346,C21H40O7,Good,-1.238095238,95.58571429
+Day,476.3222374,12247,198,"Spectral Match to 13-Keto-9Z,11E-octadecadienoic acid from NIST14",2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-7.595874234,C24H45NO8,Good,-1.083333333,91.175
+Day,422.3117601,8811,198,"Spectral Match to 13-Keto-9Z,11E-octadecadienoic acid from NIST14",2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-6.502121579,C21H43NO7,Good,-1.238095238,95.58571429
+Day,345.21893,13113,198,"Spectral Match to 13-Keto-9Z,11E-octadecadienoic acid from NIST14",2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-6.158748109,C25H28O,Good,-1.04,89.94
+Day,387.2740511,8816,198,"Spectral Match to 13-Keto-9Z,11E-octadecadienoic acid from NIST14",2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-5.692136997,C21H38O6,Good,-1.238095238,95.58571429
+Day,504.3536296,15915,198,13(S)-HpODE,2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-8.731361256,C26H49NO8,Good,-1.153846154,93.18461538
+Day,405.2849936,7445,198,"9-Oxo-10E,12Z-octadecadienoic acid",2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-7.929227104,C21H40O7,Good,-1.238095238,95.58571429
+Day,361.2581862,9657,198,19(R)-Hydroxyprostaglandin E2,2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-5.71662087,C19H36O6,Good,-1.263157895,96.3
+Day,387.2739447,8845,198,"9-Oxo-10E,12Z-octadecadienoic acid",2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-5.495325148,C21H38O6,Good,-1.238095238,95.58571429
+Day,195.1745385,11207,-1,Pinolenic acid,2,Lineolic acids and derivatives,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives,-7.270203525,C13H22O,Good,-1.538461538,104.1461538
+Day,193.1341115,18740,4627,Jasmonic acid,2,Jasmonic acids,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives;Jasmonic acids,-6.82210224,C11H16N2O,Bad quality,-0.727272727,81.02727273
+Day,227.128091,3711,673,Methyl jasmonate,2,Jasmonic acids,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives;Jasmonic acids,-3.792117499,C12H18O4,Good,-0.833333333,84.05
+Day,304.2120529,8864,-1,"1,2-Dioctanoyl-sn-glycerol",2,Diacylglycerols,Organic compounds;Lipids and lipid-like molecules;Glycerolipids;Diradylglycerols;Diacylglycerols,-6.284902022,C15H29NO5,Good,-1.066666667,90.7
+Day,415.353273,2540,2356,Glycerophospho-N-palmitoylethanolamine,2,Glycero-3-phospho-N-acyl-ethanolamines,Organic compounds;Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines;Glycero-3-phospho-N-acyl-ethanolamines,-6.558830928,C28H46O2,Good,-1.5,103.05
+Day,246.2429573,17292,5082,(R)-(+)-Citronellic acid,2,Acyclic monoterpenoids,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Monoterpenoids;Acyclic monoterpenoids,-8.176229583,C14H31NO2,Good,-1.714285714,109.1571429
+Day,202.1802957,7088,2651,(R)-(+)-Citronellic acid,2,Acyclic monoterpenoids,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Monoterpenoids;Acyclic monoterpenoids,-12.32074504,C11H23NO2,Good,-1.454545455,101.7545455
+Day,430.2301503,11041,-1,all-trans-4-Hydroxyretinoic acid,2,Retinoids,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Retinoids,-7.389532921,C23H31N3O5,Good,-0.52173913,75.16956522
+Day,485.2008179,18160,91,Salannin,2,Trichothecenes,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Sesquiterpenoids;Trichothecenes,-7.914484267,C21H34O11,Good,-0.571428571,76.58571429
+Day,561.3982219,6616,-1,ginkgolide B,2,Ginkgolides and bilobalides,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Terpene lactones;Diterpene lactones;Ginkgolides and bilobalides,-4.599825565,C24H54N6O7,Bad quality,-0.916666667,86.425
+Day,508.2390841,18110,814,"[(6E,10Z)-6-formyl-10-(hydroxymethyl)-3-methylidene-2-oxo-3a,4,5,8,9,11a-hexahydrocyclodeca[b]furan-4-yl] 3-methylbutanoate",2,Germacranolides and derivatives,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Terpene lactones;Sesquiterpene lactones;Germacranolides and derivatives,-9.356644684,C18H23N18O,Good,1.833333333,8.05
+Day,457.2065792,10557,91,".DELTA.2-Androstene-1.alpha.,17.beta.-diol acetate",2,Androstane steroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Androstane steroids,-8.387580355,C16H37NO10P,Low probability,-1.1875,94.14375
+Day,356.3220453,10294,-1,16-Oxoandrostenediol,2,Androstane steroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Androstane steroids,-4.44688589,C18H39N6O,Good,-1.055555556,90.38333333
+Day,499.2526168,14873,5529,Methenolone,2,Androstane steroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Androstane steroids,-7.061326989,C23H41N4O2P3,Low probability,NA,NA
+Day,346.2745873,14432,-1,Himbacine,1,Androstane steroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Androstane steroids,-6.762792522,C22H35NO2,Good,-1.272727273,96.57272727
+Day,536.3587378,20720,476,3-[(Cholamidopropyl)dimethylammonio]-1-propanesulfonate,2,"Bile acids, alcohols and derivatives","Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Bile acids, alcohols and derivatives",-13.10501609,C30H49NO7,Good,-1.066666667,90.7
+Day,597.34646,17833,-1,3-Oxo-4-cholestenoic acid,2,"Bile acids, alcohols and derivatives","Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Bile acids, alcohols and derivatives",-6.126802753,C20H52N10O5P2,Bad quality,-1.1,91.65
+Day,440.337555,2893,88,Spectral Match to Cholic acid from NIST14,2,Taurinated bile acids and derivatives,"Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Bile acids, alcohols and derivatives;Taurinated bile acids and derivatives",-10.12940406,C25H45NO5,Good,-1.28,96.78
+Day,517.3302367,4579,88,Tauroursodeoxycholic acid,2,Taurinated bile acids and derivatives,"Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Bile acids, alcohols and derivatives;Taurinated bile acids and derivatives",-9.504989019,C23H44N6O7,Low probability,-0.52173913,75.16956522
+Day,533.3264849,3424,88,Taurocholic acid,2,Taurinated bile acids and derivatives,"Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Bile acids, alcohols and derivatives;Taurinated bile acids and derivatives",-9.346227101,C25H44N9P2,Good,-1.08,91.08
+Day,482.2932051,9336,88,Tauroursodeoxycholic acid,2,Taurinated bile acids and derivatives,"Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Bile acids, alcohols and derivatives;Taurinated bile acids and derivatives",-7.07809676,C19H35N11O4,Low probability,0.315789474,51.3
+Day,357.166632,2481,1827,"16.alpha.,17,21-Trihydroxypregna-1,4-diene-3,11,20-trione",1,21-hydroxysteroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Hydroxysteroids;21-hydroxysteroids,-6.93792915,C16H24N2O7,Good,-0.25,67.425
+Day,357.1667748,2519,1827,"4,6-Quinazolinediamine, N4-[2-(4-phenoxyphenyl)ethyl]-",1,21-hydroxysteroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Hydroxysteroids;21-hydroxysteroids,-4.064363819,C16H24N2O7,Good,-0.25,67.425
+Day,371.182488,4771,1827,Hydrocortisone 21-hemisuccinate,2,21-hydroxysteroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Hydroxysteroids;21-hydroxysteroids,-4.634901361,C17H26N2O7,Good,-0.352941176,70.35882353
+Day,371.1827297,4763,1827,Triptophenolide,2,21-hydroxysteroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Hydroxysteroids;21-hydroxysteroids,-4.554429881,C17H26N2O7,Good,-0.352941176,70.35882353
+Day,313.1757512,4117,1827,Eurycomalactone,2,21-hydroxysteroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Hydroxysteroids;21-hydroxysteroids,-4.451085141,C15H24N2O5,Good,-0.533333333,75.5
+Day,345.2063084,8325,152,11-Dehydrocorticosterone,1,21-hydroxysteroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Hydroxysteroids;21-hydroxysteroids,-3.324884532,C19H30O4,Good,-1.157894737,93.3
+Day,323.1239113,10758,-1,"11.beta.,16.alpha.,17.alpha.,21-Tetrahydroxypregna-1,4-diene-3,20-dione",2,21-hydroxysteroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Hydroxysteroids;21-hydroxysteroids,-3.677342276,C16H18N3O3,Low probability,-0.1875,65.64375
+Day,505.2985487,17725,-1,Progesterone,2,Pregnane steroids,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Pregnane steroids,-7.131174682,C20H38N10O4,Bad quality,0,60.3
+Day,296.1937448,17077,-1,"1,24-Dihydroxyvitamin D3",2,Vitamin D and derivatives,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Vitamin D and derivatives,-5.639667497,C15H25N3O3,Good,-0.666666667,79.3
+Day,266.1075729,3994,174,trans-Zeatin,2,Purine nucleosides,"Organic compounds;Nucleosides, nucleotides, and analogues;Purine nucleosides",-11.24891412,C10H21NO3P2,Good,-2.2,123
+Day,284.0731118,13434,174,"7-chlorothieno[2,3-c]Pyridine",2,Purine nucleosides,"Organic compounds;Nucleosides, nucleotides, and analogues;Purine nucleosides",-8.425068298,C13H17O3P2,Good,-1.615384615,106.3384615
+Day,398.1507957,13005,174,"ReSpect:PT103630 trans-Zeatin-riboside|trans-ribosylzeatin|9-(beta-D-Ribofuranosyl)-trans-zeatin|N6-(trans-4-Hydroxy-3-methyl-2-buten-1-yl)adenosine|(2R,3S,4R,5R)-2-(hydroxymethyl)-5-[6-[[(E)-4-hydroxy-3-methylbut-2-e",2,Purine nucleosides,"Organic compounds;Nucleosides, nucleotides, and analogues;Purine nucleosides",-7.368971139,C15H29NO7P2,Low probability,-1.466666667,102.1
+Day,538.3939909,11788,46,"2',3'-Di-O-acetyladenosine",2,Purine nucleosides,"Organic compounds;Nucleosides, nucleotides, and analogues;Purine nucleosides",-6.760200944,C22H52N9O4P,Good,-1,88.8
+Day,222.1128354,2445,2261,ALBIZZIINE,2,Alpha amino acids,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Alpha amino acids",-3.710340981,C12H15NO3,Good,-0.5,74.55
+Day,259.201776,3850,-1,DL-.alpha.-Aminopimelic acid,2,Alpha amino acids,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Alpha amino acids",-10.58420508,C13H26N2O3,Good,-1.076923077,90.99230769
+Day,357.3116582,7118,-1,CocamidoprpylBetaine,2,Alpha amino acids,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Alpha amino acids",-6.330689503,C20H40N2O3,Good,-1.4,100.2
+Day,559.2200904,11403,131,Organic oxygen compounds#Lipids and lipid-like molecules,3,Glutamic acid and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Glutamic acid and derivatives",-8.072978637,C23H34N4O12,Good,0.086956522,57.82173913
+Day,559.2251443,16439,131,Organic oxygen compounds#Lipids and lipid-like molecules,3,Glutamic acid and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Glutamic acid and derivatives",-8.072978637,C23H34N4O12,Good,0.086956522,57.82173913
+Day,647.2721478,15079,131,Organic oxygen compounds#Lipids and lipid-like molecules,3,Glutamic acid and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Glutamic acid and derivatives",-7.440739637,C27H42N4O14,Good,-0.074074074,62.41111111
+Day,545.2043062,11320,131,Lipids and lipid-like molecules#Organic acids and derivatives,3,Glutamic acid and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Glutamic acid and derivatives",-7.217339459,C22H32N4O12,Good,0.181818182,55.11818182
+Day,545.2091907,15539,131,Lipids and lipid-like molecules#Organic acids and derivatives,3,Glutamic acid and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Glutamic acid and derivatives",-7.217339459,C22H32N4O12,Good,0.181818182,55.11818182
+Day,702.2849592,13201,131,Organic acids and derivatives#Organic oxygen compounds#Phenylpropanoids and polyketides,3,Glutamic acid and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Glutamic acid and derivatives",-6.441828205,NA,NA,NA,NA
+Day,674.2531377,13040,131,Phenylpropanoids and polyketides#Organic acids and derivatives,3,Glutamic acid and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Glutamic acid and derivatives",-5.518235715,C20H28N24OP,Good,2.05,1.875
+Day,716.3008394,18201,131,NA,N/A,Glutamic acid and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Glutamic acid and derivatives",-8.70586281,NA,NA,NA,NA
+Day,716.2999925,12707,131,NA,N/A,Glutamic acid and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Glutamic acid and derivatives",-8.628143272,NA,NA,NA,NA
+Day,227.1757429,10639,199,N-Methylisoleucine,2,Isoleucine and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Isoleucine and derivatives",-4.252616487,C12H22N2O2,Good,-1,88.8
+Day,256.190941,15484,2909,N-3-Hydroxydecanoyl-L-homoserine lactone,2,N-acyl-alpha amino acids and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;N-acyl-alpha amino acids and derivatives",-6.690112577,C14H25NO3,Good,-1.142857143,92.87142857
+Day,343.2672506,14529,5422,Linoleoylglycine,2,N-acyl-alpha amino acids,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;N-acyl-alpha amino acids and derivatives;N-acyl-alpha amino acids",-5.952722363,C23H34O2,Good,-1.304347826,97.47391304
+Day,433.8751023,11716,141,"L-3,5-Diiodotyrosine",1,Tyrosine and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Tyrosine and derivatives",-7.840626515,C7H6N2O10P5,Low probability,NA,NA
+Day,447.8908696,16123,141,"N-Acetyl-L-phenylalanyl-3,5-diiodo-L-tyrosine",2,Tyrosine and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Alpha amino acids and derivatives;Tyrosine and derivatives",-7.659109809,C8H8N2O10P5,Good,NA,NA
+Day,205.0974553,7103,7124,D-TRYPTOPHAN,1,Amino acids,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Amino acids",-4.773907001,C11H9NO2,Good,-0.181818182,65.48181818
+Day,188.0708049,4500,-1,Spectral Match to L-Tryptophan from NIST14,1,Amino acids,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Amino acids",-4.773634545,C11H9NO2,Good,-0.181818182,65.48181818
+Day,385.1984475,12156,-1,Nortilidine,2,Beta amino acids and derivatives,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Amino acids and derivatives;Beta amino acids and derivatives",-4.384528514,C14H31N3O7P,Good,-0.928571429,86.76428571
+Day,569.2581364,9333,1026,PitavastatinCa,2,Peptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides",-7.508800857,C25H43N2O9P,Good,-0.96,87.66
+Day,597.28847,10223,1026,Asn Thr Val Arg,2,Peptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides",-7.228402862,C28H46O12,Good,-0.785714286,82.69285714
+Day,583.2731019,9690,1026,Neomycin,2,Peptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides",-7.189624967,C21H35N15O2P,Good,0.428571429,48.08571429
+Day,427.3536906,2522,980,(3-hydroxyheptadecenoyl)lysine,2,Peptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides",-12.17848263,C24H46N2O4,Good,-1.333333333,98.3
+Day,373.3065982,2077,980,Putative (3-hydroxytridecanoyl)lysine,2,Peptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides",-3.595371402,C20H40N2O4,Good,-1.3,97.35
+Day,316.2233801,12347,949,Leu Ala Ile,1,Peptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides",-5.579732393,C15H29N3O4,Good,-0.8,83.1
+Day,303.1703467,13575,224,Trp-Leu,2,Peptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides",-6.645921094,C20H24O,Bad quality,-1.1,91.65
+Day,256.2272536,7147,185,Pro-Met-Arg,2,Peptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides",-11.20925591,C15H29NO2,Good,-1.466666667,102.1
+Day,259.2017939,7288,4953,L-Leucyl-L-leucine methyl ester,1,Peptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides",-4.149511977,C13H26N2O3,Good,-1.076923077,90.99230769
+Day,277.1577277,14238,4103,Met-Pro,2,Dipeptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides;Dipeptides",-6.894179242,C10H24N5P2,Bad quality,-1.9,114.45
+Day,459.3110915,18317,2705,Arg-Leu,2,Dipeptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides;Dipeptides",-7.252058668,C9H34N18O4,Bad quality,3.111111111,-28.36666667
+Day,426.2361601,6968,850,Gly-Tyr,2,Dipeptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides;Dipeptides",-6.795093036,C24H31N3O4,Good,-0.583333333,76.925
+Day,229.1549715,7514,336,Spectral Match to Ile-Pro from NIST14,1,Dipeptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides;Dipeptides",-3.888299078,C11H20N2O3,Good,-0.727272727,81.02727273
+Day,309.2535381,11946,-1,Ile-Lys-OH,2,Dipeptides,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues;Peptides;Dipeptides",-5.527402095,C18H32N2O2,Good,-1.222222222,95.13333333
+Day,276.1255956,14321,777,3-Methoxycyclohexanecarboxylic acid,2,Carboxylic acids,Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Carboxylic acids,-5.778535561,C10H21N4OP2,Good,-1.7,108.75
+Day,770.452468,8609,148,Lipids and lipid-like molecules#Phenylpropanoids and polyketides,3,Tricarboxylic acids and derivatives,Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Tricarboxylic acids and derivatives,-7.039300243,NA,NA,NA,NA
+Day,274.2741399,10993,-1,Tetranorprostaglandin J2,2,Medium-chain keto acids and derivatives,Organic compounds;Organic acids and derivatives;Keto acids and derivatives;Medium-chain keto acids and derivatives,-8.379046831,C16H35NO2,Good,-1.75,110.175
+Day,393.2274947,4064,-1,Methyl arachidonyl fluorophosphonate,1,Phosphonic acid esters,Organic compounds;Organic acids and derivatives;Organic phosphonic acids and derivatives;Phosphonic acid esters,-3.997914494,C22H32O6,Good,-0.909090909,86.20909091
+Day,283.1661076,11797,1431,(S)-Dibutyl 3-hydroxybutyl phosphate,1,Alkyl phosphates,Organic compounds;Organic acids and derivatives;Organic phosphoric acids and derivatives;Phosphate esters;Alkyl phosphates,-5.803781228,C12H27O5P,Good,-1.833333333,112.55
+Day,232.2062324,3412,-1,"MassbankEU:ETS00004 C10-DATS (TENTATIVE)|C10-Dialkyl tetralin sulfonate|8-butyl-5-ethyl-5,6,7,8-tetrahydronaphthalene-2-sulfonic acid|8-butyl-5-ethyl-tetralin sulfonate",2,Organosulfonic acids,Organic compounds;Organic acids and derivatives;Organic sulfonic acids and derivatives;Organosulfonic acids and derivatives;Organosulfonic acids,-5.21993646,C16H25N,Good,-1.375,99.4875
+Day,260.2373857,10604,-1,"MassbankEU:ETS00004 C10-DATS (TENTATIVE)|C10-Dialkyl tetralin sulfonate|8-butyl-5-ethyl-5,6,7,8-tetrahydronaphthalene-2-sulfonic acid|8-butyl-5-ethyl-tetralin sulfonate",2,Organosulfonic acids,Organic compounds;Organic acids and derivatives;Organic sulfonic acids and derivatives;Organosulfonic acids and derivatives;Organosulfonic acids,-3.900302668,C18H29N,Good,-1.444444444,101.4666667
+Day,240.23242,10837,225,"2S-Amino-4E-pentadecene-1,3R-diol",1,"1,2-aminoalcohols","Organic compounds;Organic nitrogen compounds;Organonitrogen compounds;Amines;Alkanolamines;1,2-aminoalcohols",-6.689073986,NA,NA,NA,NA
+Day,298.273902,1001,193,"2S-Amino-4E-pentadecene-1,3R-diol",2,"1,2-aminoalcohols","Organic compounds;Organic nitrogen compounds;Organonitrogen compounds;Amines;Alkanolamines;1,2-aminoalcohols",-11.09764967,C18H35NO2,Good,-1.555555556,104.6333333
+Day,230.2481337,15852,36,"MassbankEU:SM876801 N,N-Dimethyldodecylamine N-oxide|Lauramine oxide|N,N-dimethyldodecan-1-amine oxide",1,Long-chain alkyl amine oxides,Organic compounds;Organic nitrogen compounds;Organonitrogen compounds;Aminoxides;Long-chain alkyl amine oxides,-16.78493067,C14H31NO,Bad quality,-1.857142857,113.2285714
+Day,313.2302412,13606,190,Organoheterocyclic compounds#Alkaloids and derivatives,3,Cyclohexylamines,Organic compounds;Organic nitrogen compounds;Organonitrogen compounds;Cyclohexylamines,-6.019882431,C18H33O2P,Good,-1.888888889,114.1333333
+Day,257.1684206,4946,190,Huperzine B,1,Cyclohexylamines,Organic compounds;Organic nitrogen compounds;Organonitrogen compounds;Cyclohexylamines,-7.837222353,C8H18N9O,Bad quality,1.375,21.1125
+Day,327.2093099,11903,190,Apatinib,2,Cyclohexylamines,Organic compounds;Organic nitrogen compounds;Organonitrogen compounds;Cyclohexylamines,-5.521550302,C18H31O3P,Good,-1.666666667,107.8
+Day,335.1784599,19768,247,N-Acetyl-D-glucosamine,2,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-9.238028341,C14H26N2O7,Bad quality,-0.428571429,72.51428571
+Day,536.2496669,8228,247,Organoheterocyclic compounds,3,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-9.952428176,C19H43N3O10P2,Low probability,-1.263157895,96.3
+Day,234.133865,3567,247,Organic oxygen compounds#Organic acids and derivatives,3,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-3.644098206,C10H19NO5,Bad quality,-0.6,77.4
+Day,482.7221484,14414,10,GlcNAc1-3Gal1-4Glc-Sp,2,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-8.295082711,NA,NA,NA,NA
+Day,690.3202413,14533,10,Phenylpropanoids and polyketides#Organic acids and derivatives,3,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-8.366781642,C27H52N3O15P,Low probability,-0.666666667,79.3
+Day,793.3839022,15289,10,Phenylpropanoids and polyketides#Organoheterocyclic compounds,3,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-7.672351914,NA,NA,NA,NA
+Day,722.3460156,15618,10,Phenylpropanoids and polyketides#Lipids and lipid-like molecules,3,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-7.289080342,NA,NA,NA,NA
+Day,793.3837849,15341,10,Phenylpropanoids and polyketides#Organoheterocyclic compounds,3,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-6.633369179,NA,NA,NA,NA
+Day,864.4209183,14493,10,NA,N/A,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-8.862909376,NA,NA,NA,NA
+Day,864.4208877,14305,10,NA,N/A,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-8.098562683,NA,NA,NA,NA
+Day,893.4001478,12693,10,NA,N/A,Amino sugars,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Aminosaccharides;Amino sugars,-7.846105646,NA,NA,NA,NA
+Day,645.253073,17896,-1,Melezitose,2,Oligosaccharides,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates;Oligosaccharides,-6.740930402,C18H45N10O8P3,Good,NA,NA
+Day,605.4243722,7329,-1,Dicyclohexano-24-crown-8,2,Dialkyl ethers,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers,-3.919692323,C29H52N10O4,Low probability,-0.482758621,74.05862069
+Day,392.3739986,2113,2487,Tetraethylene glycol,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.577823257,C20H47N4O3,Good,-1.45,101.625
+Day,341.2116631,10657,2090,Tetraethylene glycol monomethyl ether,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-12.67322487,C14H34N2O3P2,Good,-2.285714286,125.4428571
+Day,628.5003598,592,2029,Spectral Match to Decaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.292928522,C30H67N4O9,Good,-1.233333333,95.45
+Day,642.2773103,15358,1162,Spectral Match to Undecaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-8.738109778,NA,NA,NA,NA
+Day,445.2947739,6426,352,Spectral Match to Undecaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-14.85520785,C7H33N20OP,Good,3.428571429,-37.41428571
+Day,394.3534994,449,342,Pentaethylene glycol,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.029465333,C21H44O5,Good,-1.619047619,106.4428571
+Day,828.522658,20001,245,Organic oxygen compounds#Lipids and lipid-like molecules,3,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-13.99691547,NA,NA,NA,NA
+Day,679.4194812,15251,245,Spectral Match to Undecaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-7.735675883,C33H50N12O4,Low probability,-0.181818182,65.48181818
+Day,454.3740761,8539,212,Organic nitrogen compounds#Organoheterocyclic compounds,3,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-6.554469595,C21H49N4O6,Bad quality,-1.19047619,94.22857143
+Day,528.4109026,13060,212,Alcohols and polyols,N/A,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-11.27719604,C24H55N4O8,Low probability,-1.125,92.3625
+Day,498.4005328,18504,212,Spectral Match to Nonaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-6.49732699,C23H53N4O7,Bad quality,-1.173913043,93.75652174
+Day,702.5371589,1805,200,Spectral Match to Undecaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-5.164555478,NA,NA,NA,NA
+Day,614.4846788,4669,200,Spectral Match to Nonaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.775774018,C32H63N5O6,Low probability,-1.125,92.3625
+Day,658.5108951,1747,200,Spectral Match to Undecaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.432476048,C31H69N4O10,Good,-1.193548387,94.31612903
+Day,482.4056158,467,200,Spectral Match to Hexaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.282131909,C23H53N4O6,Good,-1.260869565,96.23478261
+Day,746.5631229,7328,200,Spectral Match to Decaethylene glycol tridecyl ether from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.161701121,NA,NA,NA,NA
+Day,584.4738653,466,200,Spectral Match to Nonaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.069533266,C28H63N4O8,Good,-1.25,95.925
+Day,732.5477151,1410,200,Spectral Match to Decaethylene glycol tridecyl ether from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-3.954084262,NA,NA,NA,NA
+Day,746.5632768,2059,200,Spectral Match to Decaethylene glycol tridecyl ether from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-3.552643698,NA,NA,NA,NA
+Day,966.6946249,14932,200,NA,N/A,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-7.935590084,NA,NA,NA,NA
+Day,776.5739844,1842,200,NA,N/A,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.225064711,NA,NA,NA,NA
+Day,642.2385125,10505,140,Spectral Match to Undecaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-7.512778825,C35H35N3O9,Bad quality,-0.228571429,66.81428571
+Day,568.312519,12696,7,Spectral Match to p-tert-Octylphenol hexaglycol ether from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-10.60835782,C26H51NO8P2,Low probability,-1.615384615,106.3384615
+Day,592.4063474,11185,7,Alcohols and polyols,N/A,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-7.92245395,C30H57NO10,Good,-1.133333333,92.6
+Day,445.0958531,12645,-1,Hexaethylene glycol,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-10.23224528,C11H19N8O8P,Good,1.454545455,18.84545455
+Day,357.2059644,12803,-1,Spectral Match to Decaethylene glycol from NIST14,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-9.112531615,C22H28O4,Low probability,-0.909090909,86.20909091
+Day,438.3747761,7055,-1,Pentaethylene glycol,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-17.78834146,C21H49N4O5,Good,-1.285714286,96.94285714
+Day,436.3997246,3331,-1,Pentaethylene glycol,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.883530041,C22H51N4O4,Good,-1.409090909,100.4590909
+Day,377.3266663,7069,-1,Tetraethylene glycol,2,Polyethylene glycols,Organic compounds;Organic oxygen compounds;Organooxygen compounds;Ethers;Dialkyl ethers;Polyethylene glycols,-4.141753302,C21H44O5,Good,-1.619047619,106.4428571
+Day,229.1549575,7611,-1,DETHIOBIOTIN,2,Imidazolyl carboxylic acids and derivatives,Organic compounds;Organoheterocyclic compounds;Azoles;Imidazoles;Substituted imidazoles;Imidazolyl carboxylic acids and derivatives,-8.141749061,C11H20N2O3,Good,-0.727272727,81.02727273
+Day,301.164146,7746,2621,Imiprothrin,1,Hydantoins,Organic compounds;Organoheterocyclic compounds;Azolidines;Imidazolidines;Imidazolidinones;Imidazolidinediones;Hydantoins,-4.163116485,C15H24O6,Good,-0.8,83.1
+Day,569.2584621,2379,172,Lipids and lipid-like molecules#Organic acids and derivatives,3,Biotin and derivatives,Organic compounds;Organoheterocyclic compounds;Biotin and derivatives,-9.57437613,C16H38N10O11,Good,0.875,35.3625
+Day,555.2432635,15857,172,Lipids and lipid-like molecules,3,Biotin and derivatives,Organic compounds;Organoheterocyclic compounds;Biotin and derivatives,-7.028484205,C25H40O12,Good,-0.64,78.54
+Day,508.2753497,4450,490,Picrotin,2,Furopyrans,Organic compounds;Organoheterocyclic compounds;Furopyrans,-9.609633069,C12H36N15O4P,Low probability,1,31.8
+Day,161.1075298,11315,20,Tryptamine,1,Tryptamines and derivatives,Organic compounds;Organoheterocyclic compounds;Indoles and derivatives;Tryptamines and derivatives,-5.83776102,C10H12N2,Good,-0.6,77.4
+Day,202.0864102,7412,-1,"4-Acetoxy-N,N-diisopropyltryptamine",1,Tryptamines and derivatives,Organic compounds;Organoheterocyclic compounds;Indoles and derivatives;Tryptamines and derivatives,-4.266586418,C6H16N2O2P,Good,-1.833333333,112.55
+Day,214.1804781,13173,3123,Miglitol,2,Piperidines,Organic compounds;Organoheterocyclic compounds;Piperidines,-6.912623815,C12H23NO2,Good,-1.333333333,98.3
+Day,256.0462693,3428,-1,PYRITHYLDIONE,2,Dihydropyridines,Organic compounds;Organoheterocyclic compounds;Pyridines and derivatives;Hydropyridines;Dihydropyridines,-4.104067357,C10H9NO7,Good,0.8,37.5
+Day,250.1651524,6394,1072,1-METHYLNICOTINAMIDE,2,Nicotinamides,Organic compounds;Organoheterocyclic compounds;Pyridines and derivatives;Pyridinecarboxylic acids and derivatives;Pyridinecarboxamides;Nicotinamides,-3.382215245,C11H23NO5,Good,-0.909090909,86.20909091
+Day,379.1391759,10677,-1,Ginkgotoxin,2,Pyridoxines,Organic compounds;Organoheterocyclic compounds;Pyridines and derivatives;Pyridoxines,-4.01741338,C14H19N8O3P,Low probability,0.428571429,48.08571429
+Day,666.3337465,8411,87,Organic acids and derivatives#Lipids and lipid-like molecules,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-12.01339328,C20H45N17O5P2,Good,0.3,51.75
+Day,508.2753437,14578,87,Phenylpropanoids and polyketides#Lipids and lipid-like molecules#Benzenoids,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-10.67943627,C20H33N11O5,Good,0.5,46.05
+Day,494.2598114,13043,87,Organoheterocyclic compounds#Organic acids and derivatives#Alkaloids and derivatives#Organic oxygen compounds,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-10.62557984,C8H31N17O8,Bad quality,NA,NA
+Day,652.318372,3373,87,Organic acids and derivatives#Lipids and lipid-like molecules#Phenylpropanoids and polyketides,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-9.594570708,C29H49NO15,Good,-0.551724138,76.02413793
+Day,738.3550999,3429,87,"Lignans, neolignans and related compounds#Phenylpropanoids and polyketides",3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-9.289080711,NA,NA,NA,NA
+Day,580.2962856,7394,87,Lipids and lipid-like molecules,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-9.095462424,C26H45NO13,Good,-0.615384615,77.83846154
+Day,608.3280588,4168,87,Organic acids and derivatives,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-8.76483898,C25H53N7O2P4,Good,NA,NA
+Day,666.3337124,9557,87,Organic acids and derivatives#Lipids and lipid-like molecules,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-8.152207308,C30H51NO15,Good,-0.6,77.4
+Day,522.2904342,3336,87,Phenylpropanoids and polyketides#Organoheterocyclic compounds#Lipids and lipid-like molecules,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-6.867776866,C21H35N11O5,Good,0.380952381,49.44285714
+Day,566.2805751,7781,87,Organoheterocyclic compounds,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-6.66123062,C21H29N18O2,Bad quality,1.380952381,20.94285714
+Day,566.2809025,2464,87,Organic acids and derivatives#Phenylpropanoids and polyketides#Benzenoids#Lipids and lipid-like molecules,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-5.20398185,C25H43NO13,Good,-0.56,76.26
+Day,480.2443269,2371,87,Organic acids and derivatives#Benzenoids#Phenylpropanoids and polyketides#Organoheterocyclic compounds,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-4.904048862,C21H37NO11,Good,-0.571428571,76.58571429
+Day,494.2599462,3374,87,Alkaloids and derivatives#Organoheterocyclic compounds#Organic oxygen compounds#Organic acids and derivatives,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-4.833632914,C22H39NO11,Good,-0.636363636,78.43636364
+Day,377.1811984,2754,87,Lipids and lipid-like molecules#Organic acids and derivatives#Organic oxygen compounds,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-4.650440279,C18H24N4O5,Low probability,-0.111111111,63.46666667
+Day,394.2079169,2394,87,Organic oxygen compounds#Organoheterocyclic compounds#Lipids and lipid-like molecules,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-3.837610803,C20H29N2O6,Good,-0.55,75.975
+Day,480.2443108,3080,87,Benzenoids#Organic acids and derivatives#Phenylpropanoids and polyketides#Organoheterocyclic compounds,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-3.740775909,C17H40N2O11P,Good,-1,88.8
+Day,422.2392732,4107,87,Organoheterocyclic compounds#Organic oxygen compounds#Lipids and lipid-like molecules,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-3.692659187,C19H35NO9,Good,-0.736842105,81.3
+Day,552.2650655,1681,87,Organoheterocyclic compounds#Alkaloids and derivatives#Organic acids and derivatives,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-3.606855391,C24H41NO13,Good,-0.5,74.55
+Day,422.2393541,4422,87,Organoheterocyclic compounds#Organic oxygen compounds#Lipids and lipid-like molecules,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-3.482583571,C19H35NO9,Good,-0.736842105,81.3
+Day,408.2236406,3932,87,Organic acids and derivatives#Alkaloids and derivatives,3,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-3.394676274,C10H32N8O7P,Good,0.1,57.45
+Day,680.3493353,12660,87,Carboxylic acid esters,N/A,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-9.920727796,C19H52N15O6P3,Good,NA,NA
+Day,622.3434297,14183,87,Primary amines,N/A,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-6.89913582,C20H51N10O8P2,Good,-0.75,81.675
+Day,752.371082,10769,87,NA,N/A,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-10.84792155,NA,NA,NA,NA
+Day,924.4445414,11749,87,NA,N/A,Tetrahydrofurans,Organic compounds;Organoheterocyclic compounds;Tetrahydrofurans,-8.420405911,NA,NA,NA,NA
+Day,253.0499183,2720,644,MoNA:988166 Tetramethylthiuram disulfide,2,Organic disulfides,Organic compounds;Organosulfur compounds;Organic disulfides,-5.256911069,C7H14N2O4P2,Bad quality,-1.428571429,101.0142857
+Day,316.2483071,12172,-1,4-Hydroxy-7-methoxycoumarin,2,Coumaric acids and derivatives,Organic compounds;Phenylpropanoids and polyketides;Cinnamic acids and derivatives;Hydroxycinnamic acids and derivatives;Coumaric acids and derivatives,-7.488219979,C17H33NO4,Bad quality,-1.294117647,97.18235294
+Day,287.1124316,19964,2998,4-Amino-9-methoxypsoralen,2,8-methoxypsoralens,Organic compounds;Phenylpropanoids and polyketides;Coumarins and derivatives;Furanocoumarins;Linear furanocoumarins;Psoralens;8-methoxypsoralens,-6.457743942,C13H18O7,Good,-0.307692308,69.06923077
+Day,378.26426,13099,-1,4-Hydroxy-7-methoxycoumarin,2,Hydroxycoumarins,Organic compounds;Phenylpropanoids and polyketides;Coumarins and derivatives;Hydroxycoumarins,-8.705849866,C22H35NO4,Bad quality,-1.090909091,91.39090909
+Day,693.4765902,6733,-1,Datiscin,2,Flavonoid O-glycosides,Organic compounds;Phenylpropanoids and polyketides;Flavonoids;Flavonoid glycosides;Flavonoid O-glycosides,-3.605248658,C33H60N10O6,Low probability,-0.545454545,75.84545455
+Day,287.256214,7058,6056,"5,6,7,3',4'-Pentamethoxyflavone",2,7-O-methylated flavonoids,Organic compounds;Phenylpropanoids and polyketides;Flavonoids;O-methylated flavonoids;7-O-methylated flavonoids,-3.47056751,C17H34O3,Good,-1.647058824,107.2411765
+Day,312.2683951,9955,-1,"5,6,7,3',4'-Pentamethoxyflavone",2,7-O-methylated flavonoids,Organic compounds;Phenylpropanoids and polyketides;Flavonoids;O-methylated flavonoids;7-O-methylated flavonoids,-19.76763156,C22H33N,Good,-1.363636364,99.16363636
+Day,272.2372693,7052,-1,"5,6,7,3',4'-Pentamethoxyflavone",2,7-O-methylated flavonoids,Organic compounds;Phenylpropanoids and polyketides;Flavonoids;O-methylated flavonoids;7-O-methylated flavonoids,-4.407838252,C19H29N,Good,-1.368421053,99.3
+Day,280.2059697,2669,-1,"5,6,7,3',4'-Pentamethoxyflavone",2,7-O-methylated flavonoids,Organic compounds;Phenylpropanoids and polyketides;Flavonoids;O-methylated flavonoids;7-O-methylated flavonoids,-4.163215305,C18H27N,Bad quality,-1.333333333,98.3
+Day,240.1748856,7067,-1,"5,6,7,3',4'-Pentamethoxyflavone",2,7-O-methylated flavonoids,Organic compounds;Phenylpropanoids and polyketides;Flavonoids;O-methylated flavonoids;7-O-methylated flavonoids,-3.728959636,C17H21N,Bad quality,-1.058823529,90.47647059
+Day,258.2216725,4577,-1,"5,6,7,3',4'-Pentamethoxyflavone",2,7-O-methylated flavonoids,Organic compounds;Phenylpropanoids and polyketides;Flavonoids;O-methylated flavonoids;7-O-methylated flavonoids,-3.488564108,C18H27N,Bad quality,-1.333333333,98.3
+Day,335.1122685,7229,-1,Dihydrokavain,2,Kavalactones,Organic compounds;Phenylpropanoids and polyketides;Kavalactones,-5.288250396,C5H16N10O6,Good,NA,NA
+Day,449.1941981,11181,2916,COLFORSIN,1,Chalcones and dihydrochalcones,"Organic compounds;Phenylpropanoids and polyketides;Linear 1,3-diarylpropanoids;Chalcones and dihydrochalcones",-6.748046453,C14H34N4O8P2,Good,-1.142857143,92.87142857
+Day,221.1539528,5914,434,Brefeldin A,2,Macrolides and analogues,Organic compounds;Phenylpropanoids and polyketides;Macrolides and analogues,-3.43123542,C14H20O2,Good,-1.142857143,92.87142857
+Day,624.3934804,18031,804,"1',4-Sophorolactone 6',6-diacetate",2,Macrolides and analogues,Organic compounds;Phenylpropanoids and polyketides;Macrolides and analogues,-9.469302533,C31H53N5O8,Low probability,-0.709677419,80.52580645
+Day,593.3302684,16509,-1,Methyldopa,2,Phenylpropanoic acids,Organic compounds;Phenylpropanoids and polyketides;Phenylpropanoic acids,-8.650072947,C30H50O10,Low probability,-1,88.8
+Day,341.1712457,11904,6120,Lipids and lipid-like molecules#Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-4.527257869,C16H24N2O6,Good,-0.375,70.9875
+Day,468.2597502,16928,6003,Benzenoids,3,Canopus-Unclassified,Unclassified,-7.560442511,C21H29N11O2,Good,0.380952381,49.44285714
+Day,354.2794524,10951,5804,Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-10.30911724,C7H29N16O,Good,3,-25.2
+Day,251.1852981,9768,5761,Benzenoids,3,Canopus-Unclassified,Unclassified,-7.93871611,C12H26O5,Good,-1.333333333,98.3
+Day,353.2441531,2604,5413,Organoheterocyclic compounds#Organic acids and derivatives#Organic nitrogen compounds,3,Canopus-Unclassified,Unclassified,-8.481237837,C19H32N2O4,Good,-0.947368421,87.3
+Day,596.3427231,15127,5298,Benzenoids#Phenylpropanoids and polyketides,3,Canopus-Unclassified,Unclassified,-6.04418734,C22H42N15O3P,Good,0.181818182,55.11818182
+Day,350.3270482,10598,5189,Amines,N/A,Canopus-Unclassified,Unclassified,-4.1669722,C17H41N4O3,Good,-1.352941176,98.85882353
+Day,415.2333451,12898,5127,Organoheterocyclic compounds#Benzenoids#Organic acids and derivatives#Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-8.037536244,C21H34O8,Good,-0.857142857,84.72857143
+Day,352.2329553,20155,4726,Organoheterocyclic compounds#Organic oxygen compounds#Benzenoids,3,Canopus-Unclassified,Unclassified,-6.951695208,C17H33N2O4,Good,-1.117647059,92.15294118
+Day,335.2055811,1882,4726,Benzenoids#Organoheterocyclic compounds#Organic acids and derivatives,3,Canopus-Unclassified,Unclassified,-6.79273521,C16H30O7,Good,-1,88.8
+Day,185.1537573,2996,4645,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-7.417321381,C11H20O2,Good,-1.454545455,101.7545455
+Day,510.4003349,1469,4412,Dialkyl ethers,N/A,Canopus-Unclassified,Unclassified,-4.305238068,C26H55NO8,Good,-1.384615385,99.76153846
+Day,508.3114172,3446,4301,Organic acids and derivatives#Benzenoids#Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-8.145745703,C24H45NO10,Good,-0.916666667,86.425
+Day,801.3488991,12023,4148,Organic acids and derivatives#Phenylpropanoids and polyketides,3,Canopus-Unclassified,Unclassified,-6.399821151,NA,NA,NA,NA
+Day,503.3365301,16869,4143,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-7.873804551,C25H46N2O8,Good,-0.96,87.66
+Day,517.3517976,16755,4143,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-7.758743195,C26H48N2O8,Good,-1,88.8
+Day,482.2637303,10107,4021,Organoheterocyclic compounds#Organic acids and derivatives#Organic oxygen compounds#Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-9.866310429,C22H35N5O7,Low probability,-0.272727273,68.07272727
+Day,380.2646695,2448,3938,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-7.212598981,C21H35N2O4,Good,-1,88.8
+Day,295.1174799,10637,3869,Organic acids and derivatives,3,Canopus-Unclassified,Unclassified,-3.708936145,C15H18O6,Good,-0.4,71.7
+Day,491.2111609,17257,3623,Benzenoids#Phenylpropanoids and polyketides,3,Canopus-Unclassified,Unclassified,-5.767160103,C22H34O12,Low probability,-0.454545455,73.25454545
+Day,375.2019211,12562,3595,Organic acids and derivatives#Organoheterocyclic compounds#Benzenoids,3,Canopus-Unclassified,Unclassified,-7.609465971,C18H30O8,Good,-0.777777778,82.46666667
+Day,357.1909493,2525,3570,Lipids and lipid-like molecules#Organic acids and derivatives,3,Canopus-Unclassified,Unclassified,-4.940850503,C14H31NO7P,Good,-1.357142857,98.97857143
+Day,557.3083151,14015,3493,Phenylpropanoids and polyketides#Organoheterocyclic compounds#Organic oxygen compounds#Benzenoids#Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-6.183459478,C20H43N10O5P,Low probability,-0.4,71.7
+Day,511.2166664,18719,3468,Organoheterocyclic compounds#Organic acids and derivatives,3,Canopus-Unclassified,Unclassified,-8.076897188,C25H35ClN2O7,Low probability,-0.6,77.4
+Day,548.3796346,12407,3314,Monoalkylamines,N/A,Canopus-Unclassified,Unclassified,-5.834482805,C23H50N9O4P,Good,-0.869565217,85.0826087
+Day,396.3324788,14878,2918,Triazoles,N/A,Canopus-Unclassified,Unclassified,-9.238942654,C17H44N6O2P,Good,-1.588235294,105.5647059
+Day,630.3505236,17124,2855,Primary amines,N/A,Canopus-Unclassified,Unclassified,-6.352183484,C19H35N25O,Good,2.210526316,-2.7
+Day,329.2103668,4950,2781,Lipids and lipid-like molecules#Organic acids and derivatives#Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-6.34258338,C21H28O3,Low probability,-1.047619048,90.15714286
+Day,413.2005662,9539,2253,Organic oxygen compounds#Lipids and lipid-like molecules#Organoheterocyclic compounds#Phenylpropanoids and polyketides,3,Canopus-Unclassified,Unclassified,-6.688424763,C18H28N4O7,Low probability,-0.111111111,63.46666667
+Day,410.2393492,17546,2248,Organic acids and derivatives,3,Canopus-Unclassified,Unclassified,-5.743443514,C21H33N2O6,Bad quality,-0.714285714,80.65714286
+Day,410.2392264,20657,2248,Organic acids and derivatives,3,Canopus-Unclassified,Unclassified,-5.743443514,C12H30N13P,Bad quality,0.333333333,50.8
+Day,505.1879817,20206,2049,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-7.231991855,C19H24N10O7,Bad quality,1.052631579,30.3
+Day,511.4031885,13740,2021,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-4.319396003,C30H54O6,Good,-1.4,100.2
+Day,396.3326062,10728,1969,Monocarboxylic acids and derivatives,N/A,Canopus-Unclassified,Unclassified,-10.95895326,C23H43N2O3,Low probability,-1.347826087,98.71304348
+Day,396.332626,10755,1969,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-10.46646717,C18H43N4O5,Good,-1.166666667,93.55
+Day,396.332549,10849,1969,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-10.12646978,C18H43N4O5,Bad quality,-1.166666667,93.55
+Day,578.3173739,10881,1922,Carboxylic acid derivatives,N/A,Canopus-Unclassified,Unclassified,-9.292497873,C27H47NO12,Good,-0.740740741,81.41111111
+Day,408.114308,10903,1921,Organic acids and derivatives,3,Canopus-Unclassified,Unclassified,-9.969998972,C14H28NO8P,Good,-1,88.8
+Day,308.2066392,12456,1919,Organic oxygen compounds#Benzenoids,3,Canopus-Unclassified,Unclassified,-5.786257772,C14H29NO6,Good,-1,88.8
+Day,430.1713402,10651,1881,Organic acids and derivatives#Phenylpropanoids and polyketides,3,Canopus-Unclassified,Unclassified,-3.609407703,C14H24N9O5P,Good,0.571428571,44.01428571
+Day,659.5138808,4568,1876,Alkyl phosphates,N/A,Canopus-Unclassified,Unclassified,-4.108116193,C36H71N2O6P,Good,-1.611111111,106.2166667
+Day,598.4529001,12246,1823,Organic acids and derivatives#Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-6.359458906,C30H63NO10,Good,-1.333333333,98.3
+Day,480.3897717,9303,1798,Dialkyl ethers,N/A,Canopus-Unclassified,Unclassified,-4.138441251,C25H53NO7,Good,-1.44,101.34
+Day,305.1949125,9226,1556,Alkaloids and derivatives#Organic oxygen compounds,3,Canopus-Unclassified,Unclassified,-6.029663273,C15H28O6,Good,-1.066666667,90.7
+Day,555.2437427,11722,1526,Phenylpropanoids and polyketides,3,Canopus-Unclassified,Unclassified,-7.789868049,C23H34N6O10,Low probability,0.173913043,55.34347826
+Day,494.2598732,3563,1491,Alkaloids and derivatives#Organic oxygen compounds#Organic acids and derivatives#Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-8.123051726,C18H42N2O11P,Bad quality,-1.055555556,90.38333333
+Day,461.3282471,8487,1426,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-5.201754656,C25H50O3P2,Good,-2.16,121.86
+Day,377.2340111,4514,1426,Lipids and lipid-like molecules#Organoheterocyclic compounds#Organic oxygen compounds,3,Canopus-Unclassified,Unclassified,-4.965858692,C19H38O3P2,Good,-2.210526316,123.3
+Day,377.23313,3403,1426,Lipids and lipid-like molecules#Organoheterocyclic compounds#Organic oxygen compounds,3,Canopus-Unclassified,Unclassified,-3.931785594,C22H32O5,Good,-1,88.8
+Day,377.2355823,18373,1426,Lipids and lipid-like molecules#Organoheterocyclic compounds#Organic oxygen compounds,3,Canopus-Unclassified,Unclassified,-3.792312344,C12H28N10O4,Good,0.833333333,36.55
+Day,412.2462499,8954,1371,Organoheterocyclic compounds#Benzenoids,3,Canopus-Unclassified,Unclassified,-6.836769122,C18H35O7P,Good,-1.444444444,101.4666667
+Day,560.3067979,11174,1331,Alkaloids and derivatives#Phenylpropanoids and polyketides#Benzenoids,3,Canopus-Unclassified,Unclassified,-7.766699349,C27H45NO11,Good,-0.740740741,81.41111111
+Day,399.2173431,4354,1272,Lipids and lipid-like molecules#Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-3.761371679,C15H34N6OP2,Good,-1.6,105.9
+Day,210.1338794,12812,1204,Organoheterocyclic compounds#Organic acids and derivatives#Organic oxygen compounds#Organic nitrogen compounds,3,Canopus-Unclassified,Unclassified,-7.622288916,C8H16O5,Good,-0.75,81.675
+Day,545.3414049,18022,1143,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-7.680598407,C17H44N12O8,Bad quality,0.470588235,46.88823529
+Day,430.2945388,12769,1085,Organic oxygen compounds#Organic acids and derivatives,3,Canopus-Unclassified,Unclassified,-8.212655983,C21H39N3O6,Good,-0.857142857,84.72857143
+Day,622.2458627,20382,974,Benzenoids#Organic oxygen compounds,3,Canopus-Unclassified,Unclassified,-6.997681365,C6H31N21O14,Good,NA,NA
+Day,334.2589724,9965,919,Organic oxygen compounds,3,Canopus-Unclassified,Unclassified,-5.444384218,C17H35NO5,Good,-1.294117647,97.18235294
+Day,327.2278139,7071,887,Lipids and lipid-like molecules#Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-8.430962949,C17H30N2O4,Good,-0.941176471,87.12352941
+Day,518.3327219,12384,886,Organic oxygen compounds,3,Canopus-Unclassified,Unclassified,-7.131817491,C21H44N9O4P,Low probability,-0.666666667,79.3
+Day,402.2342136,9132,815,Organic acids and derivatives#Benzenoids#Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-7.146388655,C13H27N11O4,Good,1.076923077,29.60769231
+Day,406.3533702,9414,803,Dialkyl ethers,N/A,Canopus-Unclassified,Unclassified,-10.45548299,C22H47NO5,Good,-1.545454545,104.3454545
+Day,522.2907731,12043,732,Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-9.72666841,C21H35N11O5,Low probability,0.380952381,49.44285714
+Day,466.2292064,1385,701,Phenylpropanoids and polyketides#Organic acids and derivatives,3,Canopus-Unclassified,Unclassified,-3.417131382,C20H35NO11,Good,-0.5,74.55
+Day,310.2223487,4001,659,Organic oxygen compounds#Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-10.49433426,C14H31NO6,Good,-1.142857143,92.87142857
+Day,480.3169371,3308,659,Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-8.107907483,C23H42O9,Low probability,-1.043478261,90.03913043
+Day,336.1094054,11516,602,Organic acids and derivatives,3,Canopus-Unclassified,Unclassified,-7.83965226,C15H18N3O4P,Low probability,-0.4,71.7
+Day,698.3602504,12249,562,Primary amines,N/A,Canopus-Unclassified,Unclassified,-8.338664296,C17H41N25O5,Low probability,2.588235294,-13.46470588
+Day,448.2408107,19388,500,Benzenoids#Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-7.438211127,C13H30N13O3P,Good,0.769230769,38.37692308
+Day,574.2862451,8143,454,Benzenoids#Phenylpropanoids and polyketides,3,Canopus-Unclassified,Unclassified,-3.373932607,C21H27N21,Low probability,1.714285714,11.44285714
+Day,386.2692078,12679,435,Organoheterocyclic compounds#Alkaloids and derivatives#Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-8.463758882,C20H38N2O3P,Good,-1.55,104.475
+Day,328.2635178,12776,435,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-7.806819904,C9H31N10O3,Good,0.555555556,44.46666667
+Day,517.3152557,9759,412,Lipids and lipid-like molecules#Organic oxygen compounds,3,Canopus-Unclassified,Unclassified,-11.99324823,C25H44N2O9,Bad quality,-0.8,83.1
+Day,550.2859033,2352,355,Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-6.769309813,C25H43NO12,Good,-0.64,78.54
+Day,451.2136696,12876,355,Organoheterocyclic compounds#Organic acids and derivatives#Organic oxygen compounds,3,Canopus-Unclassified,Unclassified,-6.457801313,C17H32N8O4,Low probability,0,60.3
+Day,343.2597191,9402,336,Lipids and lipid-like molecules#Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-10.29529411,C18H34N2O4,Good,-1.111111111,91.96666667
+Day,481.3131953,11441,297,Phenylpropanoids and polyketides#Lipids and lipid-like molecules#Organic oxygen compounds,3,Canopus-Unclassified,Unclassified,-6.722863624,C23H40N6O5,Good,-0.52173913,75.16956522
+Day,524.415948,6745,255,Organic acids and derivatives#Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-4.002383995,C27H57NO8,Good,-1.407407407,100.4111111
+Day,779.5283658,2762,223,Phenylpropanoids and polyketides#Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-8.312310129,NA,NA,NA,NA
+Day,811.5585428,16510,223,Lipids and lipid-like molecules#Organoheterocyclic compounds,3,Canopus-Unclassified,Unclassified,-7.641871458,NA,NA,NA,NA
+Day,496.3481384,2947,221,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-9.588724468,C23H50N3O6P,Low probability,-1.47826087,102.4304348
+Day,440.2861865,11714,221,Phenylpropanoids and polyketides,3,Canopus-Unclassified,Unclassified,-9.255219435,C2H29N23O4,Good,NA,NA
+Day,482.3325473,4994,221,Lipids and lipid-like molecules#Benzenoids,3,Canopus-Unclassified,Unclassified,-9.017800285,C22H48N3O6P,Low probability,-1.454545455,101.7545455
+Day,486.3639452,13078,183,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-9.359188244,C20H43N11O3,Low probability,-0.2,66
+Day,618.4432937,16668,183,Lipids and lipid-like molecules,3,Canopus-Unclassified,Unclassified,-6.486353695,C20H56N15O5P,Low probability,-0.3,68.85
+Day,398.311783,16710,183,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-9.039375163,C17H41N4O6,Good,-1,88.8
+Day,466.2289117,19581,80,Phenylpropanoids and polyketides,3,Unclassified Network,Unclassified,-6.959779977,C11H32N9O6P2,Good,-0.272727273,68.07272727
+Day,466.2654562,17069,80,Benzenoids#Organoheterocyclic compounds,3,Unclassified Network,Unclassified,-6.7626813,C21H39NO10,Bad quality,-0.761904762,82.01428571
+Day,466.2660258,19657,80,Organoheterocyclic compounds#Phenylpropanoids and polyketides,3,Unclassified Network,Unclassified,-6.329935232,C7H31N17O7,Good,NA,NA
+Day,466.2288648,20204,80,Phenylpropanoids and polyketides,3,Unclassified Network,Unclassified,-6.263319136,C20H32O11,Good,-0.5,74.55
+Day,452.2491915,15601,80,Organoheterocyclic compounds,3,Unclassified Network,Unclassified,-6.064457939,C20H37NO10,Low probability,-0.7,80.25
+Day,452.2499666,17057,80,Organic acids and derivatives,3,Unclassified Network,Unclassified,-6.018811176,C23H35N2O7,Bad quality,-0.652173913,78.88695652
+Day,449.2018337,20349,80,Organoheterocyclic compounds,3,Unclassified Network,Unclassified,-5.880592135,C20H32O11,Good,-0.5,74.55
+Day,692.4798728,17851,77,Ethers,N/A,Canopus-Unclassified,Unclassified,-6.365117763,C32H66O14,Good,-1.1875,94.14375
+Day,657.2734671,2818,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-11.32395026,C30H42N4O11,Good,-0.266666667,67.9
+Day,688.5214481,9982,-1,"Amino acids, peptides, and analogues",N/A,Canopus-Unclassified,Unclassified,-10.74872424,C32H71N4O11,Low probability,-1.15625,93.253125
+Day,188.1646637,7141,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-10.69567504,C10H21NO2,Good,-1.4,100.2
+Day,448.2913701,7537,-1,Carboxylic acid derivatives,N/A,Canopus-Unclassified,Unclassified,-10.08446782,C17H38N9O3P,Good,-0.588235294,77.06470588
+Day,464.3222118,7205,-1,Ethers,N/A,Canopus-Unclassified,Unclassified,-10.02057456,C23H45NO8,Low probability,-1.130434783,92.5173913
+Day,400.1707106,10838,-1,Primary amines,N/A,Canopus-Unclassified,Unclassified,-9.996376181,C13H28N4O8P,Good,-0.384615385,71.26153846
+Day,549.2530965,7539,-1,Alkyl phosphates,N/A,Canopus-Unclassified,Unclassified,-9.96775542,C19H41N4O12P,Good,-0.526315789,75.3
+Day,468.3169111,10892,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-9.456839129,C22H45NO9,Good,-1.090909091,91.39090909
+Day,452.3223017,15675,-1,Primary amines,N/A,Canopus-Unclassified,Unclassified,-9.453408888,C6H35N20O4,Bad quality,NA,NA
+Day,464.2847305,17046,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-9.42176159,C28H37N3O3,Low probability,-0.785714286,82.69285714
+Day,453.1749944,10457,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-9.008107251,C20H30O10,Good,-0.5,74.55
+Day,499.3443737,11060,-1,"Amino acids, peptides, and analogues",N/A,Canopus-Unclassified,Unclassified,-8.9151509,C25H46N4O6,Bad quality,-0.88,85.38
+Day,535.2374546,3377,-1,Pyrimidines and pyrimidine derivatives,N/A,Canopus-Unclassified,Unclassified,-8.730751433,C21H30N10O7,Bad quality,0.666666667,41.3
+Day,354.28587,7536,-1,Monocarboxylic acids and derivatives,N/A,Canopus-Unclassified,Unclassified,-8.494668222,C15H37N4O5,Good,-1,88.8
+Day,480.2443845,7626,-1,Primary amines,N/A,Canopus-Unclassified,Unclassified,-8.195069919,C7H29N17O8,Good,NA,NA
+Day,566.4056781,13438,-1,Primary amines,N/A,Canopus-Unclassified,Unclassified,-8.118719064,C23H55N10O2P2,Good,-1.347826087,98.71304348
+Day,620.3643026,3219,-1,Primary amines,N/A,Canopus-Unclassified,Unclassified,-8.107826197,C17H41N21O5,Low probability,1.882352941,6.652941176
+Day,476.3224764,11859,-1,Secondary alcohols,N/A,Canopus-Unclassified,Unclassified,-7.683162266,C24H42O8,Good,-1.083333333,91.175
+Day,363.1918009,9693,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-7.529260491,C18H31NO3P,Bad quality,-1.5,103.05
+Day,620.3643137,12864,-1,Amines,N/A,Canopus-Unclassified,Unclassified,-7.460783796,C24H59N6O4P4,Good,NA,NA
+Day,592.3699172,18827,-1,Primary amines,N/A,Canopus-Unclassified,Unclassified,-7.361368033,C20H46N15O4P,Low probability,0.1,57.45
+Day,477.2482083,17533,-1,Carboxylic acid derivatives,N/A,Canopus-Unclassified,Unclassified,-7.31196813,C21H36N2O10,Good,-0.476190476,73.87142857
+Day,404.2285064,3222,-1,Primary amines,N/A,Canopus-Unclassified,Unclassified,-7.309906114,C19H33NO8,Good,-0.736842105,81.3
+Day,331.210533,20254,-1,Carboxylic acids,N/A,Canopus-Unclassified,Unclassified,-7.262527269,C17H30O6,Good,-1.058823529,90.47647059
+Day,377.1813972,15330,-1,Carboxylic acid derivatives,N/A,Canopus-Unclassified,Unclassified,-7.23079722,C18H24N4O5,Low probability,-0.111111111,63.46666667
+Day,694.3653174,13526,-1,Dialkyldisulfides,N/A,Canopus-Unclassified,Unclassified,-7.048701984,C14H43N23O10,Low probability,3.285714286,-33.34285714
+Day,480.2804894,15725,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-6.947306872,C18H37N7O8,Low probability,0,60.3
+Day,577.2274243,18008,-1,6-aminopurines,N/A,Canopus-Unclassified,Unclassified,-6.879174814,C23H31N12O3P,Bad quality,0.260869565,52.86521739
+Day,375.3108363,11043,-1,Ethers,N/A,Canopus-Unclassified,Unclassified,-6.74448637,C21H42O5,Good,-1.523809524,103.7285714
+Day,392.2184336,11984,-1,Monoalkylamines,N/A,Canopus-Unclassified,Unclassified,-6.695100506,C20H29N3O5,Bad quality,-0.5,74.55
+Day,478.3014835,12547,-1,Monoalkylamines,N/A,Canopus-Unclassified,Unclassified,-6.467043573,C19H39N7O7,Good,-0.210526316,66.3
+Day,643.2403069,9800,-1,6-aminopurines,N/A,Canopus-Unclassified,Unclassified,-6.388622857,C20H41N10O8P3,Low probability,NA,NA
+Day,530.3519287,9444,-1,Amines,N/A,Canopus-Unclassified,Unclassified,-6.366433642,C20H41N15O,Bad quality,0.3,51.75
+Day,374.290678,2942,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-6.365238912,C20H39NO5,Good,-1.3,97.35
+Day,388.2479543,7127,-1,Ethers,N/A,Canopus-Unclassified,Unclassified,-6.241584249,C20H35O7,Good,-1.05,90.225
+Day,438.2345105,20170,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-6.219167129,C22H33N2O7,Good,-0.590909091,77.14090909
+Day,320.1703664,8667,-1,Monoalkylamines,N/A,Canopus-Unclassified,Unclassified,-6.062611827,C14H25NO7,Good,-0.571428571,76.58571429
+Day,317.232378,8981,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-6.024333701,C17H32O5,Good,-1.294117647,97.18235294
+Day,472.270511,14594,-1,Monocarboxylic acids and derivatives,N/A,Canopus-Unclassified,Unclassified,-5.997851877,C21H45O7P2,Low probability,-1.952380952,115.9428571
+Day,449.2017948,20341,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-5.904278225,C21H28N4O7,Good,-0.095238095,63.01428571
+Day,392.1923413,8795,-1,Carboxylic acid derivatives,N/A,Canopus-Unclassified,Unclassified,-5.686899816,C21H29NO4S,Low probability,-0.761904762,82.01428571
+Day,391.1969237,4383,-1,Carboxylic acid derivatives,N/A,Canopus-Unclassified,Unclassified,-5.667803816,C19H26N4O5,Low probability,-0.210526316,66.3
+Day,454.2652805,14120,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-5.555316067,C23H37N2O7,Good,-0.739130435,81.36521739
+Day,352.2334305,1014,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-5.521833984,C16H33NO7,Low probability,-1,88.8
+Day,402.2272647,4462,-1,Ethers,N/A,Canopus-Unclassified,Unclassified,-5.163756181,C23H31NO5,Bad quality,-0.782608696,82.60434783
+Day,351.1555762,11483,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-4.676832088,C17H22N2O6,Good,-0.235294118,67.00588235
+Day,337.2009199,4360,-1,Carboxylic acid derivatives,N/A,Canopus-Unclassified,Unclassified,-4.668213857,C19H28O5,Good,-0.947368421,87.3
+Day,422.2392221,2842,-1,Ethers,N/A,Canopus-Unclassified,Unclassified,-4.420276972,C19H35NO9,Bad quality,-0.736842105,81.3
+Day,353.1601137,12625,-1,Carboxylic acid derivatives,N/A,Canopus-Unclassified,Unclassified,-4.312593295,C18H24O7,Good,-0.555555556,76.13333333
+Day,413.0795088,8483,-1,Phosphate esters,N/A,Canopus-Unclassified,Unclassified,-4.174308646,C21H17O7P,Low probability,-0.380952381,71.15714286
+Day,351.1556461,10673,-1,Carbonyl compounds,N/A,Canopus-Unclassified,Unclassified,-4.146334098,C20H24O4,Low probability,-0.8,83.1
+Day,479.1537785,6867,-1,Pyrimidines and pyrimidine derivatives,N/A,Canopus-Unclassified,Unclassified,-4.129567651,C20H18N10O5,Bad quality,1.1,28.95
+Day,359.1706752,7275,-1,Alcohols and polyols,N/A,Canopus-Unclassified,Unclassified,-3.97379854,C17H26O8,Good,-0.588235294,77.06470588
+Day,367.1757817,8365,-1,Monoalkylamines,N/A,Canopus-Unclassified,Unclassified,-3.923821967,C15H29NO7P,Bad quality,-1.133333333,92.6
+Day,362.1812921,10684,-1,Primary amines,N/A,Canopus-Unclassified,Unclassified,-3.858372063,C16H27NO8,Bad quality,-0.5,74.55
+Day,311.1237552,9323,-1,Primary amines,N/A,Canopus-Unclassified,Unclassified,-3.73540194,C13H16N6O2,Good,0.461538462,47.14615385
+Day,391.1968084,5155,-1,Dicarboxylic acids and derivatives,N/A,Canopus-Unclassified,Unclassified,-3.450844778,C19H26N4O5,Good,-0.210526316,66.3
+Day,422.2392212,3708,-1,Carboxylic acid derivatives,N/A,Canopus-Unclassified,Unclassified,-3.394040493,C22H33N2O6,Good,-0.681818182,79.73181818
+Day,743.3103766,7227,550,Benzenoids#Phenylpropanoids and polyketides#Lipids and lipid-like molecules,3,Confusing Network,Unclassified,-9.663603579,NA,NA,NA,NA
+Day,657.2733915,3610,550,Organic acids and derivatives#Phenylpropanoids and polyketides#Benzenoids,3,Confusing Network,Unclassified,-9.620871922,C29H46O15,Low probability,-0.551724138,76.02413793
+Day,585.2519232,7223,550,Organic oxygen compounds#Lipids and lipid-like molecules#Organic acids and derivatives,3,Confusing Network,Unclassified,-8.825552266,C26H42O13,Low probability,-0.615384615,77.83846154
+Day,671.2891643,9481,550,Organic acids and derivatives#Lipids and lipid-like molecules,3,Confusing Network,Unclassified,-8.064357804,C21H34N23P2,Good,1.19047619,26.37142857
+Day,527.2478377,3756,550,Lipids and lipid-like molecules,3,Confusing Network,Unclassified,-7.650341623,C23H41N2O8P,Good,-1.043478261,90.03913043
+Day,571.2362626,7726,550,Lipids and lipid-like molecules#Phenylpropanoids and polyketides,3,Confusing Network,Unclassified,-7.22995375,C25H40O13,Bad quality,-0.56,76.26
+Day,671.2891086,11793,550,Organic acids and derivatives#Lipids and lipid-like molecules,3,Confusing Network,Unclassified,-7.041704558,C20H42N16O5P2,Low probability,0.3,51.75
+Day,557.2220342,2370,550,Lipids and lipid-like molecules#Organic acids and derivatives,3,Confusing Network,Unclassified,-3.969803738,C25H34N4O9,Good,-0.16,64.86
+Day,485.201408,2575,550,Met Tyr Leu,2,Confusing Network,Unclassified,-4.580564114,C21H34O11,Low probability,-0.571428571,76.58571429
+Day,313.127405,9362,550,Gilvocarcin V,2,Confusing Network,Unclassified,-3.748962149,C13H22O7,Low probability,-0.615384615,77.83846154
+Day,299.1120353,2191,550,Trichothecine,2,Confusing Network,Unclassified,-3.514513582,C9H19N5O3P,Good,-0.333333333,69.8
+Day,478.3014698,2400,107,Alkaloids and derivatives#Organoheterocyclic compounds,3,Jasmonic Acid,Unclassified,-3.473713219,C23H43NO9,Good,-0.956521739,87.56086957
+Day,244.1909582,3475,107,Sebacic acid monomethyl ester,2,Jasmonic Acid,Unclassified,-9.101288991,C13H25NO3,Good,-1.230769231,95.37692308
+Day,1011.453619,16684,4326,NA,N/A,Unclassified,Unclassified,-6.809732338,NA,NA,NA,NA
+Day,494.3691061,15525,2237,NA,N/A,Unclassified,Unclassified,-6.93117657,C18H46N12O2P,Good,-0.611111111,77.71666667
+Day,464.3947439,12708,1627,NA,N/A,Unclassified,Unclassified,-9.111525229,C26H49N5O2,Low probability,-1.153846154,93.18461538
+Day,366.3225237,17094,1505,NA,N/A,Unclassified,Unclassified,-6.025650125,C17H41N4O4,Good,-1.235294118,95.50588235
+Day,416.3012122,12311,113,Organic acids and derivatives#Organoheterocyclic compounds,3,Unclassified Network,Unclassified,-5.524340907,C14H40N8O4P,Good,-0.928571429,86.76428571
+Day,414.2854131,13136,113,NA,N/A,Unclassified Network,Unclassified,-5.666441563,C15H34N12P,Bad quality,-0.2,66
+Day,624.3405815,19382,55,Organic acids and derivatives,3,Unclassified Network,Unclassified,-8.865858986,C26H47N7O9,Low probability,-0.307692308,69.06923077
+Day,712.3975147,19395,55,Organic acids and derivatives#Benzenoids#Lipids and lipid-like molecules,3,Unclassified Network,Unclassified,-8.357312301,NA,NA,NA,NA
+Day,580.3135777,19380,55,Phenylpropanoids and polyketides,3,Unclassified Network,Unclassified,-8.307375325,C21H45N10O5P2,Good,-0.714285714,80.65714286
+Day,668.3701937,19391,55,Benzenoids#Lipids and lipid-like molecules,3,Unclassified Network,Unclassified,-6.534949134,C32H53N5O8S,Low probability,-0.625,78.1125
+Day,684.3286562,19398,55,Organic acids and derivatives#Phenylpropanoids and polyketides#Organic oxygen compounds,3,Unclassified Network,Unclassified,-6.41468377,C33H54N3O6PS2,Good,-1.03030303,89.66363636
+Day,640.3041273,19509,55,Organic oxygen compounds#Lipids and lipid-like molecules,3,Unclassified Network,Unclassified,-6.360375212,C20H36N21OP,Low probability,1.2,26.1
+Day,610.3107693,19390,55,Lipids and lipid-like molecules#Alkaloids and derivatives,3,Unclassified Network,Unclassified,-6.249728889,C29H39N9O6,Low probability,0,60.3
+Day,756.4238489,19415,55,NA,N/A,Unclassified Network,Unclassified,-7.924293138,NA,NA,NA,NA
+Day,772.3837651,18474,55,NA,N/A,Unclassified Network,Unclassified,-6.487471565,NA,NA,NA,NA
+Day,824.3919348,2779,-1,NA,N/A,Unclassified,Unclassified,-11.13346907,NA,NA,NA,NA
+Day,743.3105013,4715,-1,NA,N/A,Unclassified,Unclassified,-9.733899255,NA,NA,NA,NA
+Day,996.4653274,4701,-1,NA,N/A,Unclassified,Unclassified,-9.556453234,NA,NA,NA,NA
+Day,468.2799181,13064,-1,NA,N/A,Unclassified,Unclassified,-9.422308983,C13H34N16P,Good,0.692307692,40.56923077
+Day,464.2849594,4585,-1,NA,N/A,Unclassified,Unclassified,-9.42176159,C19H33N11O3,Good,0.315789474,51.3
+Day,599.3077177,19389,-1,NA,N/A,Unclassified,Unclassified,-9.327132056,C31H42N4O8,Bad quality,-0.451612903,73.17096774
+Day,478.3014474,4126,-1,NA,N/A,Unclassified,Unclassified,-8.994287316,C12H38N12O3P2,Low probability,-0.5,74.55
+Day,495.2765823,7362,-1,NA,N/A,Unclassified,Unclassified,-8.685006772,C21H44O11,Bad quality,-1.047619048,90.15714286
+Day,794.7122776,18530,-1,NA,N/A,Unclassified,Unclassified,-7.967014993,NA,NA,NA,NA
+Day,343.2596715,12389,-1,NA,N/A,Unclassified,Unclassified,-7.712092444,C10H33N9O2P,Good,-0.7,80.25
+Day,260.0908767,14402,-1,NA,N/A,Unclassified,Unclassified,-7.453765997,C10H16N2O4P,Bad quality,-0.7,80.25
+Day,655.3883507,17785,-1,NA,N/A,Unclassified,Unclassified,-7.179657673,C27H48N14O4,Bad quality,0.074074074,58.18888889
+Day,353.9164108,14372,-1,NA,N/A,Unclassified,Unclassified,-7.133198162,C8H8NO5P5,Good,NA,NA
+Day,579.2996102,14083,-1,NA,N/A,Unclassified,Unclassified,-6.675656702,C20H45N8O8P,Bad quality,-0.5,74.55
+Day,775.4097103,17264,-1,NA,N/A,Unclassified,Unclassified,-6.64501555,NA,NA,NA,NA
+Day,488.1796327,16333,-1,NA,N/A,Unclassified,Unclassified,-6.523197593,C22H25N5O8,Low probability,0.272727273,52.52727273
+Day,504.3328399,18045,-1,NA,N/A,Unclassified,Unclassified,-6.470385675,C23H46N5O5P,Bad quality,-1.130434783,92.5173913
+Day,387.3223319,19845,-1,NA,N/A,Unclassified,Unclassified,-6.410120098,C16H43N7P,Bad quality,-1.6875,108.39375
+Day,357.2753316,18783,-1,NA,N/A,Unclassified,Unclassified,-6.409750207,C19H36N2O4,Good,-1.157894737,93.3
+Day,362.2335454,13443,-1,NA,N/A,Unclassified,Unclassified,-6.186418745,C17H33N5O,Bad quality,-0.941176471,87.12352941
+Day,344.1909436,17951,-1,NA,N/A,Unclassified,Unclassified,-6.150324272,C11H21N12,Bad quality,1.363636364,21.43636364
+Day,671.2746653,19379,-1,NA,N/A,Unclassified,Unclassified,-6.06185572,C26H42N10O7S2,Bad quality,0.230769231,53.72307692
+Day,255.2432153,3270,-1,NA,N/A,Unclassified,Unclassified,-5.637106233,C15H30N2O,Bad quality,-1.466666667,102.1
+Day,342.3371698,17011,-1,NA,N/A,Unclassified,Unclassified,-4.535323573,C21H43NO2,Bad quality,-1.714285714,109.1571429
+Day,342.3372453,17183,-1,NA,N/A,Unclassified,Unclassified,-4.419064105,C21H43NO2,Bad quality,-1.714285714,109.1571429
+Day,369.2631334,13211,-1,NA,N/A,Unclassified,Unclassified,-3.69661473,C18H39N2O2P,Bad quality,-1.888888889,114.1333333
+Day,349.2222841,12938,-1,NA,N/A,Unclassified,Unclassified,-3.634530504,NA,NA,NA,NA
+Day,336.201736,5124,-1,NA,N/A,Unclassified,Unclassified,-3.381902432,C15H29NO7,Good,-0.8,83.1
+Day,768.6976533,19539,-1,NA,N/A,Unclassified,Unclassified,-3.352172049,NA,NA,NA,NA
+Day,378.2724781,12327,466,Organic oxygen compounds#Lipids and lipid-like molecules,3,Unclassified Network,Unclassified,-6.439328032,C4H29N18O3,Good,NA,NA
+Day,450.3795442,10698,466,Benzenoids#Lipids and lipid-like molecules,3,Unclassified Network,Unclassified,-3.790225721,C24H51NO6,Good,-1.5,103.05
+Day,452.3588628,2815,466,Organic nitrogen compounds#Lipids and lipid-like molecules,3,Unclassified Network,Unclassified,-3.710052348,C23H49NO7,Good,-1.391304348,99.95217391
+Day,496.3846798,5501,466,Lipids and lipid-like molecules#Organoheterocyclic compounds,3,Unclassified Network,Unclassified,-3.629767923,C25H50O8,Good,-1.36,99.06
+Day,466.3744081,5390,466,Dialkyl ethers,N/A,Unclassified Network,Unclassified,-4.689390478,C24H51NO7,Good,-1.416666667,100.675
+Day,364.3066222,2572,466,Alcohols and polyols,N/A,Unclassified Network,Unclassified,-4.203327841,C19H41NO5,Good,-1.473684211,102.3
+Day,670.5107389,13068,466,Ethers,N/A,Unclassified Network,Unclassified,-4.01707869,C34H71NO11,Low probability,-1.352941176,98.85882353
+Day,436.3638289,3413,466,Dialkyl ethers,N/A,Unclassified Network,Unclassified,-3.782230768,C23H49NO6,Good,-1.47826087,102.4304348
+Day,422.3425969,4280,466,NA,N/A,Unclassified Network,Unclassified,-12.34059081,C20H45N4O5,Good,-1.15,93.075
+Day,464.2498279,11833,1629,"5-[1,2,4a-trimethyl-5-(3-methylbutanoyloxymethyl)-2,3,4,7,8,8a-hexahydronaphthalen-1-yl]-3-methylpentanoic acid",2,Unclassified,Unclassified,-7.205064983,C21H37NO10,Good,-0.666666667,79.3
+Day,700.1997696,19430,295,"bis[[3-hydroxy-2-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxyphenyl]methyl] 3,10-dihydroxy-4,9-dioxo-1,2,7,8-tetrahydrotricyclo[6.2.2.02,7]dodeca-3,9-diene-3,10-dicarboxylate",2,Unclassified,Unclassified,-8.285176758,NA,NA,NA,NA
+Day,761.2235466,10036,61,"(2S,3S,4S,5R,6R)-6-[[(3S,6aR,6bS,8aR,14bR)-9-hydroxy-4,4,6a,6b,8a,11,11,14b-octamethyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-5-[4,5-dihydroxy-6-(hydroxymethyl)-3-[(2S,3R,4R,5R,6S)-3,4,5-trihydroxy-6-methyloxan-2-yl]oxyoxan-2-yl]oxy-3,4-dihydroxyoxane-2-carboxylic acid",2,Unclassified,Unclassified,-9.395400492,NA,NA,NA,NA
