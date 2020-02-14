@@ -117,12 +117,20 @@ inchikey_df <- read_csv("~/Documents/SDSU/Moorea_2017/csi_inchikey.csv")%>%
 
 # Linda annotations
 deplete_classified <- read_csv("raw/metabolomics/Dorcierr_POC_TopDepletolites_Classified.csv")%>%
-  bind_rows(read_csv("raw/metabolomics/Dorcierr_DIC_TopDepletolitesClass.csv"),
-            read_csv("raw/metabolomics/Dorcierr_CCA_TopDepletolitesClassified.csv"))%>%
+  select(FinalClass, feature_number, ClassString)%>%
+  mutate(Organism = "Pocillopora verrucosa")%>%
+  bind_rows(read_csv("raw/metabolomics/Dorcierr_DIC_TopDepletolitesClass.csv")%>%
+              rename(FinalClass = FinalClassify)%>%
+              select(FinalClass, feature_number, ClassString)%>%
+              mutate(Organism = "Dictyota"),
+            read_csv("raw/metabolomics/Dorcierr_CCA_TopDepletolitesClassified.csv")%>%
+              select(FinalClass, feature_number, ClassString)%>%
+              mutate(Organism = "CCA"))%>%
   group_by(feature_number)%>%
   filter(row_number(feature_number) == 1)%>%
   ungroup()%>%
-  mutate(feature_number = as.character(feature_number))
+  mutate(feature_number = as.character(feature_number))%>%
+  distinct(FinalClass, feature_number, ClassString, Organism)
 
 
 # CLEANING -- SIRIUS_Zodiac elemental composition of molecular formulas -------------------------------------------
@@ -349,6 +357,12 @@ log2_features_clean <- function(x) {
                                 TRUE ~ "Night"),
            xic = case_when(xic == 0 ~ 1000,
                            TRUE ~ as.numeric(xic)))%>%
+    group_by(Organism, Timepoint, DayNight, feature_number)%>%
+    mutate(Replicate = as.numeric(Replicate),
+           xic = case_when(sum(xic) == 4000 ~ xic + Replicate, 
+                           sum(xic) == 2000 ~ xic + Replicate,
+                           TRUE ~ as.numeric(xic)))%>%
+    ungroup()%>%
     spread(Timepoint, xic)%>%
     group_by(Organism, DayNight, feature_number)%>%
     summarize_if(is.numeric, mean, na.rm = TRUE)%>%
@@ -373,6 +387,7 @@ major_deplete_features <- feature_table_no_back_trans%>%
   ungroup()%>%
   group_by(DayNight, feature_number)%>%
   summarize_if(is.numeric, mean)
+
 
 # RELATIVIZATION AND NORMALIZATION -- xic_log10 -----------------
 feature_table_relnorm <- feature_table_no_back_trans%>%
@@ -400,6 +415,7 @@ feature_table_relnorm <- feature_table_no_back_trans%>%
   group_by(Organism, Timepoint, DayNight, feature_number)%>%
   mutate(Replicate = as.numeric(Replicate),
          xic = case_when(sum(xic) == 4000 ~ xic + Replicate,
+                         sum(xic) == 2000 ~ xic + Replicate,
                          TRUE ~ as.numeric(xic)))%>%
   ungroup()%>%
   select(-c("Experiment", "Organism", "Replicate", "Timepoint", "DayNight"))%>%
@@ -569,28 +585,46 @@ microbe_combined <- microbe_abundance_raw%>%
                               TRUE ~ "Night"))%>%
   filter(Organism != "Offshore",
          Organism != "Influent")%>%
-  left_join(fcm_wdf%>%
-              rename(sample_code = sample_name)%>%
-              select(c(`Cells µL-1`, sample_code)), by = "sample_code")%>%
+  mutate(reads = case_when(reads == 0 ~ 1/numOtus,
+                           TRUE ~ as.numeric(reads)))%>%
+  # left_join(fcm_wdf%>%
+  #             rename(sample_code = sample_name)%>%
+  #             select(c(`Cells µL-1`, sample_code)), by = "sample_code")%>%
   group_by(sample_code)%>%
-  mutate(sum = sum(reads),
-         ra = reads/sum,
-         cell_abun = ra*`Cells µL-1`,
-         log10 = log10(cell_abun + 0.001))%>%
+  mutate(ra = reads/sum(reads))%>%
+         # cell_abun = ra*`Cells µL-1`,
+         # log10 = log10(cell_abun + 0.001))%>%
   ungroup()%>%
   group_by(OTU)%>%
   mutate(abundant = case_when(max(ra) > 0.01 | sum(ra > 0.001) >=3 ~ "abundant",
                               TRUE ~ "rare"))
 
-
 microbe_no_rare <- microbe_combined%>%
+  select(-c(sample_code, reads, numOtus))%>%
+  ungroup()%>%
+  spread(Timepoint, ra)%>%
+  group_by(OTU, DayNight, Organism)%>%
+  mutate(log2_change = log2(TF/mean(T0, na.rm = TRUE)),
+         log2_change = na_if(log2_change, "Inf"), 
+         log2_change = na_if(log2_change, "-Inf"),
+         log2_change = na_if(log2_change, "NaN"))%>%
   filter(abundant == "abundant")%>%
   select(-abundant)
 
+# microbe_log2 <- microbe_combined%>%
+#   select(-c(cell_abun, log10, numOtus, reads, sum, `Cells µL-1`))%>%
+#   spread(Timepoint, ra)%>%
+#   group_by(OTU, DayNight, Organism)%>%
+#   mutate(log2_change = log2(TF/mean(T0, na.rm = TRUE)))%>%
+#   filter(abundant == "abundant")%>%
+#   select(-abundant)
+  
 
 # PRE-STATS CLEANING -- microbe RA data  --------------------------------------------
-ra_bigger_TF <- microbe_no_rare%>%
-  select(-c(reads, sum, log10, numOtus, sample_code, `Cells µL-1`, cell_abun))%>%
+ra_bigger_TF <- microbe_combined%>%
+  filter(abundant == "abundant")%>%
+  select(-abundant)%>%
+  select(-c(reads, numOtus, sample_code))%>%
   spread(Organism, ra)%>%
   gather(Organism, ra, 6:10)%>%
   mutate(difference = ra - `Water control`)%>%
@@ -598,11 +632,22 @@ ra_bigger_TF <- microbe_no_rare%>%
   dplyr::select(c(DayNight, OTU, Organism))
 
 average_ra <- microbe_no_rare%>%
-  filter(Timepoint == "TF")%>%
-  select(-c(sample_code, Experiment, Replicate, numOtus, reads))%>%
+  select(-c(Experiment, Replicate))%>%
   group_by(OTU, Organism, DayNight)%>%
   summarize_if(is.numeric, mean)%>%
   ungroup()
+
+osm_ra_bigger_TF <- microbe_combined%>%
+  filter(abundant == "abundant",
+         Organism != "Turf",
+         Organism != "Porites lobata")%>%
+  select(-abundant)%>%
+  select(-c(reads, numOtus, sample_code))%>%
+  spread(Organism, ra)%>%
+  gather(Organism, ra, 6:8)%>%
+  mutate(difference = ra - `Water control`)%>%
+  filter(difference > 0)%>%
+  dplyr::select(c(DayNight, OTU, Organism))
 
 
 # SET SEED ----------------------------------------------------------------
@@ -611,10 +656,9 @@ set.seed(2005)
 
 # STATS ANOVA -- Microbe TWO-Way ------------------------------------------
 aov_microbe <- microbe_no_rare%>%
-  filter(Timepoint == "TF")%>%
   group_by(OTU)%>%
   nest()%>%
-  mutate(anova = map(data, ~ aov(log10 ~ Organism*DayNight, .x)%>%
+  mutate(anova = map(data, ~ aov(log2_change ~ Organism*DayNight, .x)%>%
                        tidy()%>%
                        filter(!term == "Residuals")%>%
                        dplyr::select(term, p.value)))%>%
@@ -691,12 +735,10 @@ sigs_osm <- anova_dom_t0%>%
 
 # PRE-POST-HOC CLEANING -- Microbe Dunnetts and DayNight anova -------------------------------
 mic_organism_post_hoc <- microbe_no_rare%>%
-  filter(OTU %in% organism_significant_microbes)%>%
-  filter(Timepoint == "TF")
+  filter(OTU %in% organism_significant_microbes)
 
 daynight_microbe_post_hoc <- microbe_no_rare%>%
-  filter(OTU %in% DayNight_significant_microbes)%>%
-  filter(Timepoint == "TF")
+  filter(OTU %in% DayNight_significant_microbes)
 
 # STATS POST-HOC -- FCM Tukeys ----------------------------------------------------------
 # Tukey growth rates for the first half of the expierment
@@ -717,13 +759,13 @@ organism_order_micro <- as.factor(mic_organism_post_hoc$Organism)%>%
 
 dunnett_microbe_pvals <- mic_organism_post_hoc%>%
   group_by(DayNight, OTU)%>%
-  mutate(sum = sum(log10))%>%
+  mutate(sum = sum(log2_change))%>%
   filter(sum != 0)%>%
   dplyr::select(-sum)%>%
   mutate(Organism = factor(Organism))%>%
   mutate(Organism = fct_relevel(Organism, organism_order_micro))%>%
   nest()%>%
-  mutate(dunnett = map(data, ~ aov(log10 ~ Organism, .x)%>%
+  mutate(dunnett = map(data, ~ aov(log2_change ~ Organism, .x)%>%
                          glht(linfct = mcp(Organism = "Dunnett"))),
          dunnett_summary = map(dunnett, ~summary(.x)%>%
                                  tidy()))%>%
@@ -739,11 +781,11 @@ dunnett_microbe_pvals <- mic_organism_post_hoc%>%
 # STATS POST-HOC -- DayNight MICROBES t-test organism --------------------
 daynight_microbe_pvals <- mic_organism_post_hoc%>%
   group_by(Organism, OTU)%>%
-  mutate(sum = sum(log10))%>%
+  mutate(sum = sum(log2_change))%>%
   filter(sum != 0)%>%
   dplyr::select(-sum)%>%
   nest()%>%
-  mutate(data = map(data, ~ aov(log10 ~ DayNight, .x)%>%
+  mutate(data = map(data, ~ aov(log2_change ~ DayNight, .x)%>%
                       tidy()))%>%
   unnest(data)%>%
   dplyr::select(-c(4:7))%>%
@@ -1087,21 +1129,23 @@ volcano <- feature_table_no_back_trans%>%
   summarize_if(is.numeric, mean, na.rm = TRUE)%>%
   mutate(log2_change = log2(TF/T0))%>%
   ungroup()%>%
-  select(-c(T0, TF))%>%
   filter(Organism != "Turf",
          Organism != "Porites lobata",
          Organism != "Water control")%>%
   left_join(t_pvals, by = c("Organism", "DayNight", "feature_number"))%>%
   mutate(fdr_combined = case_when(FDR_greater > FDR_lesser ~ FDR_lesser,
                                   FDR_lesser > FDR_greater ~ FDR_greater,
-                                  TRUE ~ 1))
+                                  TRUE ~ 1),
+         fdr_color = case_when(fdr_combined <= 0.05 ~ "Significant",
+                               TRUE ~ "Not Signifant"))
+
 volcano_themes <- function(x) {
-  ggplot(x, aes(log2_change, -log10(fdr_combined))) +
+  ggplot(x, aes(log2_change, log10(T0), col = fdr_color)) +
   geom_point(stat = "identity", size = 2.5, shape = 1, alpha = 0.8) +
   scale_x_continuous(breaks= seq(-20, 18, 2)) +
   scale_y_continuous(breaks = seq(0, 10, 1)) +
   # scale_shape_manual(values = c(1,19)) +
-  # scale_color_manual(values = c("#FF0000", "#50A45C", "#C49647", "#5BBCD6")) +
+  scale_color_manual(values = c("gray38", "darkred")) +
   theme(
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
@@ -1121,11 +1165,11 @@ volcano%>%
   geom_vline(xintercept = -3.3, col = "red", linetype = "dashed") +
   geom_vline(xintercept = 3.3, col = "red", linetype = "dashed")
 
-volcano%>%
-  volcano_themes() +
-  geom_hline(yintercept = -log10(0.05), col = "red", linetype = "dashed") +
-  geom_vline(xintercept = 3.3, col = "red", linetype = "dashed") +
-  geom_vline(xintercept = -3.3, col = "red", linetype = "dashed")
+# volcano%>%
+#   volcano_themes() +
+#   geom_hline(yintercept = -log10(0.05), col = "red", linetype = "dashed") +
+#   geom_vline(xintercept = 3.3, col = "red", linetype = "dashed") +
+#   geom_vline(xintercept = -3.3, col = "red", linetype = "dashed")
 dev.off()  
 
 # GRAPHING -- [OSM] Major depletolites ------------------------------------------
@@ -1184,10 +1228,23 @@ dev.off()
 #     # legend.position = "none"# get rid of legend panel bg
 #   )
 
+osm_dunnett_features <- (dunnetts_dom%>%
+                           filter(Organism != "Turf",
+                                  Organism != "Porites lobata",
+                                  DayNight == "Day")%>%
+                           select(-p.value)%>%
+                           spread(Organism, FDR)%>%
+                           group_by(DayNight, feature_number)%>%
+                           add_column(num_cols = rowSums(.[3:ncol(.)] >= 0, na.rm = TRUE))%>%
+                           filter(num_cols != 1)%>%
+                           ungroup())$feature_number%>%
+  as.vector()
+  
+
 osm_dunnetts <- dunnetts_dom%>%
   filter(Organism != "Turf",
-         Organism != "Porites lobata")%>%
-  left_join(deplete_classified, by = c("feature_number", "DayNight"))%>%
+         Organism != "Porites lobata",
+         feature_number %in% osm_dunnett_features)%>%
   left_join(feature_table_no_back_trans%>%
               gather(sample_name, xic, 2:ncol(.))%>%
               ungroup()%>%
@@ -1210,76 +1267,42 @@ osm_dunnetts <- dunnetts_dom%>%
                                           TRUE ~ "Night"),
                      xic = case_when(xic == 0 ~ 1000,
                                      TRUE ~ as.numeric(xic)))%>%
+              group_by(Organism, Timepoint, DayNight, feature_number)%>%
+              mutate(Replicate = as.numeric(Replicate),
+                     xic = case_when(sum(xic) == 4000 ~ xic + Replicate,
+                                     sum(xic) == 2000 ~ xic + Replicate,
+                                     TRUE ~ as.numeric(xic)))%>%
+              ungroup()%>%
               spread(Timepoint, xic)%>%
               group_by(Organism, DayNight, feature_number)%>%
               summarize_if(is.numeric, mean, na.rm = TRUE)%>%
               mutate(log2_change = log2(TF/T0))%>%
               ungroup()%>%
               select(-c(T0, TF)), by = c("DayNight", "feature_number", "Organism"))%>%
-  mutate(log2_change = as.numeric(as.character(log2_change)))
+  mutate(log2_change = as.numeric(as.character(log2_change)))%>%
+  filter(log2_change <= -3.3)%>%
+  left_join(deplete_classified, by = c("feature_number", "Organism"))%>%
+  separate(ClassString, c("level 1", "level 2", "level 3",
+                          "level 4", "level 5", "level 6", "level 7", "level 8"), sep = ";")%>%
+  mutate(FinalClass = case_when(FinalClass %like% "Unclass"~ "NA",
+                                FinalClass %like% "Confusing" ~ "NA",
+                                TRUE ~ as.character(FinalClass)))%>%
+  filter(`level 2` %like any% c("Organohetero%", "Lipids%", "Organic acids%"))
 
+
+pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_compounds.pdf", height = 7, width = 13)
 osm_dunnetts%>%
-  ggplot(aes(Organism, log2_change, col = FinalClass)) +
-  geom_bar(stat = "identity", position = "stack")
-
-# GRAPHING -- [OSM] Important OTUs --------------------------------------------------------
-osm_otus <- dunnett_microbe_pvals%>%
-  left_join(microbe_taxonomy, by = "OTU")%>%
-  filter(Organism != "Turf",
-         Organism != "Porites lobata")%>%
-  inner_join(ra_bigger_TF, by = c("DayNight", "Organism", "OTU"))%>%
-  left_join(average_ra, by = c("OTU", "Organism", "DayNight"))%>%
-  separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "sp"), sep = ";")%>%
-  unite(Tax_plot, c("Order", "Family", "Genus", "OTU"), sep = " ", remove = FALSE)
-
-colors_otus <- c("#FF0000", #Altermonas Red
-                 "firebrick4",
-           "#32806E", #Flavobacters greenish
-           "#91A737", 
-           "olivedrab4", 
-           "olivedrab2",
-           "olivedrab2",
-           "olivedrab2",
-           "olivedrab2",
-           "turquoise3", # Rhodobacters Blue
-           "#5BBCD6", 
-           "steelblue3", 
-           "steelblue3",
-           "royalblue2", 
-           "slateblue4", 
-           "slateblue4", 
-           "slateblue4") 
-
-pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_otus.pdf", width = 7, height = 5)
-osm_otus%>%
-  filter(ra >= 0.010)%>%
-  ggplot(aes(x = Organism, y = ra, fill = Tax_plot)) +
-  geom_bar(stat = "summary", fun.y = "mean", position = "stack") +
-  facet_wrap(~DayNight) +
-  # scale_color_manual(values = "black") +
-  scale_fill_manual(values = colors_otus) +
-  theme(
-    # legend.position = "none",
-    # plot.margin = margin(2,.8,2,.8, "cm"),
-    axis.text.x = element_text(angle = 60, hjust = 1),
-    panel.background = element_rect(fill = "transparent"), # bg of the panel
-    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
-    panel.grid.major = element_blank(), # get rid of major grid
-    panel.grid.minor = element_blank(), # get rid of minor grid
-    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
-    legend.box.background = element_rect(fill = "transparent"),
-    legend.position = "none"# get rid of legend panel bg
-  ) +
-  ylab("Relative Abundance") +
-  ggtitle("OTUs")
-
-osm_otus%>%
-  filter(ra >= 0.010)%>%
-  ggplot(aes(x = Organism, y = ra, fill = Tax_plot)) +
-  geom_bar(stat = "summary", fun.y = "mean", position = "stack") +
-  facet_wrap(~DayNight) +
-  # scale_color_manual(values = "black") +
-  scale_fill_manual(values = colors_otus) +
+  filter(`level 2` != "NA",
+         # `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
+         # `level 2` %like% "Organohetero%"
+         # FinalClass %like% "%carnitine%"
+         `level 2` %like% "Organic acids%"
+         )%>%
+  unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
+  ggplot(aes(Organism, -log2_change, fill = compound)) +
+  geom_bar(stat = "identity", position = "stack") +
+  # facet_wrap(~Organism) +
+  # coord_flip() +
   theme(
     # legend.position = "none",
     # plot.margin = margin(2,.8,2,.8, "cm"),
@@ -1290,10 +1313,237 @@ osm_otus%>%
     panel.grid.minor = element_blank(), # get rid of minor grid
     legend.background = element_rect(fill = "transparent"), # get rid of legend bg
     legend.box.background = element_rect(fill = "transparent")
-    # legend.position = "none"# get rid of legend panel bg
-  ) +
-  ggtitle("OTUs")
+  )
+
+osm_dunnetts%>%
+  filter(`level 2` != "NA",
+         # `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
+         # `level 2` %like% "Organohetero%"
+         FinalClass %like% "%carnitine%"
+
+  )%>%
+  unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
+  ggplot(aes(Organism, -log2_change, fill = compound)) +
+  geom_bar(stat = "identity", position = "stack") +
+  # facet_wrap(~Organism) +
+  # coord_flip() +
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+
+osm_dunnetts%>%
+  filter(`level 2` != "NA",
+         # `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
+         `level 2` %like% "Organohetero%"
+
+  )%>%
+  unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
+  ggplot(aes(Organism, -log2_change, fill = compound)) +
+  geom_bar(stat = "identity", position = "stack") +
+  # facet_wrap(~Organism) +
+  # coord_flip() +
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+
+osm_dunnetts%>%
+  filter(`level 2` != "NA",
+         `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
+
+  )%>%
+  unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
+  ggplot(aes(Organism, -log2_change, fill = compound)) +
+  geom_bar(stat = "identity", position = "stack") +
+  # facet_wrap(~Organism) +
+  # coord_flip() +
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+
 dev.off()
+
+osm_dunnetts_hc <- dunnetts_dom%>%
+  filter(Organism != "Turf",
+         Organism != "Porites lobata",
+         feature_number %in% osm_dunnett_features)%>%
+  left_join(feature_table_no_back_trans%>%
+              gather(sample_name, xic, 2:ncol(.))%>%
+              ungroup()%>%
+              separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+              filter(!Experiment %like% "%Blank%",
+                     !Organism %like% "%Blank")%>%
+              mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                            Experiment == "M" ~ "mordor",
+                                            Experiment == "R" ~ "RR3",
+                                            TRUE ~ as.character(Experiment)),
+                     Organism = case_when(Organism == "CC" ~ "CCA",
+                                          Organism == "DT" ~ "Dictyota",
+                                          Organism == "PL" ~ "Porites lobata",
+                                          Organism == "PV" ~ "Pocillopora verrucosa",
+                                          Organism == "TR" ~ "Turf",
+                                          Organism == "WA" ~ "Water control",
+                                          TRUE ~ as.character(Organism)))%>%
+              separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+              mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                                          TRUE ~ "Night"),
+                     xic = case_when(xic == 0 ~ 1000,
+                                     TRUE ~ as.numeric(xic)))%>%
+              group_by(Organism, Timepoint, DayNight, feature_number)%>%
+              mutate(Replicate = as.numeric(Replicate),
+                     xic = case_when(sum(xic) == 4000 ~ xic + Replicate,
+                                     sum(xic) == 2000 ~ xic + Replicate,
+                                     TRUE ~ as.numeric(xic)))%>%
+              ungroup()%>%
+              spread(Timepoint, xic)%>%
+              group_by(Organism, DayNight, feature_number)%>%
+              mutate(log2_change = log2(TF/mean(T0, na.rm = TRUE)))%>%
+              ungroup()%>%
+              select(-c(T0, TF)), by = c("DayNight", "feature_number", "Organism"))%>%
+  mutate(log2_change = as.numeric(as.character(log2_change)))%>%
+  left_join(deplete_classified%>%
+              select(-Organism), by = c("feature_number"))%>%
+  separate(ClassString, c("level 1", "level 2", "level 3",
+                          "level 4", "level 5", "level 6", "level 7", "level 8"), sep = ";")%>%
+  mutate(FinalClass = case_when(FinalClass %like% "Unclass"~ "NA",
+                                FinalClass %like% "Confusing" ~ "NA",
+                                TRUE ~ as.character(FinalClass)))%>%
+  filter(`level 2` != "NA",
+         FinalClass != "NA")%>%
+  unite(identifier, c("level 2", "FinalClass", "feature_number"), sep = " ")%>%
+  unite(sample, c("Organism", "Replicate"), sep = "_")%>%
+  group_by(sample)%>%
+  mutate(zscore = zscore(log2_change + 17.6))%>%
+  select(sample, identifier, zscore)%>%
+  spread(identifier, zscore)
+
+osm_dunnetts_hc[is.na(osm_dunnetts_hc)] <- 0
+
+write_csv(osm_dunnetts_hc, "./analysis/osm_dom_heat.csv")
+
+
+# GRAPHING -- [OSM] Important OTUs --------------------------------------------------------
+osm_otus <- dunnett_microbe_pvals%>%
+  filter(DayNight == "Day")%>%
+  left_join(microbe_taxonomy, by = "OTU")%>%
+  filter(Organism != "Turf",
+         Organism != "Porites lobata",
+         Organism != "Water control")%>%
+  inner_join(osm_ra_bigger_TF, by = c("DayNight", "Organism", "OTU"))%>%
+  left_join(average_ra, by = c("OTU", "Organism", "DayNight"))%>%
+  separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "sp"), sep = ";")%>%
+  unite(Tax_plot, c("Order", "Family", "Genus"), sep = " ", remove = FALSE)
+
+# colors_otus <- c("#FF0000", #Altermonas Red
+#                  "firebrick4",
+#            "#32806E", #Flavobacters greenish
+#            "#91A737", 
+#            "olivedrab4", 
+#            "olivedrab2",
+#            "olivedrab2",
+#            "olivedrab2",
+#            "olivedrab2",
+#            "turquoise3", # Rhodobacters Blue
+#            "#5BBCD6", 
+#            "steelblue3", 
+#            "steelblue3",
+#            "royalblue2", 
+#            "slateblue4", 
+#            "slateblue4", 
+#            "slateblue4",
+#            "slateblue4") 
+
+osm_ots_heat <- osm_otus%>%
+  filter(log2_change >= 1,
+         TF >= 0.001)%>%
+  select(Tax_plot, OTU)%>%
+  distinct(Tax_plot, OTU)%>%
+  left_join(microbe_no_rare, by = c("OTU"))%>%
+  filter(DayNight == "Day",
+         Organism != "Porites lobata",
+         Organism != "Turf",
+         Organism != "Water control")%>%
+  group_by(Organism, Tax_plot, Replicate)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  group_by(Tax_plot)%>%
+  mutate(log2_change = zscore(log2_change + 1.82))%>%
+  ungroup()%>%
+  select(Tax_plot, Organism, Replicate, log2_change)%>%
+  unite(sample, c("Organism", "Replicate"), sep = "_")%>%
+  spread(Tax_plot, log2_change)
+
+write_csv(osm_ots_heat, "./analysis/osm_heat.csv")
+
+# pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_otus.pdf", width = 7, height = 5)
+# osm_otus%>%
+#   filter(log2_change >= 1,
+#          TF >= 0.001)%>%
+#   ggplot(aes(x = Organism, y = ra, fill = Tax_plot)) +
+#   geom_bar(stat = "summary", fun.y = "mean", position = "stack") +
+#   facet_wrap(~DayNight) +
+#   # scale_color_manual(values = "black") +
+#   scale_fill_manual(values = colors_otus) +
+#   theme(
+#     # legend.position = "none",
+#     # plot.margin = margin(2,.8,2,.8, "cm"),
+#     axis.text.x = element_text(angle = 60, hjust = 1),
+#     panel.background = element_rect(fill = "transparent"), # bg of the panel
+#     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+#     panel.grid.major = element_blank(), # get rid of major grid
+#     panel.grid.minor = element_blank(), # get rid of minor grid
+#     legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+#     legend.box.background = element_rect(fill = "transparent"),
+#     legend.position = "none"# get rid of legend panel bg
+#   ) +
+#   ylab("Relative Abundance") +
+#   ggtitle("OTUs")
+# 
+# osm_otus%>%
+#   filter(log2_change >= 1,
+#          TF >= 0.001)%>%
+#   ggplot(aes(x = Organism, y = log2_change, fill = Tax_plot)) +
+#   geom_bar(stat = "summary", fun.y = "mean", position = "stack") +
+#   facet_wrap(~DayNight) +
+#   # scale_color_manual(values = "black") +
+#   # scale_fill_manual(values = colors_otus) +
+#   theme(
+#     # legend.position = "none",
+#     # plot.margin = margin(2,.8,2,.8, "cm"),
+#     axis.text.x = element_text(angle = 60, hjust = 1),
+#     panel.background = element_rect(fill = "transparent"), # bg of the panel
+#     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+#     panel.grid.major = element_blank(), # get rid of major grid
+#     panel.grid.minor = element_blank(), # get rid of minor grid
+#     legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+#     legend.box.background = element_rect(fill = "transparent")
+#     # legend.position = "none"# get rid of legend panel bg
+#   ) +
+#   ggtitle("OTUs")
+# dev.off()
 
 # GRAPHING -- [OSM] Correlation -------------------------------------------------------
 osm_large_otu <- osm_otus%>%
@@ -1307,7 +1557,14 @@ osm_large_otu <- osm_otus%>%
   select(-c(numOtus:cell_abun, Timepoint))%>%
   spread(OTU, log10)
 
+
+#Depletolites
+osm_features_corr <- osm_dunnetts$feature_number%>%
+  as.vector()%>%
+  unique()
+
 osm_major_depletolites <- major_depletolites%>%
+  filter(feature_number %in% osm_features_corr)%>%
   group_by(feature_number)%>%
   summarize_if(is.numeric, sum)%>%
   ungroup()%>%
@@ -1336,7 +1593,8 @@ osm_major_depletolites <- major_depletolites%>%
                                      TRUE ~ as.numeric(xic)))%>%
               group_by(Organism, Timepoint, DayNight, feature_number)%>%
               mutate(Replicate = as.numeric(Replicate),
-                     xic = case_when(sum(xic) == 4000 ~ xic + Replicate,
+                     xic = case_when(sum(xic) == 4000 ~ xic + Replicate, 
+                                     sum(xic) == 2000 ~ xic + Replicate,
                                      TRUE ~ as.numeric(xic)),
                      Replicate = as.character(Replicate))%>%
               ungroup()%>%
@@ -1349,8 +1607,8 @@ osm_major_depletolites <- major_depletolites%>%
 
 osm_correlation <- osm_major_depletolites%>%
   left_join(osm_large_otu, by = c("Organism", "DayNight", "Replicate"))%>%
-  gather(feature_number, log10, 5:1770)%>%
-  gather(OTU, log2_change, 7:23)%>%
+  gather(feature_number, log10, 5:173)%>%
+  gather(OTU, log2_change, 7:20)%>%
   filter(Organism != "Turf",
          Organism != "Porites lobata",
          Organism != "Water control")%>%
@@ -1361,17 +1619,19 @@ osm_corr_test <- osm_correlation%>%
     nest()%>%
     mutate(data = map(data, ~ cor.test(.x$log10, .x$log2_change, method = "pearson")%>%
                                broom::tidy()))
-
+## Edge table
 osm_corr_pvals <- osm_corr_test%>%
   unnest(data)%>%
-  # left_join(microbe_taxonomy, by = "OTU")%>%
-  # separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "sp"), sep = ";")%>%
   # left_join(networking, by = c("feature_number"))%>%
   mutate(fdr = p.adjust(p.value, method = "BH"))%>%
   filter(fdr < 0.05)%>%
   select(1,2,fdr)
 
-write_csv(osm_corr_pvals, "./analysis/osm_cytoscape_correlations.csv")
+write_csv(osm_corr_pvals, "./analysis/osm_cytoscape_correlations_edge.csv")
+
+## Node table
+depletolites_osm
+
 
 
 # GRAPHING -- [OSM] FCM data ----------------------------------------------------
