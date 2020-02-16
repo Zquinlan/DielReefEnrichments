@@ -490,7 +490,7 @@ dom_stats_wdf<- dorc_wdf%>%
          !Timepoint == c("T1", "T2", "T3", "T4"))%>%
   gather(feature_number, log, 6:ncol(.))%>%
   right_join(log2_features%>%
-               select(-log2_change), by = c("feature_number", "DayNight"))
+               select(-log2_change, -Replicate), by = c("feature_number", "DayNight"))
 
 # PRE-STATS CLEAINING -- FCM Stats prep---------------------------------------------------------------------
 ## This should calculate mean cells per hour per µL for each organism
@@ -963,93 +963,6 @@ dunnett_micro_analysis <- dunnett_microbe_pvals%>%
 
 micro_sigs_vector <- as.vector(dunnett_micro_analysis$OTU)
 
-# META-STATS Random Forest -- microbes ------------------------------------------
-rf_microbe_prep <- microbe_no_rare%>%
-  filter(Timepoint == "TF")%>%
-  select(c(1:6, OTU, log10))%>%
-  filter(OTU %in% micro_sigs_vector)%>%
-  # group_by(Organism, Replicate, Timepoint, DayNight, OTU)%>%
-  # summarize_if(is.numeric, sum)%>%
-  # ungroup()%>%
-  spread(OTU, log10)%>%
-  select(Organism, DayNight, 7:ncol(.))%>%
-  mutate(Organism = as.factor(Organism))
-
-names(rf_microbe_prep) <- make.names(names(rf_microbe_prep))
-
-rf_microbe <- rf_microbe_prep%>%
-  group_by(DayNight)%>%
-  nest()%>%
-  mutate(data = map(data, ~randomForest(Organism ~ ., .x,
-                                        importance = TRUE, proximity = TRUE,
-                                        ntree = 5000, na.action=na.exclude)),
-         mda = map(data, ~ .x$importance%>%
-                     as.data.frame()%>%
-                     rownames_to_column("otu")))
-
-rf_microbe_mda <- rf_microbe%>%
-  select(DayNight, mda)%>%
-  unnest(mda)
-
-
-pdf("~/Documents/GitHub/DORCIERR/data/plots/microbe_mda.pdf", width = 7, height = 5)
-rf_microbe_mda%>%
-  filter(DayNight == "Day")%>%
-  ggplot(., aes(x= reorder(otu, -MeanDecreaseAccuracy), y = MeanDecreaseAccuracy)) +
-  geom_point(stat = "identity") +
-  ggtitle("Day") +
-  geom_hline(yintercept = (top_n(rf_microbe_mda%>%
-                                   filter(DayNight=="Day"), 30, MeanDecreaseAccuracy)%>%
-                             arrange(-MeanDecreaseAccuracy))$MeanDecreaseAccuracy[30],
-             col = "red") +
-  theme(
-    panel.background = element_rect(fill = "transparent"), # bg of the panel
-    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
-    panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"), 
-    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
-    legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
-    legend.text = element_text(face = "italic")) +
-  scale_x_discrete(breaks = seq(0, 568, 50))
-
-rf_microbe_mda%>%
-  filter(DayNight == "Night")%>%
-  ggplot(., aes(x= reorder(otu, -MeanDecreaseAccuracy), y = MeanDecreaseAccuracy)) +
-  geom_point(stat = "identity") +
-  ggtitle("Night") +
-  geom_hline(yintercept = (top_n(rf_microbe_mda%>%
-                                   filter(DayNight=="Night"), 35, MeanDecreaseAccuracy)%>%
-                             arrange(-MeanDecreaseAccuracy))$MeanDecreaseAccuracy[30],
-             col = "red") +
-  theme(
-    panel.background = element_rect(fill = "transparent"), # bg of the panel
-    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
-    panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"), 
-    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
-    legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
-    legend.text = element_text(face = "italic")) +
-  scale_x_discrete(breaks = seq(0, 568, 50))
-dev.off()
-
-rf_microbe_sigs <- (rf_microbe_mda%>%
-                      group_by(DayNight)%>%
-                      nest()%>%
-                      mutate(dic = map(data, ~ top_n(.x, 20, Dictyota)%>%
-                                         select(otu)),
-                             cca = map(data, ~ top_n(.x, 20, CCA)%>%
-                                         select(otu)),
-                             trf = map(data, ~ top_n(.x, 20, Turf)%>%
-                                         select(otu)),
-                             poc = map(data, ~ top_n(.x, 20, `Pocillopora verrucosa`)%>%
-                                         select(otu)),
-                             por = map(data, ~ top_n(.x, 20, `Porites lobata`)%>%
-                                         select(otu)),
-                             wat = map(data, ~ top_n(.x, 20, `Water control`)%>%
-                                         select(otu)))%>%
-                      select(-data)%>%
-                      gather(species, importance, dic:wat)%>%
-                      unnest(importance))$otu%>%
-  as.vector()%>%
-  unique()
 # META-STATS -- Hierarchical cluster matrix----------------------------------------
 hc_microbe <- mic_organism_post_hoc%>%
   # filter(OTU %in% rf_microbe_sigs)%>%
