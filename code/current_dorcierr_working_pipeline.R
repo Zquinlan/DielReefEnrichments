@@ -1202,7 +1202,22 @@ osm_dunnetts <- dunnetts_dom%>%
                                 TRUE ~ as.character(FinalClass)))%>%
   filter(`level 2` %like any% c("Organohetero%", "Lipids%", "Organic acids%"))
 
+## Colors for heterocyclic
+colors_hetero <- c("#FF0000",
+                   "firebrick4",
+                   "#E69F00",
+                   "#32806E", 
+                   "#91A737",
+                   "olivedrab4",
+                   "olivedrab2",
+                   "darkorchid3", 
+                   "#F0E442", 
+                   "#0072B2",
+                   "steelblue3",
+                   "#5BBCD6")
 
+
+## Making the PDF
 pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_compounds.pdf", height = 7, width = 13)
 osm_dunnetts%>%
   filter(`level 2` != "NA",
@@ -1211,9 +1226,11 @@ osm_dunnetts%>%
          # FinalClass %like% "%carnitine%"
          `level 2` %like% "Organic acids%"
          )%>%
-  unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Organism, -log2_change, fill = compound)) +
+  rename(`Chemical Class` = `level 3`)%>%
+  # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
+  ggplot(aes(Organism, -log2_change, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
+  scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")) + # Colorblind pallette
   # facet_wrap(~Organism) +
   # coord_flip() +
   theme(
@@ -1235,9 +1252,11 @@ osm_dunnetts%>%
          FinalClass %like% "%carnitine%"
 
   )%>%
-  unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Organism, -log2_change, fill = compound)) +
+  rename(`Chemical Class` = `level 3`)%>%
+  # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
+  ggplot(aes(Organism, -log2_change, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
+  scale_fill_manual(values = "#0072B2") +
   # facet_wrap(~Organism) +
   # coord_flip() +
   theme(
@@ -1256,11 +1275,12 @@ osm_dunnetts%>%
   filter(`level 2` != "NA",
          # `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
          `level 2` %like% "Organohetero%"
-
   )%>%
-  unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Organism, -log2_change, fill = compound)) +
+  rename(`Chemical Class` = `level 3`)%>%
+  # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
+  ggplot(aes(Organism, -log2_change, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
+  scale_fill_manual(values = colors_hetero) +
   # facet_wrap(~Organism) +
   # coord_flip() +
   theme(
@@ -1280,9 +1300,11 @@ osm_dunnetts%>%
          `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
 
   )%>%
-  unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Organism, -log2_change, fill = compound)) +
+  rename(`Chemical Class` = `level 3`)%>%
+  # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
+  ggplot(aes(Organism, -log2_change, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
+  scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")) + # Colorblind pallette
   # facet_wrap(~Organism) +
   # coord_flip() +
   theme(
@@ -1537,7 +1559,7 @@ osm_corr_pvals <- osm_corr_test%>%
   unnest(data)%>%
   # left_join(networking, by = c("feature_number"))%>%
   mutate(fdr = p.adjust(p.value, method = "BH"))%>%
-  filter(fdr < 0.05)%>%
+  filter(fdr < 0.001)%>%
   select(1,2,fdr)
 
 write_csv(osm_corr_pvals, "./analysis/osm_cytoscape_correlations_edge.csv")
@@ -1561,7 +1583,7 @@ fcm_graphing%>%
   geom_point(stat = "summary", fun.y = "mean") +
   geom_line(aes(group = Organism), stat = "summary", fun.y = "mean") +
   facet_wrap(~ DayNight) +
-  scale_color_manual(values = c("#FF0000", "#50A45C", "#F69100", "#5BBCD6")) +
+  scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   scale_y_continuous(limits = c(0,900), breaks= seq(0, 900, 100)) +
   theme(
     axis.text.x = element_text(angle = 60, hjust = 1),
@@ -1613,7 +1635,7 @@ osm_dom_pco$vectors%>%
   ggplot(., aes(x = Axis.1, y = Axis.2, color = Organism, shape = DayNight)) +
   geom_point(stat = "identity", aes(size = 0.2)) +
   scale_shape_manual(values = c(1,19)) +
-  scale_color_manual(values = c("#FF0000", "#50A45C", "#F69100", "#5BBCD6")) +
+  scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   theme(
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
@@ -1630,20 +1652,16 @@ dev.off()
 
 # GRAPHING -- [OSM] PCoAs microbes ------------------------------------------
 osm_pcoa_microbe <- microbe_no_rare%>%
-  filter(Timepoint == "TF",
-         Organism != "Turf",
+  filter(Organism != "Turf",
          Organism != "Porites lobata",
          DayNight == "Day")%>%
   unite(sample, c(Organism, DayNight, Replicate), sep = "_")%>%
-  select(-c(sample_code, Experiment, Timepoint,
-            numOtus, sum, reads, ra))%>%
+  select(-c(Experiment, T0, TF))%>%
   group_by(sample, OTU)%>%
   summarize_if(is.numeric, sum)%>%
   ungroup()%>%
-  mutate(zscore = (log10 -mean(log10))/sd(log10))%>%
-  mutate(zscore = zscore + 0.76)%>%
-  select(-c(log10, `Cells µL-1`, cell_abun))%>%
-  spread(OTU, zscore)%>%
+  mutate(log2_change = log2_change + 19)%>%
+  spread(OTU, log2_change)%>%
   column_to_rownames("sample")%>%
   vegdist(na.rm = TRUE)%>%
   pcoa()
@@ -1666,7 +1684,7 @@ osm_pcoa_microbe$vectors%>%
   ggplot(., aes(x = Axis.1, y = Axis.2, color = Organism, shape = DayNight)) +
   geom_point(stat = "identity", aes(size = 0.2)) +
   scale_shape_manual(values = c(1,19)) +
-  scale_color_manual(values = c("#FF0000", "#50A45C", "#F69100", "#5BBCD6")) +
+  scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   theme(
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
