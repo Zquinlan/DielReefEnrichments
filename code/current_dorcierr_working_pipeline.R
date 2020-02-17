@@ -1482,15 +1482,15 @@ write_csv(osm_ots_heat, "./analysis/osm_heat.csv")
 
 # GRAPHING -- [OSM] Correlation -------------------------------------------------------
 osm_large_otu <- osm_otus%>%
-  filter(ra >= 0.015)%>%
+  filter(log2_change >= 1,
+         TF >= 0.001)%>%
   group_by(OTU)%>%
   summarize_if(is.numeric, sum)%>%
   ungroup()%>%
   select(OTU)%>%
   left_join(microbe_no_rare, by = c("OTU"))%>%
-  filter(Timepoint == "TF")%>%
-  select(-c(numOtus:cell_abun, Timepoint))%>%
-  spread(OTU, log10)
+  select(-c(T0, TF))%>%
+  spread(OTU, log2_change)
 
 
 #Depletolites
@@ -1499,7 +1499,7 @@ osm_features_corr <- osm_dunnetts$feature_number%>%
   unique()
 
 osm_major_depletolites <- major_depletolites%>%
-  filter(feature_number %in% osm_features_corr)%>%
+  # filter(feature_number %in% osm_features_corr)%>%
   group_by(feature_number)%>%
   summarize_if(is.numeric, sum)%>%
   ungroup()%>%
@@ -1547,15 +1547,39 @@ osm_correlation <- osm_major_depletolites%>%
   filter(Organism != "Turf",
          Organism != "Porites lobata",
          Organism != "Water control")%>%
-  select(-c(contains("Experiment"), sample_code))
+  select(-c(contains("Experiment")))
   
+osm_metabolite_metabolite_corr <- osm_major_depletolites%>%
+  select(-Experiment)%>%
+  left_join(osm_major_depletolites%>%
+              select(-Experiment), by = c("Organism", "DayNight", "Replicate"))%>%
+  gather(feature_number, log10, contains(".x"))%>%
+  gather(feature_number.y, log10.y, contains(".y"))%>%
+  filter(Organism != "Turf",
+         Organism != "Porites lobata",
+         Organism != "Water control")
+
 osm_corr_test <- osm_correlation%>%
     group_by(OTU, feature_number)%>%
     nest()%>%
     mutate(data = map(data, ~ cor.test(.x$log10, .x$log2_change, method = "pearson")%>%
                                broom::tidy()))
+
+osm_metab_corr_test <- osm_metabolite_metabolite_corr%>%
+  group_by(feature_number, feature_number.y)%>%
+  nest()%>%
+  mutate(data = map(data, ~ cor.test(.x$log10, .x$log10.y, method = "pearson")%>%
+                      broom::tidy()))
+
 ## Edge table
 osm_corr_pvals <- osm_corr_test%>%
+  unnest(data)%>%
+  # left_join(networking, by = c("feature_number"))%>%
+  mutate(fdr = p.adjust(p.value, method = "BH"))%>%
+  filter(fdr < 0.001)%>%
+  select(1,2,fdr)
+
+osm_metab_corr_pvals <- osm_metab_corr_test%>%
   unnest(data)%>%
   # left_join(networking, by = c("feature_number"))%>%
   mutate(fdr = p.adjust(p.value, method = "BH"))%>%
