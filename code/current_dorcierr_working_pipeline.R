@@ -1542,8 +1542,8 @@ osm_major_depletolites <- major_depletolites%>%
 
 osm_correlation <- osm_major_depletolites%>%
   left_join(osm_large_otu, by = c("Organism", "DayNight", "Replicate"))%>%
-  gather(feature_number, log10, 5:173)%>%
-  gather(OTU, log2_change, 7:20)%>%
+  gather(feature_number, log10, 5:685)%>%
+  gather(OTU, log2_change, 6:31)%>%
   filter(Organism != "Turf",
          Organism != "Porites lobata",
          Organism != "Water control")%>%
@@ -1565,32 +1565,75 @@ osm_corr_test <- osm_correlation%>%
     mutate(data = map(data, ~ cor.test(.x$log10, .x$log2_change, method = "pearson")%>%
                                broom::tidy()))
 
-osm_metab_corr_test <- osm_metabolite_metabolite_corr%>%
-  group_by(feature_number, feature_number.y)%>%
-  nest()%>%
-  mutate(data = map(data, ~ cor.test(.x$log10, .x$log10.y, method = "pearson")%>%
-                      broom::tidy()))
+# osm_metab_corr_test <- osm_metabolite_metabolite_corr%>%
+#   group_by(feature_number, feature_number.y)%>%
+#   nest()%>%
+#   mutate(data = map(data, ~ cor.test(.x$log10, .x$log10.y, method = "pearson")%>%
+#                       broom::tidy()))
+
+write_csv(osm_metab_corr_test%>%
+            unnest(data), "analysis/metab_corr_results_unensted.csv")
 
 ## Edge table
 osm_corr_pvals <- osm_corr_test%>%
   unnest(data)%>%
   # left_join(networking, by = c("feature_number"))%>%
   mutate(fdr = p.adjust(p.value, method = "BH"))%>%
-  filter(fdr < 0.001)%>%
+  filter(fdr < 0.0001)%>%
   select(1,2,fdr)
 
 osm_metab_corr_pvals <- osm_metab_corr_test%>%
   unnest(data)%>%
+  filter(feature_number != feature_number.y)%>%
   # left_join(networking, by = c("feature_number"))%>%
   mutate(fdr = p.adjust(p.value, method = "BH"))%>%
   filter(fdr < 0.001)%>%
   select(1,2,fdr)
 
-write_csv(osm_corr_pvals, "./analysis/osm_cytoscape_correlations_edge.csv")
+osm_corr_combined <- osm_metab_corr_pvals%>%
+  ungroup()%>%
+  filter(fdr < 0.000000001)%>%
+  mutate(feature_number = gsub(".x", "", feature_number),
+         feature_number.y = gsub(".y", "", feature_number.y))%>%
+  rename(node_2 = feature_number.y)%>%
+  bind_rows(osm_corr_pvals%>%
+              ungroup()%>%
+              rename(node_2 = OTU))%>%
+  filter(feature_number != node_2)
+  
+write_csv(osm_corr_combined, "./analysis/osm_cytoscape_correlations_edge.csv")
 
 ## Node table
-depletolites_osm
+corr_nodes <- osm_otus%>%
+  select(-c(p.value:Class, Order, sp, T0, TF))%>%
+  distinct(OTU, Tax_plot, Family, Genus, Organism, log2_change)%>%
+  spread(Organism, log2_change)%>%
+  mutate(sample = "ASV",
+         OTU_code = OTU,
+         label = Family,
+         label = case_when(label == "Clade_I" ~ "SAR 11",
+         Genus %like% "%NS5_%" ~ "NS5 Marine Group",
+         Genus %like% "%Dong%" ~ "Donghicola",
+         Genus %like% "Meso%" ~ "Mesoflavibacter",
+         Genus %like% "Wino%" ~ "Winogradskyella",
+         TRUE ~ as.character(label))
+)%>%
+  unite(color, c("label", "OTU_code"), sep = ";", remove = FALSE)%>%
+  rename(shared_name = OTU)%>%
+  bind_rows(deplete_classified%>%
+              mutate(sample = "metabolite")%>%
+              select(-Organism)%>%
+              separate(ClassString, c("level 1", "level 2", "level 3",
+                                      "level 4", "level 5", "level 6", "level 7", "level 8"), sep = ";")%>%
+              left_join(osm_dunnetts%>%
+                          select(feature_number, Organism), by = "feature_number")%>%
+              rename(shared_name = feature_number,
+                     label = FinalClass,
+                     color = `level 2`))%>%
+  mutate(label = case_when(label %like% "Canopus%" ~ "Unidentified",
+                           TRUE ~ as.character(label)))
 
+write_csv(corr_nodes, "analysis/osm_cyto_node.csv")
 
 
 # GRAPHING -- [OSM] FCM data ----------------------------------------------------
