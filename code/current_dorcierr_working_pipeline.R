@@ -634,7 +634,7 @@ ra_bigger_TF <- microbe_combined%>%
 average_ra <- microbe_no_rare%>%
   select(-c(Experiment, Replicate))%>%
   group_by(OTU, Organism, DayNight)%>%
-  summarize_if(is.numeric, mean)%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
   ungroup()
 
 osm_ra_bigger_TF <- microbe_combined%>%
@@ -1190,8 +1190,7 @@ osm_dunnetts <- dunnetts_dom%>%
               group_by(Organism, DayNight, feature_number)%>%
               summarize_if(is.numeric, mean, na.rm = TRUE)%>%
               mutate(log2_change = log2(TF/T0))%>%
-              ungroup()%>%
-              select(-c(T0, TF)), by = c("DayNight", "feature_number", "Organism"))%>%
+              ungroup(), by = c("DayNight", "feature_number", "Organism"))%>%
   mutate(log2_change = as.numeric(as.character(log2_change)))%>%
   filter(log2_change <= -3.3)%>%
   left_join(deplete_classified, by = c("feature_number", "Organism"))%>%
@@ -1200,7 +1199,8 @@ osm_dunnetts <- dunnetts_dom%>%
   mutate(FinalClass = case_when(FinalClass %like% "Unclass"~ "NA",
                                 FinalClass %like% "Confusing" ~ "NA",
                                 TRUE ~ as.character(FinalClass)))%>%
-  filter(`level 2` %like any% c("Organohetero%", "Lipids%", "Organic acids%"))
+  filter(`level 2` %like any% c("Organohetero%", "Lipids%", "Organic acids%"))%>%
+  gather(Timepoint, xic, T0:TF)
 
 ## Colors for heterocyclic
 colors_hetero <- c("#FF0000",
@@ -1221,22 +1221,26 @@ colors_hetero <- c("#FF0000",
 pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_compounds.pdf", height = 7, width = 13)
 osm_dunnetts%>%
   filter(`level 2` != "NA",
+         `level 5` != "NA",
          # `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
          # `level 2` %like% "Organohetero%"
          # FinalClass %like% "%carnitine%"
          `level 2` %like% "Organic acids%"
          )%>%
   rename(`Chemical Class` = `level 3`)%>%
+  mutate(`Chemical Class` = case_when(`Chemical Class` %like% "%Carb%" ~ `level 5`,
+                                      TRUE ~ as.character(`Chemical Class`)))%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Organism, -log2_change, fill = `Chemical Class`)) +
+  ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
-  scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")) + # Colorblind pallette
-  # facet_wrap(~Organism) +
+  scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "darkorchid3")) + # Colorblind pallette
+  facet_wrap(~Organism) +
   # coord_flip() +
   theme(
     # legend.position = "none",
     # plot.margin = margin(2,.8,2,.8, "cm"),
-    axis.text.x = element_text(angle = 60, hjust = 1),
+    axis.text.x = element_text(angle = 60, size = 20, hjust = 1),
+    axis.text.y = element_text(size = 20),
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
     panel.grid.major = element_blank(), # get rid of major grid
@@ -1254,15 +1258,16 @@ osm_dunnetts%>%
   )%>%
   rename(`Chemical Class` = `level 3`)%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Organism, -log2_change, fill = `Chemical Class`)) +
+  ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
   scale_fill_manual(values = "#0072B2") +
-  # facet_wrap(~Organism) +
+  facet_wrap(~Organism) +
   # coord_flip() +
   theme(
     # legend.position = "none",
     # plot.margin = margin(2,.8,2,.8, "cm"),
-    axis.text.x = element_text(angle = 60, hjust = 1),
+    axis.text.x = element_text(angle = 60, size = 20,  hjust = 1),
+    axis.text.y = element_text(size = 20),
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
     panel.grid.major = element_blank(), # get rid of major grid
@@ -1278,15 +1283,16 @@ osm_dunnetts%>%
   )%>%
   rename(`Chemical Class` = `level 3`)%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Organism, -log2_change, fill = `Chemical Class`)) +
+  ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
   scale_fill_manual(values = colors_hetero) +
-  # facet_wrap(~Organism) +
+  facet_wrap(~Organism) +
   # coord_flip() +
   theme(
     # legend.position = "none",
     # plot.margin = margin(2,.8,2,.8, "cm"),
-    axis.text.x = element_text(angle = 60, hjust = 1),
+    axis.text.x = element_text(angle = 60, size = 20, hjust = 1),
+    axis.text.y = element_text(size = 20),
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
     panel.grid.major = element_blank(), # get rid of major grid
@@ -1297,20 +1303,22 @@ osm_dunnetts%>%
 
 osm_dunnetts%>%
   filter(`level 2` != "NA",
-         `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
+         `level 2` %like% "Lipids%" 
+         # & !FinalClass %like% "%carnitine%"
 
   )%>%
   rename(`Chemical Class` = `level 3`)%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Organism, -log2_change, fill = `Chemical Class`)) +
+  ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
   scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")) + # Colorblind pallette
-  # facet_wrap(~Organism) +
+  facet_wrap(~Organism) +
   # coord_flip() +
   theme(
     # legend.position = "none",
     # plot.margin = margin(2,.8,2,.8, "cm"),
-    axis.text.x = element_text(angle = 60, hjust = 1),
+    axis.text.x = element_text(angle = 60, size = 20,  hjust = 1),
+    axis.text.y = element_text(size = 20),
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
     panel.grid.major = element_blank(), # get rid of major grid
@@ -1422,7 +1430,7 @@ osm_ots_heat <- osm_otus%>%
          Organism != "Turf",
          Organism != "Water control")%>%
   group_by(Organism, Tax_plot, Replicate)%>%
-  summarize_if(is.numeric, mean)%>%
+  summarize_if(is.numeric, sum)%>%
   ungroup()%>%
   group_by(Tax_plot)%>%
   mutate(log2_change = zscore(log2_change + 1.82))%>%
@@ -1635,6 +1643,36 @@ corr_nodes <- osm_otus%>%
 
 write_csv(corr_nodes, "analysis/osm_cyto_node.csv")
 
+# PLOT FOR CRAIG ----------------------------------------------------------
+osm_correlation%>%
+  filter(feature_number == "2734",
+         OTU == "Otu0062")%>%
+  ggplot(aes(log10, log2_change, col = Organism)) +
+  geom_point()
+
+pdf("./plots/cyromorphaceae.pdf", height = 7, width = 8)
+osm_otus%>%
+  filter(OTU == "Otu0062")%>%
+  select(-log2_change)%>%
+  gather(Timepoint, val, T0:TF)%>%
+  ggplot(aes(Timepoint, val, fill == "gray")) +
+  geom_bar(stat = "summary", fun.y = "mean") +
+  # scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")) + # Colorblind pallette
+  facet_wrap(~Organism) +
+  # coord_flip() +
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(angle = 60, size = 20,  hjust = 1),
+    axis.text.y = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+dev.off()
 
 # GRAPHING -- [OSM] FCM data ----------------------------------------------------
 fcm_graphing <- fcm_wdf%>%
@@ -1642,22 +1680,33 @@ fcm_graphing <- fcm_wdf%>%
          !Organism == 'Offshore',
          Organism != "Turf",
          Organism != "Porites lobata",
-         DayNight == "Day")
+         DayNight == "Day")%>%
+  mutate(Hours = case_when(Timepoint == "T0" ~ 0,
+                           Timepoint == "T1" ~ 4,
+                           Timepoint == "T2" ~ 13,
+                           Timepoint == "T3" ~ 17,
+                           Timepoint == "T4" ~ 23,
+                           Timepoint == "T5" ~ 28,
+                           Timepoint == "T6" ~ 37,
+                           Timepoint == "TF" ~ 48))%>%
+  filter(Timepoint != "T6",
+         Timepoint != "TF")
 
 pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_fcm_DayNight.pdf", width = 7, height = 5)
 fcm_graphing%>%
-  ggplot(aes(x= Timepoint, y = `Cells µL-1`, color = Organism))+
+  ggplot(aes(x= Hours, y = `Cells µL-1`, color = Organism))+
   geom_point(stat = "summary", fun.y = "mean") +
   geom_line(aes(group = Organism), stat = "summary", fun.y = "mean") +
   facet_wrap(~ DayNight) +
   scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   scale_y_continuous(limits = c(0,900), breaks= seq(0, 900, 100)) +
+  scale_x_continuous(limits = c(0,30), breaks = seq(0, 30, 5)) +
   theme(
     axis.text.x = element_text(angle = 60, hjust = 1),
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
     panel.grid.major.x = element_blank(), # get rid of major grid
-    panel.grid.major.y = element_line(colour = "grey"),
+    panel.grid.major.y = element_blank(),
     panel.grid.minor = element_blank(), # get rid of minor grid
     legend.background = element_rect(fill = "transparent"), # get rid of legend bg
     legend.box.background = element_rect(fill = "transparent") # get rid of legend panel bg
@@ -1701,7 +1750,7 @@ osm_dom_pco$vectors%>%
   separate(sample, c("experiemnt", "Organism", "replicate", "DayNight"), sep = "_")%>%
   ggplot(., aes(x = Axis.1, y = Axis.2, color = Organism, shape = DayNight)) +
   geom_point(stat = "identity", aes(size = 0.2)) +
-  scale_shape_manual(values = c(1,19)) +
+  scale_shape_manual(values = c(19)) +
   scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   theme(
     panel.background = element_rect(fill = "transparent"), # bg of the panel
@@ -1750,7 +1799,7 @@ osm_pcoa_microbe$vectors%>%
   separate(sample, c("Organism", "DayNight", "Replicate"), sep = "_")%>%
   ggplot(., aes(x = Axis.1, y = Axis.2, color = Organism, shape = DayNight)) +
   geom_point(stat = "identity", aes(size = 0.2)) +
-  scale_shape_manual(values = c(1,19)) +
+  scale_shape_manual(values = c(19)) +
   scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   theme(
     panel.background = element_rect(fill = "transparent"), # bg of the panel
