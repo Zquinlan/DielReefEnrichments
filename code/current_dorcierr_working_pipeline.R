@@ -1042,9 +1042,6 @@ volcano <- feature_table_no_back_trans%>%
   summarize_if(is.numeric, mean, na.rm = TRUE)%>%
   mutate(log2_change = log2(TF/T0))%>%
   ungroup()%>%
-  filter(Organism != "Turf",
-         Organism != "Porites lobata",
-         Organism != "Water control")%>%
   left_join(t_pvals, by = c("Organism", "DayNight", "feature_number"))%>%
   mutate(fdr_combined = case_when(FDR_greater > FDR_lesser ~ FDR_lesser,
                                   FDR_lesser > FDR_greater ~ FDR_greater,
@@ -1143,19 +1140,19 @@ osm_dunnetts <- dunnetts_dom%>%
   filter(`level 2` %like any% c("Organohetero%", "Lipids%", "Organic acids%"))%>%
   gather(Timepoint, xic, T0:TF)
 
-## Colors for heterocyclic
-colors_hetero <- c("#FF0000",
-                   "firebrick4",
-                   "#E69F00",
-                   "#32806E", 
-                   "#91A737",
-                   "olivedrab4",
-                   "olivedrab2",
-                   "darkorchid3", 
-                   "#F0E442", 
-                   "#0072B2",
-                   "steelblue3",
-                   "#5BBCD6")
+# ## Colors for heterocyclic
+# colors_hetero <- c("#FF0000",
+#                    "firebrick4",
+#                    "#E69F00",
+#                    "#32806E", 
+#                    "#91A737",
+#                    "olivedrab4",
+#                    "olivedrab2",
+#                    "darkorchid3", 
+#                    "#F0E442", 
+#                    "#0072B2",
+#                    "steelblue3",
+#                    "#5BBCD6")
 
 
 ## Making the PDF
@@ -1174,7 +1171,7 @@ osm_dunnetts%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
   ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
-  scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "darkorchid3")) + # Colorblind pallette
+  # scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "darkorchid3")) + # Colorblind pallette
   facet_wrap(~Organism) +
   # coord_flip() +
   theme(
@@ -1226,7 +1223,7 @@ osm_dunnetts%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
   ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
-  scale_fill_manual(values = colors_hetero) +
+  # scale_fill_manual(values = colors_hetero) +
   facet_wrap(~Organism) +
   # coord_flip() +
   theme(
@@ -1252,7 +1249,7 @@ osm_dunnetts%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
   ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
   geom_bar(stat = "identity", position = "stack") +
-  scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")) + # Colorblind pallette
+  # scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")) + # Colorblind pallette
   facet_wrap(~Organism) +
   # coord_flip() +
   theme(
@@ -1622,7 +1619,7 @@ fcm_graphing%>%
   geom_point(stat = "summary", fun.y = "mean") +
   geom_line(aes(group = Organism), stat = "summary", fun.y = "mean") +
   facet_wrap(~ DayNight) +
-  scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
+  # scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   scale_y_continuous(limits = c(0,900), breaks= seq(0, 900, 100)) +
   scale_x_continuous(limits = c(0,50), breaks = seq(0, 50, 5)) +
   theme(
@@ -1673,7 +1670,7 @@ osm_dom_pco$vectors%>%
   ggplot(., aes(x = Axis.1, y = Axis.2, color = Organism, shape = DayNight)) +
   geom_point(stat = "identity", aes(size = 0.2)) +
   scale_shape_manual(values = c(19)) +
-  scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
+  # scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   theme(
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
@@ -1720,7 +1717,7 @@ osm_pcoa_microbe$vectors%>%
   ggplot(., aes(x = Axis.1, y = Axis.2, color = Organism, shape = DayNight)) +
   geom_point(stat = "identity", aes(size = 0.2)) +
   scale_shape_manual(values = c(19)) +
-  scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
+  # scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   theme(
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot

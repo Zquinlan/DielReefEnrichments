@@ -30,5 +30,5 @@ fig.set_size_inches((20, 16))
 
 
 #Showing the plot
-plt.savefig('osm_microbes_hc.png', dpi = 600)
+plt.savefig('microbes_hc.png', dpi = 600)
 plt.show()
