@@ -221,7 +221,7 @@ metadata <- full_join(node_info,
 metadata$feature_number <- as.character(metadata$feature_number)
 
 networking <- metadata%>%
-  dplyr::select(c(feature_number, network,combined_ID, binary_ID, 
+  dplyr::select(c(feature_number, network,combined_ID, binary_ID,  SmilesLibrary_, SmilesAnalog_,
                   canopus_annotation:CLASS_STRING, ZodiacMF, `characterization scores`,
                   C:dG, inchi_binary, inchi_combined))%>%
   separate(CLASS_STRING, c("level 1", "level 2", "level 3",
@@ -893,8 +893,14 @@ major_deplete <- feature_table_no_back_trans%>%
 major_deplete$max_log <- apply(major_deplete[3:8], 1, min)
 
 major_depletolites <- major_deplete%>%
-  filter(max_log < -3.3)%>%
-  filter(Organism == "Pocillopora verrucosa" | Organism == "Dictyota" | Organism == "CCA")
+  filter(max_log < -3.3)
+
+# EXPORT -- Major depletolites for Classyfire annotations --------------------
+classyfire_features <- major_depletolites$feature_number%>%
+  unique()
+
+classyfire_export <- networking%>%
+  filter(feature_number %in% classyfire_features)
 
 # META-STATS -- microbes --------------------------------------------------
 dunnett_micro_analysis <- dunnett_microbe_pvals%>%
