@@ -116,22 +116,40 @@ inchikey_df <- read_csv("~/Documents/SDSU/Moorea_2017/csi_inchikey.csv")%>%
   mutate(feature_number = as.character(feature_number))
 
 # Linda annotations
-deplete_classified <- read_csv("raw/metabolomics/Dorcierr_POC_TopDepletolites_Classified.csv")%>%
-  select(FinalClass, feature_number, ClassString)%>%
-  mutate(Organism = "Pocillopora verrucosa")%>%
-  bind_rows(read_csv("raw/metabolomics/Dorcierr_DIC_TopDepletolitesClass.csv")%>%
-              rename(FinalClass = FinalClassify)%>%
-              select(FinalClass, feature_number, ClassString)%>%
-              mutate(Organism = "Dictyota"),
-            read_csv("raw/metabolomics/Dorcierr_CCA_TopDepletolitesClassified.csv")%>%
-              select(FinalClass, feature_number, ClassString)%>%
-              mutate(Organism = "CCA"))%>%
-  group_by(feature_number)%>%
-  filter(row_number(feature_number) == 1)%>%
-  ungroup()%>%
-  mutate(feature_number = as.character(feature_number))%>%
-  distinct(FinalClass, feature_number, ClassString, Organism)
+# molnet_class <- read_csv("raw/metabolomics/Dorcierr_POC_TopDepletolites_Classified.csv")%>%
+#   select(FinalClass, feature_number, ClassString)%>%
+#   mutate(Organism = "Pocillopora verrucosa")%>%
+#   bind_rows(read_csv("raw/metabolomics/Dorcierr_DIC_TopDepletolitesClass.csv")%>%
+#               rename(FinalClass = FinalClassify)%>%
+#               select(FinalClass, feature_number, ClassString)%>%
+#               mutate(Organism = "Dictyota"),
+#             read_csv("raw/metabolomics/Dorcierr_CCA_TopDepletolitesClassified.csv")%>%
+#               select(FinalClass, feature_number, ClassString)%>%
+#               mutate(Organism = "CCA"))%>%
+#   group_by(feature_number)%>%
+#   filter(row_number(feature_number) == 1)%>%
+#   ungroup()%>%
+#   mutate(feature_number = as.character(feature_number))%>%
+#   distinct(FinalClass, feature_number, ClassString, Organism)
 
+# MolNetEnhancer
+molnet_class <- read_csv("analysis/Moorea2017_MolNetEnhancer.csv")%>%
+  rename(feature_number = "cluster index")%>%
+  mutate(feature_number = as.character(feature_number))%>%
+  select(feature_number, CF_kingdom, CF_class, CF_subclass, CF_superclass)%>%
+  unite(molnet_string, c(CF_kingdom, CF_superclass, CF_class, CF_subclass), sep = ";")
+
+# compare <- deplete_classified%>%
+#   inner_join(molnet_class, by = "feature_number")%>%
+#   left_join(true_hits%>%
+#               select(feature_number, Compound_Name)%>%
+#               mutate(feature_number = as.character(feature_number)), by = "feature_number")%>%
+#   left_join(node_info%>%
+#               select(feature_number, network)%>%
+#               mutate(feature_number = as.character(feature_number)), by = "feature_number")
+#   
+# 
+# write_csv(compare, "~/Downloads/dorcierr_annotation_comparison.csv")
 
 # CLEANING -- SIRIUS_Zodiac elemental composition of molecular formulas -------------------------------------------
 networking_elements <- sirius_zodiac_anotations%>%
@@ -196,16 +214,18 @@ metadata <- full_join(node_info,
                                           by = "feature_number"),
                                 by = "feature_number"),
                       by = "feature_number")%>%
-  left_join(nap_df, by = "feature_number", suffix = c("", "_nap"))%>%
+  left_join(molnet_class%>%
+              mutate(feature_number = as.numeric(feature_number)), by = "feature_number")%>%
+  # left_join(nap_df, by = "feature_number", suffix = c("", "_nap"))%>%
   left_join(csi_finger_id, by = "feature_number", suffix = c("", "_csi"))%>%
   add_column(binary_ID = .$LibraryID, .before = 1)%>%
   mutate(binary_ID = case_when(binary_ID != "N/A" ~ "1",
                                Compound_NameAnalog_ != "NA" ~ "2",
-                               !is.na(ConsensusSC) ~ "3",
+                               !is.na(molnet_string) ~ "3",
                                TRUE ~ as.character(binary_ID)))%>%
   add_column(combined_ID = .$LibraryID, .before = 1)%>%
   mutate(combined_ID = case_when(binary_ID == "1" ~ LibraryID,
-                                 binary_ID == "3" ~ ConsensusSC,
+                                 binary_ID == "3" ~ molnet_string,
                                  binary_ID == "2" ~ Compound_NameAnalog_,
                                  binary_ID == "N/A" ~ canopus_annotation,
                                  TRUE ~ as.character(binary_ID)))%>%
@@ -381,8 +401,7 @@ log2_features <- feature_table_no_back_trans%>%
 major_deplete_features <- feature_table_no_back_trans%>%
   log2_features_clean()%>%
   group_by(DayNight, feature_number, Organism)%>%
-  filter(min(log2_change) <= -3.3,
-         Organism == "Pocillopora verrucosa" | Organism == "Dictyota" | Organism == "CCA")%>%
+  filter(min(log2_change) <= -3.3)%>%
   select(-c(T0, TF, log2_change))%>%
   ungroup()%>%
   group_by(DayNight, feature_number)%>%
@@ -1137,13 +1156,8 @@ osm_dunnetts <- dunnetts_dom%>%
               ungroup(), by = c("DayNight", "feature_number", "Organism"))%>%
   mutate(log2_change = as.numeric(as.character(log2_change)))%>%
   filter(log2_change <= -3.3)%>%
-  left_join(deplete_classified, by = c("feature_number", "Organism"))%>%
-  separate(ClassString, c("level 1", "level 2", "level 3",
-                          "level 4", "level 5", "level 6", "level 7", "level 8"), sep = ";")%>%
-  mutate(FinalClass = case_when(FinalClass %like% "Unclass"~ "NA",
-                                FinalClass %like% "Confusing" ~ "NA",
-                                TRUE ~ as.character(FinalClass)))%>%
-  filter(`level 2` %like any% c("Organohetero%", "Lipids%", "Organic acids%"))%>%
+  left_join(molnet_class, by = c("feature_number"))%>%
+  separate(molnet_string, c("CF_kingdom", "CF_superclass", "CF_class", "CF_subclass"), sep = ";")%>%
   gather(Timepoint, xic, T0:TF)
 
 # ## Colors for heterocyclic
@@ -1159,7 +1173,6 @@ osm_dunnetts <- dunnetts_dom%>%
 #                    "#0072B2",
 #                    "steelblue3",
 #                    "#5BBCD6")
-
 
 ## Making the PDF
 pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_compounds.pdf", height = 7, width = 13)
@@ -1309,16 +1322,10 @@ osm_dunnetts_hc <- dunnetts_dom%>%
               ungroup()%>%
               select(-c(T0, TF)), by = c("DayNight", "feature_number", "Organism"))%>%
   mutate(log2_change = as.numeric(as.character(log2_change)))%>%
-  left_join(deplete_classified%>%
+  left_join(molnet_class%>%
               select(-Organism), by = c("feature_number"))%>%
-  separate(ClassString, c("level 1", "level 2", "level 3",
-                          "level 4", "level 5", "level 6", "level 7", "level 8"), sep = ";")%>%
-  mutate(FinalClass = case_when(FinalClass %like% "Unclass"~ "NA",
-                                FinalClass %like% "Confusing" ~ "NA",
-                                TRUE ~ as.character(FinalClass)))%>%
-  filter(`level 2` != "NA",
-         FinalClass != "NA")%>%
-  unite(identifier, c("level 2", "FinalClass", "feature_number"), sep = " ")%>%
+  separate(molnet_string, c(CF_kingdom, CF_superclass, CF_class, CF_subclass), sep = ";")%>%
+  unite(identifier, c("CF_superclass", "CF_class", "feature_number"), sep = " ")%>%
   unite(sample, c("Organism", "Replicate"), sep = "_")%>%
   group_by(sample)%>%
   mutate(zscore = zscore(log2_change + 17.6))%>%
@@ -1337,7 +1344,7 @@ osm_otus <- dunnett_microbe_pvals%>%
   inner_join(osm_ra_bigger_TF, by = c("DayNight", "Organism", "OTU"))%>%
   left_join(average_ra, by = c("OTU", "Organism", "DayNight"))%>%
   separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "sp"), sep = ";")%>%
-  unite(Tax_plot, c("Order", "Family", "Genus"), sep = " ", remove = FALSE)
+  unite(Tax_plot, c("Order", "Family", "Genus", "OTU"), sep = " ", remove = FALSE)
 
 # colors_otus <- c("#FF0000", #Altermonas Red
 #                  "firebrick4",
@@ -1366,9 +1373,9 @@ osm_ots_heat <- osm_otus%>%
   left_join(microbe_no_rare, by = c("OTU"))%>%
   filter(DayNight == "Day",
          Organism != "Water control")%>%
-  group_by(Organism, Tax_plot, Replicate)%>%
-  summarize_if(is.numeric, sum)%>%
-  ungroup()%>%
+  # group_by(Organism, Tax_plot, Replicate)%>%
+  # summarize_if(is.numeric, sum)%>%
+  # ungroup()%>%
   group_by(Tax_plot)%>%
   mutate(log2_change = zscore(log2_change + 1.82))%>%
   ungroup()%>%
@@ -1559,20 +1566,31 @@ corr_nodes <- osm_otus%>%
 )%>%
   unite(color, c("label", "OTU_code"), sep = ";", remove = FALSE)%>%
   rename(shared_name = OTU)%>%
-  bind_rows(deplete_classified%>%
+  bind_rows(molnet_class%>%
               mutate(sample = "metabolite")%>%
               select(-Organism)%>%
-              separate(ClassString, c("level 1", "level 2", "level 3",
-                                      "level 4", "level 5", "level 6", "level 7", "level 8"), sep = ";")%>%
+              separate(molnet_string, c(CF_kingdom, CF_superclass, CF_class, CF_subclass), sep = ";")%>%
               left_join(osm_dunnetts%>%
                           select(feature_number, Organism), by = "feature_number")%>%
               rename(shared_name = feature_number,
-                     label = FinalClass,
-                     color = `level 2`))%>%
-  mutate(label = case_when(label %like% "Canopus%" ~ "Unidentified",
-                           TRUE ~ as.character(label)))
+                     label = CF_subclass,
+                     color = `CF_superclass`))
 
 write_csv(corr_nodes, "analysis/osm_cyto_node.csv")
+
+
+# GRAPHING -- data sleuthing Porites --------------------------------------
+porites_depletes <- osm_dunnetts%>%
+  filter(Organism == "Porites lobata")
+
+porites_asv <- osm_otus%>%
+  # filter(log2_change >= 1,
+  #        TF >= 0.001)%>%
+  select(Tax_plot, OTU)%>%
+  distinct(Tax_plot, OTU)%>%
+  left_join(microbe_no_rare, by = c("OTU"))%>%
+  filter(DayNight == "Day",
+         Organism == "Porites lobata")
 
 # PLOT FOR CRAIG ----------------------------------------------------------
 osm_correlation%>%
@@ -1909,15 +1927,15 @@ summary_average_xic <- feature_table_no_back_trans%>%
   spread(Organism, log2_change)%>%
   right_join(t_pvals, by = c("DayNight", "feature_number"))
 
-summary_dunnett <- dom_dunnetts%>%
+summary_dunnett <- dunnetts_dom%>%
   right_join(dom_stats_wdf%>%
               select(c(feature_number, Timepoint, DayNight, Organism, log))%>%
               group_by(feature_number,Timepoint, DayNight, Organism)%>%
               summarize_if(is.numeric, mean, na.rm = TRUE), by = c("feature_number", "DayNight", "Organism"))%>%
   left_join(networking, by = "feature_number")%>%
-  select(-c(rhs:p.value))
+  select(-p.value)
 
-summary_count_dunnett <- dom_dunnetts%>%
+summary_count_dunnett <- dunnetts_dom%>%
   select(activity, Organism, DayNight)%>%
   group_by(activity, Organism, DayNight)%>%
   mutate(count = 1)%>%
