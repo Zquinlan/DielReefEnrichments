@@ -244,8 +244,8 @@ networking <- metadata%>%
   dplyr::select(c(feature_number, network,combined_ID, binary_ID,  SmilesLibrary_, SmilesAnalog_,
                   canopus_annotation:CLASS_STRING, ZodiacMF, `characterization scores`,
                   C:dG, inchi_binary, inchi_combined))%>%
-  separate(CLASS_STRING, c("level 1", "level 2", "level 3",
-                           "level 4", "level 5", "level 6", "level 7", "level 8"), sep = ";")%>%
+  separate(CLASS_STRING, c("level 1", "CF_class", "level 3",
+                           "level 4", "CF_Sublass", "level 6", "level 7", "level 8"), sep = ";")%>%
   mutate(c_temp = case_when(C > 0 ~ "C",
                             TRUE ~ "_"),
          o_temp = case_when(O > 0 ~ "O",
@@ -1175,23 +1175,24 @@ osm_dunnetts <- dunnetts_dom%>%
 #                    "#5BBCD6")
 
 ## Making the PDF
-pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_compounds.pdf", height = 7, width = 13)
+# pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_compounds.pdf", height = 7, width = 13)
 osm_dunnetts%>%
-  filter(`level 2` != "NA",
-         `level 5` != "NA",
-         # `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
-         # `level 2` %like% "Organohetero%"
-         # FinalClass %like% "%carnitine%"
-         `level 2` %like% "Organic acids%"
-         )%>%
-  rename(`Chemical Class` = `level 3`)%>%
-  mutate(`Chemical Class` = case_when(`Chemical Class` %like% "%Carb%" ~ `level 5`,
-                                      TRUE ~ as.character(`Chemical Class`)))%>%
+  filter(Timepoint == "T0")%>%
+  # filter(`CF_class` != "NA",
+  #        `CF_subclass` != "NA",
+  #        # `CF_class` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
+  #        # `CF_class` %like% "Organohetero%"
+  #        # FinalClass %like% "%carnitine%"
+  #        `CF_class` %like% "Organic acids%"
+  #        )%>%
+  # rename(`Chemical Class` = `CF_subclass`)%>%
+  # mutate(`Chemical Class` = case_when(`Chemical Class` %like% "%Carb%" ~ `Chemical Class`,
+  #                                     TRUE ~ as.character(`Chemical Class`)))%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
+  ggplot(aes(Organism, log2_change, fill = CF_Class)) +
   geom_bar(stat = "identity", position = "stack") +
   # scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "darkorchid3")) + # Colorblind pallette
-  facet_wrap(~Organism) +
+  facet_wrap(~CF_superclass) +
   # coord_flip() +
   theme(
     # legend.position = "none",
@@ -1207,9 +1208,9 @@ osm_dunnetts%>%
   )
 
 osm_dunnetts%>%
-  filter(`level 2` != "NA",
-         # `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
-         # `level 2` %like% "Organohetero%"
+  filter(`CF_class` != "NA",
+         # `CF_class` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
+         # `CF_class` %like% "Organohetero%"
          FinalClass %like% "%carnitine%"
 
   )%>%
@@ -1234,9 +1235,9 @@ osm_dunnetts%>%
   )
 
 osm_dunnetts%>%
-  filter(`level 2` != "NA",
-         # `level 2` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
-         `level 2` %like% "Organohetero%"
+  filter(`CF_class` != "NA",
+         # `CF_class` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
+         `CF_class` %like% "Organohetero%"
   )%>%
   rename(`Chemical Class` = `level 3`)%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
@@ -1259,8 +1260,8 @@ osm_dunnetts%>%
   )
 
 osm_dunnetts%>%
-  filter(`level 2` != "NA",
-         `level 2` %like% "Lipids%" 
+  filter(`CF_class` != "NA",
+         `CF_class` %like% "Lipids%" 
          # & !FinalClass %like% "%carnitine%"
 
   )%>%
