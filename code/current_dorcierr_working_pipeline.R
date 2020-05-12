@@ -139,6 +139,10 @@ molnet_class <- read_csv("analysis/Moorea2017_MolNetEnhancer.csv")%>%
   select(feature_number, CF_kingdom, CF_class, CF_subclass, CF_superclass)%>%
   unite(molnet_string, c(CF_kingdom, CF_superclass, CF_class, CF_subclass), sep = ";")
 
+#PPl extraction efficiency
+extraction_efficiency <- read_csv("./raw/metabolomics/Extraction_efficiency.csv")%>%
+  select(-c(X6:X8))
+
 # compare <- deplete_classified%>%
 #   inner_join(molnet_class, by = "feature_number")%>%
 #   left_join(true_hits%>%
@@ -565,7 +569,24 @@ doc_log10 <- moorea_doc%>%
          sample_name != "D_WA_2_T0D",
          sample_name != "D_WA_1_T0D",
          sample_name != "D_CC_1_T0D",
-         sample_name != "D_CC_2_T0D")
+         sample_name != "D_CC_2_T0D")%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_", remove = FALSE)%>%
+  dplyr::mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                       Experiment == "M" ~ "mordor",
+                                       Experiment == "R" ~ "RR3",
+                                       TRUE ~ as.character(Experiment)))%>%
+  dplyr::mutate(Organism = case_when(Organism == "CC" ~ "CCA",
+                                     Organism == "DT" ~ "Dictyota",
+                                     Organism == "PL" ~ "Porites lobata",
+                                     Organism == "PV" ~ "Pocillopora verrucosa",
+                                     Organism == "TR" ~ "Turf",
+                                     Organism == "WA" ~ "Water control",
+                                     Organism == "IN" ~ "Influent",
+                                     Organism == "OF" ~ "Offshore",
+                                     TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"))
 
 fdom_doc_log10 <- left_join(fdom_log10, doc_log10, by = "sample_name")%>%
   dplyr::select(-sample_name)
@@ -1175,7 +1196,7 @@ osm_dunnetts <- dunnetts_dom%>%
 #                    "#5BBCD6")
 
 ## Making the PDF
-# pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_compounds.pdf", height = 7, width = 13)
+pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_compounds.pdf", height = 7, width = 13)
 osm_dunnetts%>%
   filter(Timepoint == "T0")%>%
   # filter(`CF_class` != "NA",
@@ -1189,7 +1210,7 @@ osm_dunnetts%>%
   # mutate(`Chemical Class` = case_when(`Chemical Class` %like% "%Carb%" ~ `Chemical Class`,
   #                                     TRUE ~ as.character(`Chemical Class`)))%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Organism, log2_change, fill = CF_Class)) +
+  ggplot(aes(Organism, xic, fill = CF_class)) +
   geom_bar(stat = "identity", position = "stack") +
   # scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "darkorchid3")) + # Colorblind pallette
   facet_wrap(~CF_superclass) +
@@ -1209,17 +1230,17 @@ osm_dunnetts%>%
 
 osm_dunnetts%>%
   filter(`CF_class` != "NA",
-         # `CF_class` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
+         `CF_superclass` %like% "Lipids%"
          # `CF_class` %like% "Organohetero%"
-         FinalClass %like% "%carnitine%"
+         # FinalClass %like% "%carnitine%"
 
   )%>%
-  rename(`Chemical Class` = `level 3`)%>%
   # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
+  ggplot(aes(Timepoint, xic, fill = CF_subclass)) +
   geom_bar(stat = "identity", position = "stack") +
-  scale_fill_manual(values = "#0072B2") +
+  # scale_fill_manual(values = "#0072B2") +
   facet_wrap(~Organism) +
+  ggtitle("Lipids and Lipid-like compounds") +
   # coord_flip() +
   theme(
     # legend.position = "none",
@@ -1237,15 +1258,12 @@ osm_dunnetts%>%
 osm_dunnetts%>%
   filter(`CF_class` != "NA",
          # `CF_class` %like% "Lipids%" & !FinalClass %like% "%carnitine%"
-         `CF_class` %like% "Organohetero%"
+         `CF_superclass` %like% "Organohetero%"
   )%>%
-  rename(`Chemical Class` = `level 3`)%>%
-  # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
+  ggplot(aes(Timepoint, xic, fill = CF_subclass)) +
   geom_bar(stat = "identity", position = "stack") +
-  # scale_fill_manual(values = colors_hetero) +
-  facet_wrap(~Organism) +
-  # coord_flip() +
+  facet_wrap(~ Organism) +
+  ggtitle("Organoheterocyclic compounds") +
   theme(
     # legend.position = "none",
     # plot.margin = margin(2,.8,2,.8, "cm"),
@@ -1261,17 +1279,14 @@ osm_dunnetts%>%
 
 osm_dunnetts%>%
   filter(`CF_class` != "NA",
-         `CF_class` %like% "Lipids%" 
+         `CF_superclass` %like% "Organic acids%" 
          # & !FinalClass %like% "%carnitine%"
 
   )%>%
-  rename(`Chemical Class` = `level 3`)%>%
-  # unite(compound, c("level 3", "FinalClass"), sep = " ")%>%
-  ggplot(aes(Timepoint, xic, fill = `Chemical Class`)) +
+  ggplot(aes(Timepoint, xic, fill = CF_subclass)) +
   geom_bar(stat = "identity", position = "stack") +
-  # scale_fill_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")) + # Colorblind pallette
   facet_wrap(~Organism) +
-  # coord_flip() +
+  ggtitle("Organic acids and derivatives") + 
   theme(
     # legend.position = "none",
     # plot.margin = margin(2,.8,2,.8, "cm"),
@@ -1865,6 +1880,97 @@ pcoa_microbe$vectors%>%
   ylab(str_c("Axis 2", " (", round(pcoa_microbe$values$Relative_eig[2], digits = 4)*100, "%)", sep = ""))
 dev.off()
 
+
+
+# GRAPHING -- DOC and XIC -------------------------------------------------
+pdf("plots/doc_xic_compare.pdf", width = 6, height = 5)
+doc_log10%>%
+  filter(DayNight == "Day")%>%
+  ggplot(aes(Organism, DOC)) + 
+  geom_bar(stat = "summary", fun.y = "mean") +
+  facet_wrap(~Timepoint) + 
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(angle = 60, size = 20, hjust = 1),
+    axis.text.y = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+
+
+dom_stats_wdf%>%
+  filter(DayNight == "Day")%>%
+  ggplot(aes(Organism, log)) + 
+  geom_bar(stat = "summary", fun.y = "sum") +
+  facet_wrap(~Timepoint) + 
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(angle = 60, size = 20, hjust = 1),
+    axis.text.y = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+dev.off()
+
+
+test <- dom_stats_wdf%>%
+  group_by(Timepoint, Organism, DayNight)%>%
+  summarize_if(is.numeric, mean)
+
+write_csv(test, "test.csv")
+
+
+
+# GRAPHING -- Extraction Efficiency ---------------------------------------
+extraction_efficiency%>%
+  filter(DayNight == "Day")%>%
+  ggplot(aes(Organism, efficiency, color = Organism)) +
+  geom_boxplot() +
+  facet_wrap(~Timepoint) +
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(angle = 60, size = 20, hjust = 1),
+    axis.text.y = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+
+
+# GRAPHING -- NOSC Vs. dG plot --------------------------------------------
+nosc_plot <- osm_dunnetts%>%
+  select(feature_number, log2_change, xic)%>%
+  group_by(feature_number)%>%
+  summarize_if(is.numeric, min)%>%
+  group_by(feature_number)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  left_join(osm_dunnetts%>%
+              select(feature_number, CF_superclass), by = "feature_number")%>%
+  left_join(networking%>%
+              select(feature_number, dG, NOSC, N, O), by = "feature_number")
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'no matches', ' %acids%', '%hetero%', '%propan%'))%>%
+  ggplot(aes(N, NOSC, color = log2_change)) +
+  geom_point(stat = "identity") +
+  geom_smooth(method = lm) +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient(low = '#EBCC2A', high = '#3B9AB2')
 
 # SUMMARY -- DOM-----------------------------------------------------------------
 summary_no_background <- as.vector(feature_table_no_back_trans_filter%>%
