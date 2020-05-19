@@ -411,6 +411,40 @@ major_deplete_features <- feature_table_no_back_trans%>%
   group_by(DayNight, feature_number)%>%
   summarize_if(is.numeric, mean)
 
+log2_change_vals <- feature_table_no_back_trans%>%
+  gather(sample_name, xic, 2:ncol(.))%>%
+  ungroup()%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+  filter(!Experiment %like% "%Blank%",
+         !Organism %like% "%Blank")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                Experiment == "M" ~ "mordor",
+                                Experiment == "R" ~ "RR3",
+                                TRUE ~ as.character(Experiment)),
+         Organism = case_when(Organism == "CC" ~ "CCA",
+                              Organism == "DT" ~ "Dictyota",
+                              Organism == "PL" ~ "Porites lobata",
+                              Organism == "PV" ~ "Pocillopora verrucosa",
+                              Organism == "TR" ~ "Turf",
+                              Organism == "WA" ~ "Water control",
+                              TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"),
+         xic = case_when(xic == 0 ~ 1000,
+                         TRUE ~ as.numeric(xic)))%>%
+  group_by(Organism, Timepoint, DayNight, feature_number)%>%
+  mutate(Replicate = as.numeric(Replicate),
+         xic = case_when(sum(xic) == 4000 ~ xic + Replicate, 
+                         sum(xic) == 2000 ~ xic + Replicate,
+                         TRUE ~ as.numeric(xic)))%>%
+  ungroup()%>%
+  spread(Timepoint, xic)%>%
+  group_by(Organism, DayNight, feature_number)%>%
+  mutate(T0 = mean(T0, na.rm = TRUE))%>%
+  mutate(log2_change = log2(TF/T0))%>%
+  filter(log2_change <= -3.3)%>%
+  ungroup()
 
 # RELATIVIZATION AND NORMALIZATION -- xic_log10 -----------------
 feature_table_relnorm <- feature_table_no_back_trans%>%
@@ -1952,25 +1986,63 @@ extraction_efficiency%>%
 
 
 # GRAPHING -- NOSC Vs. dG plot --------------------------------------------
-nosc_plot <- osm_dunnetts%>%
-  select(feature_number, log2_change, xic)%>%
-  group_by(feature_number)%>%
-  summarize_if(is.numeric, min)%>%
-  group_by(feature_number)%>%
+nosc_plot <- log2_change_vals%>%
+  filter(DayNight == "Day")%>%
+  group_by(feature_number, Organism)%>%
   summarize_if(is.numeric, mean)%>%
   ungroup()%>%
+  filter(feature_number %in% osm_dunnett_features)%>%
   left_join(osm_dunnetts%>%
               select(feature_number, CF_superclass), by = "feature_number")%>%
   left_join(networking%>%
-              select(feature_number, dG, NOSC, N, O), by = "feature_number")
+              select(feature_number, dG, NOSC, N, O), by = "feature_number")%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`, `row retention time`), by = "feature_number")
+
+pdf('plots/craig_lability.pdf', width = 6, height = 5)
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'no matches', 'Organic acid%', '%hetero%', '%propan%'))%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(log10(T0), log2_change)) +
+
+  geom_point(stat = "identity") +
+  geom_smooth(method = lm, color = 'grey') +
+  # xlim(c(125, 750)) +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
 
 nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'no matches', ' %acids%', '%hetero%', '%propan%'))%>%
-  ggplot(aes(N, NOSC, color = log2_change)) +
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'no matches', 'Organic acid%', '%hetero%', '%propan%'))%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(dG, log2_change)) +
   geom_point(stat = "identity") +
-  geom_smooth(method = lm) +
+  geom_smooth(method = lm, color = 'grey') +
+  # xlim(c(125, 750)) +
   facet_wrap(~CF_superclass) +
-  scale_color_gradient(low = '#EBCC2A', high = '#3B9AB2')
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'no matches', 'Organic acid%', '%hetero%', '%propan%'))%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(`row m/z`, dG, color = log2_change)) +
+  geom_point(stat = "identity") +
+  geom_smooth(method = lm, color = 'grey') +
+  xlim(c(125, 750)) +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'no matches', 'Organic acid%', '%hetero%', '%propan%'))%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(`row retention time`, dG, color = log2_change)) +
+  geom_point(stat = "identity") +
+  geom_smooth(method = lm, color = 'grey') +
+  # xlim(c(125, 750)) +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+
+dev.off()
+
 
 # SUMMARY -- DOM-----------------------------------------------------------------
 summary_no_background <- as.vector(feature_table_no_back_trans_filter%>%
