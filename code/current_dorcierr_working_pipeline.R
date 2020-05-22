@@ -441,8 +441,10 @@ log2_change_vals <- feature_table_no_back_trans%>%
   ungroup()%>%
   spread(Timepoint, xic)%>%
   group_by(Organism, DayNight, feature_number)%>%
-  mutate(T0 = mean(T0, na.rm = TRUE))%>%
-  mutate(log2_change = log2(TF/T0))%>%
+  mutate(T0 = mean(T0, na.rm = TRUE),
+         log2_change = log2(TF/T0),
+         complete_removal = case_when(TF > 0 & TF == 1000 ~ "removed",
+                                      TRUE ~ "semi-removed"))%>%
   filter(log2_change <= -3.3)%>%
   ungroup()
 
@@ -493,6 +495,37 @@ dorcierr_table_wdf_temp <- feature_table_combined%>%
   dplyr::select(c(feature_number, everything()))
 
 # CLEANING-- adding carbon normalized values to wdf ------------------
+  carbon_normalized_xic_NOSC <- dorcierr_table_wdf_temp%>%
+  filter(`characterization scores` == "Good")%>%
+  dplyr::select(c(feature_number, C, ends_with("_xic")))%>%
+  gather(sample_name, xic, 3:ncol(.))%>%
+  mutate(percent_total_C = log10(xic)*C)%>%
+  group_by(sample_name)%>%
+  mutate(sum_c = sum(percent_total_C,  na.rm = TRUE),
+         carbon_norm_temp = percent_total_C/sum_c)%>%
+  ungroup()%>%
+  right_join(metadata%>%
+               select(c(feature_number, NOSC)),
+             .,  by = "feature_number")%>%
+  mutate(carbon_normalized_NOSC = carbon_norm_temp*NOSC,
+         sample_name = gsub("_xic", "", sample_name))%>%
+  select(c(feature_number, sample_name, carbon_normalized_NOSC))%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                       TRUE ~ as.character(Experiment)))%>%
+  mutate(Organism = case_when(Organism == "CC" ~ "CCA",
+                                     Organism == "DT" ~ "Dictyota",
+                                     Organism == "PL" ~ "Porites lobata",
+                                     Organism == "PV" ~ "Pocillopora verrucosa",
+                                     Organism == "TR" ~ "Turf",
+                                     Organism == "WA" ~ "Water control",
+                                     TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"))%>%
+  group_by(feature_number, Organism, Timepoint, DayNight)%>%
+  summarize_if(is.numeric, mean)
+
 dorcierr_features_wdf <-dorcierr_table_wdf_temp
 
 write_csv(dorcierr_features_wdf, "~/Documents/GitHub/DORCIERR/data/analysis/Dorcierr_feature_table_master_post_filtered.csv")
@@ -1988,7 +2021,7 @@ extraction_efficiency%>%
 # GRAPHING -- NOSC Vs. dG plot --------------------------------------------
 nosc_plot <- log2_change_vals%>%
   filter(DayNight == "Day")%>%
-  group_by(feature_number, Organism)%>%
+  group_by(feature_number, Organism, complete_removal)%>%
   summarize_if(is.numeric, mean)%>%
   ungroup()%>%
   filter(feature_number %in% osm_dunnett_features)%>%
@@ -1997,34 +2030,62 @@ nosc_plot <- log2_change_vals%>%
   left_join(networking%>%
               select(feature_number, dG, NOSC, N, O), by = "feature_number")%>%
   left_join(metadata%>%
-              select(feature_number, `row m/z`, `row retention time`), by = "feature_number")
+              select(feature_number, `row m/z`, `row retention time`), by = "feature_number")%>%
+  left_join(carbon_normalized_xic_NOSC%>%
+              filter(Timepoint == "T0",
+                     DayNight == "Day"), by = c("Organism", "feature_number"))
 
-pdf('plots/craig_lability.pdf', width = 6, height = 5)
+pdf('plots/lability_plots_052220.pdf', width = 6, height = 5)
 nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'no matches', 'Organic acid%', '%hetero%', '%propan%'))%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(log10(T0), log2_change)) +
-
-  geom_point(stat = "identity") +
-  geom_smooth(method = lm, color = 'grey') +
-  # xlim(c(125, 750)) +
+  ggplot(aes(complete_removal, `row m/z`)) +
+  geom_boxplot() +
   facet_wrap(~CF_superclass) +
   scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
 
 nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'no matches', 'Organic acid%', '%hetero%', '%propan%'))%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(dG, log2_change)) +
-  geom_point(stat = "identity") +
-  geom_smooth(method = lm, color = 'grey') +
-  # xlim(c(125, 750)) +
+  ggplot(aes(complete_removal, log2_change)) +
+  geom_boxplot() +
   facet_wrap(~CF_superclass) +
   scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
 
 nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'no matches', 'Organic acid%', '%hetero%', '%propan%'))%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(`row m/z`, dG, color = log2_change)) +
+  ggplot(aes(complete_removal, NOSC)) +
+  geom_boxplot() +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(complete_removal, carbon_normalized_NOSC)) +
+  geom_boxplot() +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         complete_removal == "semi-removed")%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(`row m/z`, log2_change, color = carbon_normalized_NOSC)) +
+  geom_point(stat = "identity") +
+  ggtitle('Not completely removed') +
+  geom_smooth(method = lm, color = 'grey') +
+  xlim(c(125, 750)) +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         complete_removal != "semi-removed")%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(`row m/z`, log2_change, color = carbon_normalized_NOSC)) +
+  ggtitle('Completely removed') +
   geom_point(stat = "identity") +
   geom_smooth(method = lm, color = 'grey') +
   xlim(c(125, 750)) +
@@ -2032,10 +2093,36 @@ nosc_plot%>%
   scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
 
 nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'no matches', 'Organic acid%', '%hetero%', '%propan%'))%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         complete_removal == "semi-removed")%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(`row retention time`, dG, color = log2_change)) +
+  ggplot(aes(carbon_normalized_NOSC, log2_change, color = `row m/z`)) +
   geom_point(stat = "identity") +
+  ggtitle('Not completely removed') +
+  geom_smooth(method = lm, color = 'grey') +
+  # xlim(c(125, 750)) +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         complete_removal == "semi-removed")%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(`row m/z`, carbon_normalized_NOSC, color = log2_change)) +
+  geom_point(stat = "identity") +
+  ggtitle('Not completely removed') +
+  geom_smooth(method = lm, color = 'grey') +
+  # xlim(c(125, 750)) +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         complete_removal != "semi-removed")%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(`row m/z`, carbon_normalized_NOSC, color = log2_change)) +
+  geom_point(stat = "identity") +
+  ggtitle('Not completely removed') +
   geom_smooth(method = lm, color = 'grey') +
   # xlim(c(125, 750)) +
   facet_wrap(~CF_superclass) +
