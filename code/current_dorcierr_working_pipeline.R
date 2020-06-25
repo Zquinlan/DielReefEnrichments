@@ -245,11 +245,11 @@ metadata <- full_join(node_info,
 metadata$feature_number <- as.character(metadata$feature_number)
 
 networking <- metadata%>%
-  dplyr::select(c(feature_number, network,combined_ID, binary_ID,  SmilesLibrary_, SmilesAnalog_,
+  select(c(feature_number, network,combined_ID, binary_ID,  SmilesLibrary_, SmilesAnalog_,
                   canopus_annotation:CLASS_STRING, ZodiacMF, `characterization scores`,
                   C:dG, inchi_binary, inchi_combined))%>%
-  separate(CLASS_STRING, c("level 1", "CF_class", "level 3",
-                           "level 4", "CF_Sublass", "level 6", "level 7", "level 8"), sep = ";")%>%
+  left_join(molnet_class, by = 'feature_number')%>%
+  separate(molnet_string, c("CF_kingdom", "CF_superclass", "CF_class", "CF_subclass"), sep = ";")%>%
   mutate(c_temp = case_when(C > 0 ~ "C",
                             TRUE ~ "_"),
          o_temp = case_when(O > 0 ~ "O",
@@ -389,7 +389,7 @@ log2_features_clean <- function(x) {
     ungroup()%>%
     spread(Timepoint, xic)%>%
     group_by(Organism, DayNight, feature_number)%>%
-    summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+    summarize_if(is.numeric, max, na.rm = TRUE)%>%
     mutate(log2_change = log2(TF/T0))%>%
     filter(log2_change >= 1 | log2_change <= -1)%>%
     ungroup()
@@ -443,9 +443,10 @@ log2_change_vals <- feature_table_no_back_trans%>%
   group_by(Organism, DayNight, feature_number)%>%
   mutate(T0 = mean(T0, na.rm = TRUE),
          log2_change = log2(TF/T0),
-         complete_removal = case_when(TF > 0 & TF == 1000 ~ "removed",
+         complete_removal = case_when(mean(TF) > 0 & mean(TF, na.rm = TRUE) == 1000 ~ "removed",
+                                      mean(TF, na.rm = TRUE) > mean(T0, na.rm = TRUE) ~"accumulite",
                                       TRUE ~ "semi-removed"))%>%
-  filter(log2_change <= -3.3)%>%
+  filter(log2_change <= -1 | log2_change >= 1)%>%
   ungroup()
 
 # RELATIVIZATION AND NORMALIZATION -- xic_log10 -----------------
@@ -499,8 +500,9 @@ dorcierr_table_wdf_temp <- feature_table_combined%>%
   filter(`characterization scores` == "Good")%>%
   dplyr::select(c(feature_number, C, ends_with("_xic")))%>%
   gather(sample_name, xic, 3:ncol(.))%>%
-  mutate(percent_total_C = log10(xic)*C)%>%
   group_by(sample_name)%>%
+  mutate(ra = xic/sum(xic, na.rm = TRUE),
+         percent_total_C = xic*C)%>%
   mutate(sum_c = sum(percent_total_C,  na.rm = TRUE),
          carbon_norm_temp = percent_total_C/sum_c)%>%
   ungroup()%>%
@@ -524,7 +526,8 @@ dorcierr_table_wdf_temp <- feature_table_combined%>%
   mutate(DayNight = case_when(DayNight == "D" ~ "Day",
                               TRUE ~ "Night"))%>%
   group_by(feature_number, Organism, Timepoint, DayNight)%>%
-  summarize_if(is.numeric, mean)
+  summarize_if(is.numeric, mean)%>%
+  filter(!carbon_normalized_NOSC < -0.001)
 
 dorcierr_features_wdf <-dorcierr_table_wdf_temp
 
@@ -759,6 +762,36 @@ osm_ra_bigger_TF <- microbe_combined%>%
 
 # SET SEED ----------------------------------------------------------------
 set.seed(2005)
+
+
+# STATS  -- T-TEST Network level ------------------------------------------
+net_test <- dom_stats_wdf%>%
+  left_join(networking%>%
+              select(feature_number, network), by = "feature_number")%>%
+  filter(network != "-1")%>%
+  group_by(network, Organism, DayNight)%>%
+  nest()%>%
+  mutate(greater = map(data, ~ t.test(log ~ Timepoint, .x, alternative = "greater")),
+         lesser = map(data, ~ t.test(log ~ Timepoint, .x, alternative = "less")))%>%
+  select(-data)%>%
+  mutate(greater = map(greater, ~ .x["p.value"][[1]]))%>%
+  mutate(lesser = map(lesser, ~ .x["p.value"][[1]]))%>%
+  ungroup()%>%
+  mutate(greater = as.numeric(greater),
+         lesser = as.numeric(lesser),
+         FDR_greater = p.adjust(greater, method = "BH"),
+         FDR_lesser = p.adjust(lesser, method = "BH"))%>%
+  mutate(activity = case_when(FDR_greater < 0.05 ~ "depletolite",
+                              FDR_lesser < 0.05 ~ "accumulite",
+                              FDR_lesser >= 0.05 & FDR_greater >= 0.05 | 
+                                is.na(FDR_lesser) & is.na(FDR_greater) ~ "recalcitrant"))
+
+net_activity <- net_test%>%
+  filter(activity != "recalcitrant", DayNight == "Day", Organism != "Water control")%>% 
+  group_by(network, activity)%>%
+  summarize_if(is.numeric, mean)%>%
+  select(network, activity)
+
 
 
 # STATS ANOVA -- Microbe TWO-Way ------------------------------------------
@@ -1001,6 +1034,16 @@ major_deplete$max_log <- apply(major_deplete[3:8], 1, min)
 
 major_depletolites <- major_deplete%>%
   filter(max_log < -3.3)
+
+
+# META-STATS -- Network changes -------------------------------------------
+network_means <- dom_stats_wdf%>%
+  left_join(networking%>%
+              select(feature_number, network), by = "feature_number")%>%
+  filter(network != "-1")%>%
+  group_by(network, Organism, DayNight)
+  summarize_if(is.numeric, mean)
+
 
 # EXPORT -- Major depletolites for Classyfire annotations --------------------
 classyfire_features <- major_depletolites$feature_number%>%
@@ -1754,10 +1797,23 @@ osm_dom_pco <- dom_stats_wdf%>%
   mutate(zscore = zscore + 78)%>%
   select(-c(TF, T0, mean_t0, change))%>%
   unite(sample, c(1:4), sep = "_")%>%
-  spread(2,3)%>%
+ 
   column_to_rownames(var = "sample")%>%
   vegdist(na.rm = TRUE)%>%
   pcoa()
+
+dom_stats_wdf%>%
+  spread(Timepoint, log)%>%
+  filter(DayNight == "Day")%>%
+  group_by(feature_number, Organism, DayNight)%>%
+  mutate(mean_t0 = mean(T0, na.rm = TRUE))%>%
+  mutate(change = TF - mean_t0)%>%
+  ungroup()%>%
+  mutate(zscore = ((change - mean(change, na.rm = TRUE))/sd(change, na.rm = TRUE)))%>%
+  mutate(zscore = zscore + 78)%>%
+  select(-c(TF, T0, mean_t0, change))%>%
+  spread(feature_number, zscore)%>%
+  adonis(.[5:ncol(.)] ~ Organism, data = ., perm = 1000, method = 'bray', p.adjust.methods = "BH")
 
 ## Plot Eigenvalues
 osm_dom_pco$values[1:10,]%>%
@@ -1768,6 +1824,7 @@ osm_dom_pco$values[1:10,]%>%
   geom_bar(stat = "identity") +
   geom_text(size = 3, color = "red", vjust = -0.5)
 
+org_colors <- c('#ED220D', '#7DFB4C', '#F19E38', '#8B19F5', '#33330A', '#0F01C4')
 ## PCoA plot
 pdf("./plots/osm_dom_pcoa.pdf", width = 6, height = 5)
 osm_dom_pco$vectors%>%
@@ -1777,7 +1834,7 @@ osm_dom_pco$vectors%>%
   ggplot(., aes(x = Axis.1, y = Axis.2, color = Organism, shape = DayNight)) +
   geom_point(stat = "identity", aes(size = 0.2)) +
   scale_shape_manual(values = c(19)) +
-  # scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
+  scale_color_manual(values = org_colors) +
   theme(
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
@@ -2028,18 +2085,29 @@ nosc_plot <- log2_change_vals%>%
   left_join(osm_dunnetts%>%
               select(feature_number, CF_superclass), by = "feature_number")%>%
   left_join(networking%>%
-              select(feature_number, dG, NOSC, N, O), by = "feature_number")%>%
+              select(feature_number, network, dG, NOSC, N, O), by = "feature_number")%>%
   left_join(metadata%>%
               select(feature_number, `row m/z`, `row retention time`), by = "feature_number")%>%
+  left_join(net_activity, by = 'network')%>%
   left_join(carbon_normalized_xic_NOSC%>%
               filter(Timepoint == "T0",
                      DayNight == "Day"), by = c("Organism", "feature_number"))
 
+
+#Original NOSC plots
 pdf('plots/lability_plots_052220.pdf', width = 6, height = 5)
 nosc_plot%>%
   filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
   ggplot(aes(complete_removal, `row m/z`)) +
+  geom_boxplot() +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(complete_removal, log10(T0))) +
   geom_boxplot() +
   facet_wrap(~CF_superclass) +
   scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
@@ -2070,6 +2138,20 @@ nosc_plot%>%
 
 nosc_plot%>%
   filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         complete_removal != "accumulite",
+         activity == 'depletolite',)%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(`row m/z`, log2_change, color = carbon_normalized_NOSC)) +
+  ggtitle('Accumulites') +
+  geom_point(stat = "identity") +
+  geom_smooth(method = lm, color = 'grey') +
+  xlim(c(125, 750)) +
+  facet_wrap(~CF_superclass) +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         activity == 'depletolite',
          complete_removal == "semi-removed")%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
   ggplot(aes(`row m/z`, log2_change, color = carbon_normalized_NOSC)) +
@@ -2082,7 +2164,8 @@ nosc_plot%>%
 
 nosc_plot%>%
   filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         complete_removal != "semi-removed")%>%
+         activity == 'depletolite',
+         complete_removal != "removed")%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
   ggplot(aes(`row m/z`, log2_change, color = carbon_normalized_NOSC)) +
   ggtitle('Completely removed') +
@@ -2094,6 +2177,7 @@ nosc_plot%>%
 
 nosc_plot%>%
   filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         activity == 'depletolite',
          complete_removal == "semi-removed")%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
   ggplot(aes(carbon_normalized_NOSC, log2_change, color = `row m/z`)) +
@@ -2106,30 +2190,92 @@ nosc_plot%>%
 
 nosc_plot%>%
   filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         activity == 'depletolite',
          complete_removal == "semi-removed")%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(`row m/z`, carbon_normalized_NOSC, color = log2_change)) +
+  ggplot(aes(`row m/z`, NOSC, color = log2_change)) +
   geom_point(stat = "identity") +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red') +
   ggtitle('Not completely removed') +
   geom_smooth(method = lm, color = 'grey') +
   # xlim(c(125, 750)) +
+  facet_wrap(~CF_superclass)
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         activity == 'depletolite',
+         complete_removal == "removed")%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(`row m/z`, NOSC, color = log2_change)) +
+  geom_point(stat = "identity") +
+  ggtitle('Completely Removed') +
+  geom_smooth(method = lm, color = 'grey') +
+  # xlim(c(125, 750)) +x
   facet_wrap(~CF_superclass) +
   scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
 
 nosc_plot%>%
   filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         complete_removal != "semi-removed")%>%
+         activity == 'depletolite',
+         complete_removal == "semi-removed")%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(`row m/z`, carbon_normalized_NOSC, color = log2_change)) +
+  ggplot(aes(carbon_normalized_NOSC, log2_change, color = `row m/z`)) +
+  geom_point(stat = "identity") +
+  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red') +
+  ggtitle('Not completely removed') +
+  geom_smooth(method = lm, color = 'grey') +
+  # xlim(c(125, 750)) +x
+  facet_wrap(~CF_superclass)
+  
+
+nosc_plot%>%
+  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
+         activity == 'depletolite',
+         complete_removal == "semi-removed")%>%
+  # ggplot(aes(dG, NOSC, color = log2_change)) +
+  ggplot(aes(NOSC, log2_change, color = `row m/z`)) +
   geom_point(stat = "identity") +
   ggtitle('Not completely removed') +
   geom_smooth(method = lm, color = 'grey') +
-  # xlim(c(125, 750)) +
+  # xlim(c(125, 750)) +x
   facet_wrap(~CF_superclass) +
   scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
 
+
 dev.off()
 
+
+# SUMMARY -- Cytoscape ----------------------------------------------------
+cyto <- networking%>%
+  left_join(net_activity, by = 'network')%>%
+  right_join(feature_table_relnorm%>%
+               select(feature_number, contains('_xic'))%>%
+               gather(sample_code, xic, 2:ncol(.))%>%
+               separate(sample_code, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+               mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                             Experiment == "M" ~ "mordor",
+                                             Experiment == "R" ~ "RR3",
+                                             TRUE ~ as.character(Experiment)),
+                      Organism = case_when(Organism == "CC" ~ "CCA",
+                                           Organism == "DT" ~ "Dictyota",
+                                           Organism == "PL" ~ "Porites lobata",
+                                           Organism == "PV" ~ "Pocillopora verrucosa",
+                                           Organism == "TR" ~ "Turf",
+                                           Organism == "WA" ~ "Water control",
+                                           TRUE ~ as.character(Organism)))%>%
+               separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+               mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                                           TRUE ~ "Night"))%>%
+               group_by(feature_number, Organism, Timepoint)%>%
+               summarize_if(is.numeric, mean)%>%
+               spread(Timepoint, xic), 
+            by = 'feature_number')%>%
+  mutate(xic_treat = case_when(activity == "depletolite" ~ T0,
+                               TRUE ~ TF))%>%
+  select(-c(canopus_annotation:CLASS_STRING, T0, TF))%>%
+  spread(Organism, xic_treat)
+  
+write_csv(cyto, 'analysis/cytoscape_networks.csv')
 
 # SUMMARY -- DOM-----------------------------------------------------------------
 summary_no_background <- as.vector(feature_table_no_back_trans_filter%>%
