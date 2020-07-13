@@ -23,6 +23,7 @@ library(webchem)
 library(classyfireR)
 library(randomForest)
 library(ggpubr)
+library(rsq)
 
 #PCoA, PERMANOVA
 library(vegan)
@@ -33,6 +34,7 @@ library(wesanderson)
 library(RColorBrewer)
 library(gplots)
 library(gtable)
+library(ggnewscale)
 
 #Defining functions and removing issues with overlapping function calls
 map <- purrr::map
@@ -444,9 +446,8 @@ log2_change_vals <- feature_table_no_back_trans%>%
   mutate(T0 = mean(T0, na.rm = TRUE),
          log2_change = log2(TF/T0),
          complete_removal = case_when(mean(TF) > 0 & mean(TF, na.rm = TRUE) == 1000 ~ "removed",
-                                      mean(TF, na.rm = TRUE) > mean(T0, na.rm = TRUE) ~"accumulite",
+                                      mean(TF, na.rm = TRUE) > mean(T0, na.rm = TRUE) ~"accumolite",
                                       TRUE ~ "semi-removed"))%>%
-  filter(log2_change <= -1 | log2_change >= 1)%>%
   ungroup()
 
 # RELATIVIZATION AND NORMALIZATION -- xic_log10 -----------------
@@ -769,7 +770,7 @@ net_test <- dom_stats_wdf%>%
   left_join(networking%>%
               select(feature_number, network), by = "feature_number")%>%
   filter(network != "-1")%>%
-  group_by(network, Organism, DayNight)%>%
+  group_by(network, DayNight)%>%
   nest()%>%
   mutate(greater = map(data, ~ t.test(log ~ Timepoint, .x, alternative = "greater")),
          lesser = map(data, ~ t.test(log ~ Timepoint, .x, alternative = "less")))%>%
@@ -782,15 +783,195 @@ net_test <- dom_stats_wdf%>%
          FDR_greater = p.adjust(greater, method = "BH"),
          FDR_lesser = p.adjust(lesser, method = "BH"))%>%
   mutate(activity = case_when(FDR_greater < 0.05 ~ "depletolite",
-                              FDR_lesser < 0.05 ~ "accumulite",
-                              FDR_lesser >= 0.05 & FDR_greater >= 0.05 | 
-                                is.na(FDR_lesser) & is.na(FDR_greater) ~ "recalcitrant"))
+                              FDR_lesser < 0.05 ~ "accumolite",
+                              TRUE ~ "recalcitrant"))
 
 net_activity <- net_test%>%
-  filter(activity != "recalcitrant", DayNight == "Day", Organism != "Water control")%>% 
   group_by(network, activity)%>%
   summarize_if(is.numeric, mean)%>%
   select(network, activity)
+
+# STATS - GLM Activity groupings -----------------------------------------------
+#Difference within activity groupings
+net_glm <- log2_change_vals%>%
+  left_join(networking%>%
+              select(c(feature_number, network, NOSC)), by = "feature_number")%>%
+  filter(network != "-1")%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`), by = "feature_number")%>%
+  left_join(net_activity, by = 'network')%>%
+  mutate(activity = case_when(is.na(activity) ~ 'recalcitrant',
+                              TRUE ~ as.character(activity)))%>% #This line was added because entire networks did not pass the log2 bottleneck
+  select(-c(T0,TF, complete_removal))%>%
+  gather(response_var, value, NOSC:`row m/z`)%>%
+  group_by(DayNight, activity, response_var)%>%
+  nest()%>%
+  mutate(model = map(data, ~ glm(log2_change ~ value, family = gaussian, .x)),
+         p_vals = map(model, ~tidy(.x)%>%
+                        filter(term == 'value')),
+         r2 = map(model, ~with(summary(.x), 1-deviance/null.deviance)))%>%
+  select(-c(data, model))%>%
+  unnest(p_vals)%>%
+  ungroup()%>%
+  mutate(r2 = as.numeric(r2),
+         r = sqrt(r2),
+         FDR = p.adjust(p.value, method = 'BH'))
+
+
+
+write_csv(net_glm, "./analysis/net_glm_07012020.csv")
+
+
+org_glm <- log2_change_vals%>%
+  left_join(networking%>%
+              select(c(feature_number, network, NOSC)), by = "feature_number")%>%
+  filter(network != "-1")%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`), by = "feature_number")%>%
+  left_join(net_activity, by = 'network')%>%
+  mutate(activity = case_when(is.na(activity) ~ 'recalcitrant',
+                              TRUE ~ as.character(activity)))%>% #This line was added because entire networks did not pass the log2 bottleneck
+  filter(activity == 'depletolite')%>%
+  select(-c(T0,TF, complete_removal, activity))%>%
+  gather(response_var, value, NOSC:`row m/z`)%>%
+  group_by(DayNight, Organism, response_var)%>%
+  nest()%>%
+  mutate(model = map(data, ~ glm(log2_change ~ value, family = gaussian, .x)),
+         p_vals = map(model, ~tidy(.x)%>%
+                        filter(term == 'value')),
+         r2 = map(model, ~with(summary(.x), 1-deviance/null.deviance)))%>%
+  select(-c(data, model))%>%
+  unnest(p_vals)%>%
+  ungroup()%>%
+  mutate(r2 = as.numeric(r2),
+         r = sqrt(r2),
+         FDR = p.adjust(p.value, method = 'BH'))
+
+
+pdf("plots/glm_NOSC_Mass.pdf", width = 15, height = 10)
+log2_change_vals%>%
+  left_join(networking%>%
+              select(feature_number, network, NOSC), by = "feature_number")%>%
+  filter(network != "-1")%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`), by = "feature_number")%>%
+  left_join(net_activity, by = 'network')%>%
+  filter(activity != 'recalcitrant')%>%
+  mutate(activity2 = activity)%>% 
+  select(-c(T0,TF, complete_removal))%>%
+  gather(response_var, value, NOSC:`row m/z`)%>%
+  ggplot(aes(value, log2_change, color = activity)) +
+  facet_wrap(~ response_var, scales = 'free_x') + 
+  geom_point(stat = 'summary', fun.y = mean) +
+  scale_color_manual(values = c('#78B7C5', '#EBCC2A')) +
+  new_scale('color') + 
+  geom_smooth(method = lm, aes(color = activity2)) +
+  scale_color_manual(values = c('#3B9AB2', '#E1AF00')) +
+  theme(
+    # legend.position = "none",
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(size = 20),
+    axis.text.y = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+  dev.off()
+  
+  log2_change_vals%>%
+    left_join(networking%>%
+                select(feature_number, network, NOSC), by = "feature_number")%>%
+    filter(network != "-1")%>%
+    left_join(metadata%>%
+                select(feature_number, `row m/z`), by = "feature_number")%>%
+    left_join(net_activity, by = 'network')%>%
+    filter(activity == 'depletolite')%>%
+    mutate(Organism2 = Organism)%>% 
+    select(-c(T0,TF, complete_removal))%>%
+    gather(response_var, value, NOSC:`row m/z`)%>%
+    ggplot(aes(value, log2_change, color = Organism)) +
+    facet_wrap(~ response_var, scales = 'free_x') + 
+    geom_point(stat = 'summary', fun.y = mean) +
+    # scale_color_manual(values = c('#78B7C5', '#EBCC2A')) +
+    new_scale('color') + 
+    geom_smooth(method = lm, aes(color = Organism2)) +
+    # scale_color_manual(values = c('#3B9AB2', '#E1AF00')) +
+    theme(
+      # legend.position = "none",
+      # plot.margin = margin(2,.8,2,.8, "cm"),
+      axis.text.x = element_text(size = 20),
+      axis.text.y = element_text(size = 20),
+      panel.background = element_rect(fill = "transparent"), # bg of the panel
+      plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+      panel.grid.major = element_blank(), # get rid of major grid
+      panel.grid.minor = element_blank(), # get rid of minor grid
+      legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+      legend.box.background = element_rect(fill = "transparent")
+    )
+  
+nosc_quadrants <- log2_change_vals%>%
+  left_join(networking%>%
+              select(feature_number, network, NOSC), by = "feature_number")%>%
+  filter(network != "-1")%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`), by = "feature_number")%>%
+  left_join(net_activity, by = 'network')%>%
+  filter(activity != 'recalcitrant')%>%
+  group_by(feature_number, Organism, DayNight, network, activity)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  mutate(quadrant = case_when(log2_change > -3.3 & log2_change < 0 & NOSC > 0 ~ '6',
+                              log2_change > -3.3 & log2_change < 0 & NOSC <= 0 ~ '5',
+                              log2_change <= -3.3 & NOSC > 0 ~ '8',
+                              log2_change <= -3.3 & NOSC <= 0 ~ '7',
+                              log2_change > 0 & log2_change < 1 & NOSC <= 0 ~ '3',
+                              log2_change > 0 & log2_change < 1 & NOSC > 0 ~ '4',
+                              log2_change >= 1 & NOSC <= 0 ~ '1',
+                              log2_change >= 1 & NOSC > 0 ~ '2'))%>%
+  filter(!is.na(quadrant))
+  
+  
+
+# STATS - ANOVA Activity groupings ----------------------------------------
+# Difference between activity groupings
+net_anova <- net_activity%>%
+  left_join(networking%>%
+              select(feature_number, network, NOSC), by = "network")%>%
+  filter(network != "-1")%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`), by = "feature_number")%>%
+  gather(response_var, value, NOSC:`row m/z`)%>%
+  group_by(response_var)%>%
+  nest()%>%
+  mutate(anova = map(data, ~ aov(value ~ activity, .x)%>%
+                      tidy()%>%
+                      filter(!term == "Residuals")%>%
+                      select(p.value)%>%
+                      rename(anova = p.value)),
+         tukey = map(data, ~ aov(value ~ activity, .x)%>%
+                       TukeyHSD(p.adjust.methods = 'BH')%>%
+                       tidy()))%>%
+  select(-data)%>%
+  unnest(c(anova, tukey))%>%
+  ungroup()%>%
+  filter(anova < 0.05,
+         adj.p.value < 0.05)
+
+
+net_activity%>%
+  left_join(networking%>%
+              select(feature_number, network, NOSC), by = "network")%>%
+  filter(network != "-1")%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`), by = "feature_number")%>%
+  gather(response_var, value, NOSC:`row m/z`)%>%
+  ggplot(aes(activity, value)) +
+  # geom_jitter() +
+  geom_boxplot() +
+  facet_wrap(~response_var, scale = 'free_y')
 
 
 
@@ -841,7 +1022,7 @@ t_pvals <- t_test%>%
   # mutate(data = map(data, ~ mutate(.x, feature_number = as.character(feature_number))%>%
   #                     group_by(feature_number)%>%
   #                     summarize_if(is.numeric, min)%>%
-  mutate(activity = case_when(FDR_greater < 0.05 ~ "accumulite",
+  mutate(activity = case_when(FDR_greater < 0.05 ~ "accumolite",
                               FDR_lesser < 0.05 ~ "depletolite",
                               FDR_lesser >= 0.05 & FDR_greater >= 0.05 | 
                                 is.na(FDR_lesser) & is.na(FDR_greater) ~ "recalcitrant"))
@@ -1035,14 +1216,18 @@ major_deplete$max_log <- apply(major_deplete[3:8], 1, min)
 major_depletolites <- major_deplete%>%
   filter(max_log < -3.3)
 
-
 # META-STATS -- Network changes -------------------------------------------
 network_means <- dom_stats_wdf%>%
   left_join(networking%>%
               select(feature_number, network), by = "feature_number")%>%
   filter(network != "-1")%>%
-  group_by(network, Organism, DayNight)
-  summarize_if(is.numeric, mean)
+  group_by(network, Organism, DayNight, Timepoint)%>%
+  summarize_if(is.numeric, mean)%>%
+  spread(Timepoint, log)%>%
+  mutate(diff = TF-T0)%>%
+  right_join(net_test, by = c('Organism', 'DayNight', 'network'))%>%
+  filter(activity != 'recalcitrant')
+  
 
 
 # EXPORT -- Major depletolites for Classyfire annotations --------------------
@@ -1169,6 +1354,158 @@ write_csv(hc_microbe%>%
 write_csv(hc_compounds%>%
             select(everything(), sample), "~/Documents/GitHub/DORCIERR/data/plots/compounds_hc_df.csv")
 
+
+
+# META-STATS -- Network stats summary sheet -------------------------------
+net_summary <- net_activity%>%
+  left_join(metadata%>%
+              mutate(num_features = 1)%>%
+              select(num_features, network)%>%
+              group_by(network)%>%
+              summarize_if(is.numeric, sum)%>%
+              ungroup(), 
+            by = 'network')%>%
+  left_join(networking%>%
+              group_by(network)%>%
+              mutate(min_nosc = min(NOSC, na.rm = TRUE),
+                     max_nosc = max(NOSC, na.rm = TRUE))%>%
+              select(network, min_nosc, max_nosc)%>%
+              unique(),
+            by = 'network')%>%
+  left_join(log2_change_vals%>%
+              left_join(networking, by = 'feature_number')%>%
+              group_by(network)%>%
+              mutate(min_log2 = min(log2_change),
+                     max_log2 = max(log2_change))%>%
+              select(network, min_log2, max_log2)%>%
+              unique(),
+            by = 'network')%>%
+  left_join(molnet_class%>%
+              left_join(networking, by = 'feature_number')%>%
+              select(c(network, molnet_string))%>%
+              filter(network != '-1')%>%
+              unique(),
+            by = 'network')%>%
+  left_join(nosc_quadrants%>%
+              filter(network != '324', DayNight == "Day")%>%
+              select(-c('Replicate', 'T0', 'TF', 'NOSC', 'row m/z'))%>%
+              spread(Organism, log2_change)%>%
+              select(-activity),
+            by = 'network')%>%
+  left_join(networking%>%
+              select(feature_number, combined_ID, binary_ID, NOSC), 
+            by = 'feature_number')%>%
+  select(feature_number, network, activity, num_features, DayNight, NOSC, quadrant, combined_ID, binary_ID, everything())
+
+write_csv(net_summary, './analysis/depletolite_net_summary.csv')
+
+
+# META-STATS -- unexpected depletolites and accumolites -------------------
+unexpected_features_deplet <- net_activity%>%
+  left_join(log2_change_vals%>%
+              group_by(DayNight, Organism, feature_number)%>%
+              summarize_if(is.numeric, mean)%>%
+              left_join(networking, by = 'feature_number'),
+            by = 'network')%>%
+  filter(log2_change > 1,
+         activity == 'depletolite',
+         DayNight == 'Day')
+  
+pdf("plots/depletolite_networks_unexpected_accum.pdf", width = 6, height = 5)
+unexpected_features_deplet%>%
+  ggplot(aes(CF_subclass, fill = Organism)) +
+  geom_histogram(stat = 'count') + 
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
+    panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
+    legend.text = element_text(face = "italic"))
+dev.off()
+
+unexpected_features_accum <- net_activity%>%
+  left_join(log2_change_vals%>%
+              group_by(DayNight, Organism, feature_number)%>%
+              summarize_if(is.numeric, mean)%>%
+              left_join(networking, by = 'feature_number'),
+            by = 'network')%>%
+  filter(log2_change < -1,
+         activity == 'accumolite',
+         DayNight == 'Day')
+
+pdf("plots/accumolite_networks_unexpected_deplet.pdf", width = 6, height = 5)
+unexpected_features_accum%>%
+  ggplot(aes(CF_subclass, fill = Organism)) +
+  geom_histogram(stat = 'count') + 
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
+    panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
+    legend.text = element_text(face = "italic"))
+dev.off()
+
+print_df <- unexpected_features_accum%>%
+  bind_rows(unexpected_features_deplet)%>%
+  select(1:11)%>%
+  filter(binary_ID == 1)
+
+write_csv(print_df, '~/Downloads/print_df_dorc.csv')
+
+networks_plotting <- net_activity%>%
+  left_join(log2_change_vals%>%
+              group_by(DayNight, Organism, feature_number)%>%
+              summarize_if(is.numeric, mean)%>%
+              left_join(networking, by = 'feature_number'),
+            by = 'network')%>%
+  mutate(coloring = case_when(log2_change < -3.3 ~ 'depletolite',
+                              log2_change > -3.3 & log2_change < 3.3 ~ 'recalcitrant',
+                              TRUE ~ 'accumolite'),
+         expected = case_when(log2_change > 1 & activity == 'depletolite' ~ 'unexpected',
+                              log2_change < -1 & activity == 'accumolite' ~ 'unexpected',
+                              TRUE ~ 'expected'))
+
+networks_plotting%>%
+  filter(activity == 'accumolite',
+         DayNight == 'Day')%>%
+  ggplot(aes(NOSC, log2_change, color = coloring)) +
+  geom_text(aes(label = network))
+
+pdf("plots/depletolite_networks_NOSC_unexpectedlogs.pdf", width = 15, height = 10)
+networks_plotting%>%
+  filter(activity == 'depletolite',
+         DayNight == 'Day')%>%
+  ggplot(aes(NOSC, log2_change, color = coloring)) +
+  geom_text(aes(label = network))
+
+networks_plotting%>%
+  group_by(network)%>%
+  filter(activity == 'depletolite',
+         DayNight == 'Day',
+         mean(log2_change) <= -3.3)%>%
+  ungroup()%>%
+  arrange(network)%>%
+  mutate(network = as.character(network))%>%
+  ggplot(aes(network, fill = expected)) +
+  geom_histogram(stat = 'count', position = 'dodge') +
+  ylim(c(0,50)) +
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1, size = 15),
+    axis.text.y = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
+    panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
+    legend.text = element_text(face = "italic"))
+dev.off()
 
 # GRAPHING -- [OSM] Pvalues, Log2 Volcano plot -----------------------------------------
 volcano <- feature_table_no_back_trans%>%
@@ -2138,11 +2475,11 @@ nosc_plot%>%
 
 nosc_plot%>%
   filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         complete_removal != "accumulite",
+         complete_removal != "accumolite",
          activity == 'depletolite',)%>%
   # ggplot(aes(dG, NOSC, color = log2_change)) +
   ggplot(aes(`row m/z`, log2_change, color = carbon_normalized_NOSC)) +
-  ggtitle('Accumulites') +
+  ggtitle('accumolites') +
   geom_point(stat = "identity") +
   geom_smooth(method = lm, color = 'grey') +
   xlim(c(125, 750)) +
@@ -2356,7 +2693,7 @@ summary_count_dunnett <- dunnetts_dom%>%
 # summary_ttest <- t_pvals%>%
 #   mutate(depletolites = map(data, ~ filter(.x, activity == "depletolites")$feature_number%>%
 #                               length()),
-#          accumlites = map(data, ~ filter(.x, activity == "accumulites")$feature_number%>%
+#          accumlites = map(data, ~ filter(.x, activity == "accumolites")$feature_number%>%
 #                             length()),
 #          recalcitrant = map(data, ~ filter(.x, activity == "recalcitrant")$feature_number%>%
 #                               length()))%>%
