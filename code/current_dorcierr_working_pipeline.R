@@ -450,6 +450,87 @@ log2_change_vals <- feature_table_no_back_trans%>%
                                       TRUE ~ "semi-removed"))%>%
   ungroup()
 
+
+# FILTERING -- Log2 Exometabolites ----------------------------------------
+exometabolite_features <- feature_table_no_back_trans%>%
+  gather(sample_name, xic, 2:ncol(.))%>%
+  ungroup()%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+  filter(!Experiment %like% "%Blank%",
+         !Organism %like% "%Blank")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                Experiment == "M" ~ "mordor",
+                                Experiment == "R" ~ "RR3",
+                                TRUE ~ as.character(Experiment)),
+         Organism = case_when(Organism == "CC" ~ "CCA",
+                              Organism == "DT" ~ "Dictyota",
+                              Organism == "PL" ~ "Porites lobata",
+                              Organism == "PV" ~ "Pocillopora verrucosa",
+                              Organism == "TR" ~ "Turf",
+                              Organism == "WA" ~ "Water control",
+                              TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"),
+         xic = case_when(xic == 0 ~ 1000,
+                         TRUE ~ as.numeric(xic)))%>%
+  group_by(Organism, Timepoint, DayNight, feature_number)%>%
+  mutate(Replicate = as.numeric(Replicate),
+         xic = case_when(sum(xic) == 4000 ~ xic + Replicate, 
+                         sum(xic) == 2000 ~ xic + Replicate,
+                         TRUE ~ as.numeric(xic)))%>%
+  ungroup()%>%
+  group_by(DayNight, Timepoint, feature_number, Organism)%>%
+  summarize_if(is.numeric, mean)%>%
+  spread(Organism, xic)%>%
+  gather(Organism, xic, `CCA`:`Turf`)%>%
+  mutate(log_org = log2(xic/`Water control`))%>%
+  ungroup()%>%
+  filter(log_org > 3.3)
+
+day_exometabolites <- exometabolite_features%>%
+  filter(DayNight == 'Day')%>%
+  select(feature_number)%>%
+  unique()
+
+org_exometabolites <- exometabolite_features%>%
+  filter(DayNight == 'Day')%>%
+  select(feature_number, Organism)%>%
+  unique()
+
+overlapping_exometabolites <- org_exometabolites%>% 
+  mutate(num_organisms = 1)%>% 
+  ungroup()%>% 
+  select(-Organism)%>%
+  group_by(feature_number)%>%
+  summarise_if(is.numeric, sum)%>%
+  ungroup()%>%
+  group_by(num_organisms)%>%
+  mutate(num_features = 1)%>%
+  summarize_if(is.numeric, sum)
+
+unique_benthic_metabolites <- org_exometabolites%>%
+  mutate(num_organisms = 1)%>% 
+  ungroup()%>% 
+  group_by(feature_number)%>%
+  mutate(num_organisms = sum(num_organisms))%>%
+  filter(num_organisms == 1)
+  
+
+benthic_produced_exometabolites <- exometabolite_features%>%
+  filter(DayNight == 'Day',
+         Timepoint == 'T0')%>%
+  select(feature_number, Organism)%>%
+  mutate(bin = 'yes',
+         dorc_prd = "produced")%>%
+  unite(Organism, c('Organism', 'dorc_prd'), sep = '_')%>%
+  spread(Organism, bin)%>%
+  mutate(dorcierr = 'yes')
+
+benthic_produced_exometabolites[is.na(benthic_produced_exometabolites)] <- 'no'
+
+write_csv(benthic_produced_exometabolites, './analysis/dorcierr_day_benthic_exometabolite_features.csv')
+
 # RELATIVIZATION AND NORMALIZATION -- xic_log10 -----------------
 feature_table_relnorm <- feature_table_no_back_trans%>%
   gather(sample_name, xic, 2:ncol(.))%>%
@@ -800,6 +881,7 @@ net_glm <- log2_change_vals%>%
   left_join(metadata%>%
               select(feature_number, `row m/z`), by = "feature_number")%>%
   left_join(net_activity, by = 'network')%>%
+  inner_join(day_exometabolites, by = 'feature_number')%>%
   mutate(activity = case_when(is.na(activity) ~ 'recalcitrant',
                               TRUE ~ as.character(activity)))%>% #This line was added because entire networks did not pass the log2 bottleneck
   select(-c(T0,TF, complete_removal))%>%
@@ -817,8 +899,6 @@ net_glm <- log2_change_vals%>%
          r = sqrt(r2),
          FDR = p.adjust(p.value, method = 'BH'))
 
-
-
 write_csv(net_glm, "./analysis/net_glm_07012020.csv")
 
 
@@ -829,6 +909,7 @@ org_glm <- log2_change_vals%>%
   left_join(metadata%>%
               select(feature_number, `row m/z`), by = "feature_number")%>%
   left_join(net_activity, by = 'network')%>%
+  right_join(day_exometabolites, by = 'feature_number')%>%
   mutate(activity = case_when(is.na(activity) ~ 'recalcitrant',
                               TRUE ~ as.character(activity)))%>% #This line was added because entire networks did not pass the log2 bottleneck
   filter(activity == 'depletolite')%>%
@@ -856,6 +937,7 @@ log2_change_vals%>%
   left_join(metadata%>%
               select(feature_number, `row m/z`), by = "feature_number")%>%
   left_join(net_activity, by = 'network')%>%
+  right_join(day_exometabolites, by = 'feature_number')%>%
   filter(activity != 'recalcitrant')%>%
   mutate(activity2 = activity)%>% 
   select(-c(T0,TF, complete_removal))%>%
@@ -888,6 +970,7 @@ log2_change_vals%>%
     left_join(metadata%>%
                 select(feature_number, `row m/z`), by = "feature_number")%>%
     left_join(net_activity, by = 'network')%>%
+    inner_join(unique_benthic_metabolites, by = c('Organism', 'feature_number'))%>%
     filter(activity == 'depletolite')%>%
     mutate(Organism2 = Organism)%>% 
     select(-c(T0,TF, complete_removal))%>%
@@ -1395,9 +1478,11 @@ net_summary <- net_activity%>%
   left_join(networking%>%
               select(feature_number, combined_ID, binary_ID, NOSC), 
             by = 'feature_number')%>%
-  select(feature_number, network, activity, num_features, DayNight, NOSC, quadrant, combined_ID, binary_ID, everything())
+  select(feature_number, network, activity, num_features, DayNight, NOSC, quadrant, combined_ID, binary_ID, everything())%>%
+  inner_join(day_exometabolites, by = 'feature_number')
 
 write_csv(net_summary, './analysis/depletolite_net_summary.csv')
+
 
 
 # META-STATS -- unexpected depletolites and accumolites -------------------
@@ -1486,9 +1571,9 @@ networks_plotting%>%
 
 networks_plotting%>%
   group_by(network)%>%
-  filter(activity == 'depletolite',
+  filter(activity == 'accumulite',
          DayNight == 'Day',
-         mean(log2_change) <= -3.3)%>%
+         mean(log2_change) >= 1)%>%
   ungroup()%>%
   arrange(network)%>%
   mutate(network = as.character(network))%>%
@@ -2412,6 +2497,28 @@ extraction_efficiency%>%
   )
 
 
+
+# GRAPHING -- NOSC Vs Organism --------------------------------------------
+org_nosc <- log2_change_vals%>%
+  filter(DayNight == "Day")%>%
+  group_by(feature_number, Organism, complete_removal)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  left_join(networking%>%
+              select(feature_number, network, dG, NOSC, N, O, P, C, CLASS_STRING), by = "feature_number")%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`, `row retention time`), by = "feature_number")%>%
+  left_join(net_activity, by = 'network')%>%
+  inner_join(unique_benthic_metabolites, by = c('feature_number', 'Organism'))
+
+org_nosc%>%
+  mutate(Organism2 = Organism)%>%
+  ggplot(aes(NOSC, log2_change, color = Organism)) +
+  facet_wrap(~activity) +
+  geom_point() +
+  geom_smooth(method = lm, aes(color = Organism2))
+
+
 # GRAPHING -- NOSC Vs. dG plot --------------------------------------------
 nosc_plot <- log2_change_vals%>%
   filter(DayNight == "Day")%>%
@@ -2429,7 +2536,6 @@ nosc_plot <- log2_change_vals%>%
   left_join(carbon_normalized_xic_NOSC%>%
               filter(Timepoint == "T0",
                      DayNight == "Day"), by = c("Organism", "feature_number"))
-
 
 #Original NOSC plots
 pdf('plots/lability_plots_052220.pdf', width = 6, height = 5)
@@ -2797,4 +2903,31 @@ microbe_summary <- microbe_combined%>%
   select(-c(Experiment, Organism, Replicate, Timepoint, DayNight, reads, asin, numOtus, sum))%>%
   spread(sample_code, ra)
 
+
+
+# LINDAS DATASHEET  -------------------------------------------------------
+
+# linda <- read_csv('~/Downloads/Dorcierr_depletolites_Reduced_July2020.csv')%>%
+#   select(-Feat_MinLog2)
+# 
+# 
+# linda_quadrant <- linda%>%
+#   select(feature_number, quadrant, CCA:`Water control`)%>%
+#   unique()%>%
+#   group_by(feature_number)%>%
+#   summarize_all(paste0, collapse = ", ")%>%
+#   mutate_all(funs(gsub("NA, ", "", .)))%>%
+#   mutate_all(funs(gsub(", NA", "", .)))%>%
+#   na_if("NA")%>%
+#   mutate(Feat_MinLog2 = apply(.[3:8], 1, max, na.rm = TRUE))%>%
+#   left_join(linda%>%
+#               select(-c(quadrant, CCA:`Water control`))%>%
+#               unique()%>%
+#               mutate(feature_number = as.character(feature_number)), 
+#             by = 'feature_number')%>%
+#   left_join(benthic_produced_exometabolites,
+#             by = 'feature_number')
+# 
+# 
+# write_csv(linda_quadrant, '~/Downloads/Dorcierr_depletolites_Reduced_July2020_zaq_changes.csv')
 
