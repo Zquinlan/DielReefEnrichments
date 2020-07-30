@@ -41,6 +41,7 @@ map <- purrr::map
 select <- dplyr::select
 tidy <- broom::tidy
 rename <- dplyr::rename
+mutate <- dplyr::mutate
 
 zscore <- function(x) {
   (x-mean(x, na.rm = TRUE))/sd(x, na.rm = TRUE)
@@ -114,7 +115,7 @@ microbe_taxonomy <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/microbes/MCR2
 nap_df <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/moorea2017_NAP.tsv")%>%
   rename("feature_number" = "cluster.index")
 
-inchikey_df <- read_csv("~/Documents/SDSU/Moorea_2017/csi_inchikey.csv")%>%
+inchikey_df <- read_csv("~/Documents/SDSU_Scripps/Moorea_2017/csi_inchikey.csv")%>%
   mutate(feature_number = as.character(feature_number))
 
 # Linda annotations
@@ -1110,7 +1111,7 @@ t_pvals <- t_test%>%
                               FDR_lesser >= 0.05 & FDR_greater >= 0.05 | 
                                 is.na(FDR_lesser) & is.na(FDR_greater) ~ "recalcitrant"))
 
-# # STATS -- ANOVA metabolties Organism T0 MAJOR DEPLETEs-------------------------------------------------------
+# STATS -- ANOVA metabolties Organism T0 MAJOR DEPLETEs-------------------------------------------------------
 anova_dom_t0_df <- t_pvals%>%
   select(c(DayNight, feature_number, activity))%>%
   inner_join(major_deplete_features, by = c("DayNight", "feature_number"))%>%
@@ -1449,20 +1450,21 @@ net_summary <- net_activity%>%
               ungroup(), 
             by = 'network')%>%
   left_join(networking%>%
-              group_by(network)%>%
+              group_by(feature_number)%>%
               mutate(min_nosc = min(NOSC, na.rm = TRUE),
-                     max_nosc = max(NOSC, na.rm = TRUE))%>%
-              select(network, min_nosc, max_nosc)%>%
+                     max_nosc = max(NOSC, na.rm = TRUE),
+                     nc = N/C,
+                     pc = P/C)%>%
+              select(feature_number, network, min_nosc, max_nosc, C:P, nc, pc)%>%
               unique(),
             by = 'network')%>%
   left_join(log2_change_vals%>%
-              left_join(networking, by = 'feature_number')%>%
-              group_by(network)%>%
+              group_by(feature_number)%>%
               mutate(min_log2 = min(log2_change),
                      max_log2 = max(log2_change))%>%
-              select(network, min_log2, max_log2)%>%
+              select(feature_number, min_log2, max_log2)%>%
               unique(),
-            by = 'network')%>%
+            by = 'feature_number')%>%
   left_join(molnet_class%>%
               left_join(networking, by = 'feature_number')%>%
               select(c(network, molnet_string))%>%
@@ -1473,13 +1475,24 @@ net_summary <- net_activity%>%
               filter(network != '324', DayNight == "Day")%>%
               select(-c('Replicate', 'T0', 'TF', 'NOSC', 'row m/z'))%>%
               spread(Organism, log2_change)%>%
-              select(-activity),
-            by = 'network')%>%
+              select(-activity)%>%
+              group_by(feature_number, network, DayNight)%>%
+              summarize_all(paste0, collapse = ", ")%>%
+              ungroup()%>%
+              mutate_all(funs(gsub("NA, ", "", .)))%>%
+              mutate_all(funs(gsub(", NA", "", .)))%>%
+              na_if("NA")%>%
+              mutate(network = as.numeric(network)),
+            by = c('feature_number', 'network'))%>%
   left_join(networking%>%
               select(feature_number, combined_ID, binary_ID, NOSC), 
             by = 'feature_number')%>%
   select(feature_number, network, activity, num_features, DayNight, NOSC, quadrant, combined_ID, binary_ID, everything())%>%
-  inner_join(day_exometabolites, by = 'feature_number')
+  inner_join(day_exometabolites, by = 'feature_number')%>%
+  left_join(benthic_produced_exometabolites, by = 'feature_number')%>%
+  left_join(unique_benthic_metabolites%>%
+              rename(unique_organism = Organism),
+            by = 'feature_number')
 
 write_csv(net_summary, './analysis/depletolite_net_summary.csv')
 
@@ -1591,6 +1604,31 @@ networks_plotting%>%
     legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
     legend.text = element_text(face = "italic"))
 dev.off()
+
+
+# GRAPHING -- N:C P:C ratios ----------------------------------------------
+unique_nc <- net_summary%>%
+  filter(num_organisms == 1)%>%
+  left_join(log2_change_vals%>%
+              filter(DayNight == 'Day')%>%
+              select(feature_number, Organism, log2_change)%>%
+              rename(unique_organism = Organism)%>%
+              group_by(feature_number, unique_organism)%>%
+              summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+              ungroup(),
+            by = c('feature_number', 'unique_organism'))%>%
+  mutate(weighted_nc = nc*log2_change,
+         weighted_pc = pc*log2_change)%>%
+  ungroup()
+  
+unique_nc%>%
+  select(unique_organism, weighted_pc, weighted_nc)%>%
+  group_by(unique_organism)%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  ungroup()%>%
+  ggplot(aes(weighted_nc, weighted_pc, color = unique_organism)) +
+  geom_point(stat = 'identity') +
+  scale_color_manual(values = wes_palette('Darjeeling1', 5, type = 'continuous'))
 
 # GRAPHING -- [OSM] Pvalues, Log2 Volcano plot -----------------------------------------
 volcano <- feature_table_no_back_trans%>%
