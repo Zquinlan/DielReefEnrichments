@@ -515,7 +515,8 @@ unique_benthic_metabolites <- org_exometabolites%>%
   ungroup()%>% 
   group_by(feature_number)%>%
   mutate(num_organisms = sum(num_organisms))%>%
-  filter(num_organisms == 1)
+  filter(num_organisms == 1)%>%
+  select(-num_organisms)
   
 
 benthic_produced_exometabolites <- exometabolite_features%>%
@@ -524,6 +525,8 @@ benthic_produced_exometabolites <- exometabolite_features%>%
   select(feature_number, Organism)%>%
   mutate(bin = 'yes',
          dorc_prd = "produced")%>%
+  group_by(feature_number)%>%
+  add_tally(name = 'num_organism')%>%
   unite(Organism, c('Organism', 'dorc_prd'), sep = '_')%>%
   spread(Organism, bin)%>%
   mutate(dorcierr = 'yes')
@@ -1611,22 +1614,26 @@ unique_nc <- net_summary%>%
   filter(num_organisms == 1)%>%
   left_join(log2_change_vals%>%
               filter(DayNight == 'Day')%>%
-              select(feature_number, Organism, log2_change)%>%
-              rename(unique_organism = Organism)%>%
-              group_by(feature_number, unique_organism)%>%
-              summarize_if(is.numeric, mean, na.rm = TRUE)%>%
-              ungroup(),
+              select(feature_number, Organism, T0, TF, log2_change, Replicate)%>%
+              rename(unique_organism = Organism),
             by = c('feature_number', 'unique_organism'))%>%
-  mutate(weighted_nc = nc*log2_change,
-         weighted_pc = pc*log2_change)%>%
+  group_by(unique_organism, Replicate)%>%
+  mutate(sample_t0_tic = sum(T0, na.rm = TRUE),
+         sample_c = sum(C, na.rm = TRUE),
+         sample_n = sum(N, na.rm = TRUE),
+         sample_p = sum(P, na.rm = TRUE),
+         weighted_nc = N/(C*T0/(sample_c*sample_t0_tic)),
+         weighted_pc = P/(C*T0/(sample_c*sample_t0_tic)),
+         weighted_p = (P*T0/(sample_p*sample_t0_tic)),
+         weighted_n = (N*T0/(sample_n*sample_t0_tic)))%>%
   ungroup()
   
 unique_nc%>%
-  select(unique_organism, weighted_pc, weighted_nc)%>%
-  group_by(unique_organism)%>%
+  group_by(unique_organism, Replicate)%>%
   summarize_if(is.numeric, mean, na.rm = TRUE)%>%
   ungroup()%>%
-  ggplot(aes(weighted_nc, weighted_pc, color = unique_organism)) +
+  mutate(Replicate = as.factor(Replicate))%>%
+  ggplot(aes(n, p, color = unique_organism, shape = Replicate)) +
   geom_point(stat = 'identity') +
   scale_color_manual(values = wes_palette('Darjeeling1', 5, type = 'continuous'))
 
