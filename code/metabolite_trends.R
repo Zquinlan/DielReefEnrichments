@@ -618,17 +618,20 @@ plots_no_filter <- no_min_filter%>%
   ungroup()%>%
   left_join(num_features_no_filter, by = 'network')%>%
   arrange(network)%>%
+  mutate(color_b = 'black')%>%
   group_by(network, num_features)%>%
   nest()%>%
   mutate(plots = map(data, ~ ggplot(.x, aes(Timepoint, mean, fill = xic_min_filter, color = feature_number)) +
-                       geom_bar(stat = 'identity', size = 0.001) +
+                       geom_bar(stat = 'identity', size = 0.0001) +
                        facet_wrap(~Organism) +
                        ggtitle(sprintf('Network %3.0f          total unique features = %3.0f', network, num_features)) +
                        scale_fill_manual(values = c("#F2AD00", "#00A08A")) +
                        ylab("Mean feature XIC") +
+                       scale_color_manual(values = .x$color_b) +
                        theme(legend.position = 'none',
                              axis.text.x = element_text(angle = 60, hjust = 1, size = 15),
                              axis.text.y = element_text(size = 20),
+                             plot.title = element_text(size = 20),
                              panel.background = element_rect(fill = "transparent"), # bg of the panel
                              plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
                              panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
@@ -647,16 +650,21 @@ plots_min_filter <- min_filter%>%
   ungroup()%>%
   left_join(num_features_min_filter, by = 'network')%>%
   arrange(network)%>%
+  mutate(color_b = 'black',
+         fill_bl = "#00A08A")%>%
   group_by(network, num_features)%>%
   nest()%>%
-  mutate(plots = map(data, ~ ggplot(.x, aes(Timepoint, mean, color = feature_number)) +
-                       geom_bar(stat = 'identity', size= 0.001) +
+  mutate(plots = map(data, ~ ggplot(.x, aes(Timepoint, mean, color = feature_number, fill = fill_bl)) +
+                       geom_bar(stat = 'identity', size= 0.0001) +
                        facet_wrap(~Organism) +
                        ggtitle(sprintf('Network %3.0f          total unique features = %3.0f', network, num_features)) +
                        ylab("Mean feature XIC") +
+                       scale_color_manual(values = .x$color_b) +
+                       scale_fill_manual(values = .x$fill_bl) +
                        theme(legend.position = 'none',
                              axis.text.x = element_text(angle = 60, hjust = 1, size = 15),
                              axis.text.y = element_text(size = 20),
+                             plot.title = element_text(size = 20),
                              panel.background = element_rect(fill = "transparent"), # bg of the panel
                              plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
                              panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
