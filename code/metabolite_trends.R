@@ -536,6 +536,141 @@ benthic_produced_exometabolites[is.na(benthic_produced_exometabolites)] <- 'no'
 
 write_csv(benthic_produced_exometabolites, './analysis/dorcierr_day_benthic_exometabolite_features.csv')
 
+
+# FILTERING -- raw XIC minimum --------------------------------------------
+min_filter_pre <- feature_table_no_back_trans%>%
+  gather(sample_name, xic, 2:ncol(.))%>%
+  ungroup()%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+  filter(!Experiment %like% "%Blank%",
+         !Organism %like% "%Blank")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                Experiment == "M" ~ "mordor",
+                                Experiment == "R" ~ "RR3",
+                                TRUE ~ as.character(Experiment)),
+         Organism = case_when(Organism == "CC" ~ "CCA",
+                              Organism == "DT" ~ "Dictyota",
+                              Organism == "PL" ~ "Porites lobata",
+                              Organism == "PV" ~ "Pocillopora verrucosa",
+                              Organism == "TR" ~ "Turf",
+                              Organism == "WA" ~ "Water control",
+                              TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"),
+         xic = case_when(xic == 0 ~ 1000,
+                         TRUE ~ as.numeric(xic)))%>%
+  group_by(Organism, Timepoint, DayNight, feature_number)%>%
+  mutate(Replicate = as.numeric(Replicate),
+         xic = case_when(sum(xic) == 4000 ~ xic + Replicate, 
+                         sum(xic) == 2000 ~ xic + Replicate,
+                         TRUE ~ as.numeric(xic)))%>%
+  ungroup()
+
+#Building filters and dataframes for plotting
+min_filter <- min_filter_pre%>%
+  group_by(feature_number, Organism, DayNight)%>%
+  filter(max(xic) >= 5*10^6)%>%
+  left_join(networking%>%
+              select(network, feature_number), by = 'feature_number')
+
+min_filter_feature_tag <- min_filter%>%
+  ungroup()%>%
+  filter(DayNight == 'Day',
+         network %in% c('131','21','7','55','107','198','466', '165', '619', '627', '756', '924', '1314','80','141'))%>%
+  select(feature_number, Organism)%>%
+  mutate(xic_min_filter = 1)
+
+no_min_filter <- min_filter_pre%>%
+  left_join(networking%>%
+              select(network, feature_number), by = 'feature_number')
+
+#COunting number of features in each network
+num_features_no_filter <- no_min_filter%>%
+  select(feature_number, network)%>%
+  unique()%>%
+  group_by(network)%>%
+  mutate(num_features = 1)%>%
+  summarize_if(is.numeric, sum)%>%
+  ungroup()
+
+num_features_min_filter <- min_filter%>%
+  ungroup()%>%
+  select(feature_number, network)%>%
+  unique()%>%
+  group_by(network)%>%
+  mutate(num_features = 1)%>%
+  summarize_if(is.numeric, sum)%>%
+  ungroup()
+
+#Making the plots
+plots_no_filter <- no_min_filter%>%
+  group_by(feature_number, Timepoint, Organism)%>%
+  filter(DayNight == 'Day',
+         network %in% c('131','21','7','55','107','198','466', '165', '619', '627', '756', '924', '1314','80','141'))%>%
+  left_join(min_filter_feature_tag, by = c('feature_number', 'Organism'))%>%
+  mutate(mean = mean(xic),
+         sd = sd(xic),
+         xic_min_filter = case_when(is.na(xic_min_filter) ~ 'Noise',
+                                    TRUE ~ 'Real'))%>%
+  select(-c(xic, Replicate))%>%
+  unique()%>%
+  ungroup()%>%
+  left_join(num_features_no_filter, by = 'network')%>%
+  arrange(network)%>%
+  group_by(network, num_features)%>%
+  nest()%>%
+  mutate(plots = map(data, ~ ggplot(.x, aes(Timepoint, mean, fill = xic_min_filter, color = feature_number)) +
+                       geom_bar(stat = 'identity', size = 0.001) +
+                       facet_wrap(~Organism) +
+                       ggtitle(sprintf('Network %3.0f          total unique features = %3.0f', network, num_features)) +
+                       scale_fill_manual(values = c("#F2AD00", "#00A08A")) +
+                       ylab("Mean feature XIC") +
+                       theme(legend.position = 'none',
+                             axis.text.x = element_text(angle = 60, hjust = 1, size = 15),
+                             axis.text.y = element_text(size = 20),
+                             panel.background = element_rect(fill = "transparent"), # bg of the panel
+                             plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+                             panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
+                             panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"))))%>%
+  select(-data)
+
+
+plots_min_filter <- min_filter%>%
+  group_by(feature_number, Timepoint, Organism)%>%
+  filter(DayNight == 'Day',
+         network %in% c('131','21','7','55','107','198','466', '165', '619', '627', '756', '924', '1314','80','141'))%>%
+  mutate(mean = mean(xic),
+         sd = sd(xic))%>%
+  select(-c(xic, Replicate))%>%
+  unique()%>%
+  ungroup()%>%
+  left_join(num_features_min_filter, by = 'network')%>%
+  arrange(network)%>%
+  group_by(network, num_features)%>%
+  nest()%>%
+  mutate(plots = map(data, ~ ggplot(.x, aes(Timepoint, mean, color = feature_number)) +
+                       geom_bar(stat = 'identity', size= 0.001) +
+                       facet_wrap(~Organism) +
+                       ggtitle(sprintf('Network %3.0f          total unique features = %3.0f', network, num_features)) +
+                       ylab("Mean feature XIC") +
+                       theme(legend.position = 'none',
+                             axis.text.x = element_text(angle = 60, hjust = 1, size = 15),
+                             axis.text.y = element_text(size = 20),
+                             panel.background = element_rect(fill = "transparent"), # bg of the panel
+                             plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+                             panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
+                             panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"))))%>%
+  select(-data)
+
+pdf("plots/networks_xic_notfiltered.pdf", width = 15, height = 10)
+plots_no_filter$plots
+dev.off()
+
+pdf("plots/networks_xic_filtered.pdf", width = 15, height = 10)
+plots_min_filter$plots
+dev.off()
+
 # RELATIVIZATION AND NORMALIZATION -- xic_log10 -----------------
 feature_table_relnorm <- feature_table_no_back_trans%>%
   gather(sample_name, xic, 2:ncol(.))%>%
@@ -705,6 +840,10 @@ net_activity <- net_test%>%
 # STATS - GLM Activity groupings -----------------------------------------------
 #Difference within activity groupings
 net_glm <- log2_change_vals%>%
+  inner_join(min_filter%>%
+               select(feature_number, Organism, DayNight)%>%
+               unique(),
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
   left_join(networking%>%
               select(c(feature_number, network, NOSC)), by = "feature_number")%>%
   filter(network != "-1")%>%
@@ -733,6 +872,10 @@ write_csv(net_glm, "./analysis/net_glm_07012020.csv")
 
 
 org_glm <- log2_change_vals%>%
+  inner_join(min_filter%>%
+               select(feature_number, Organism, DayNight)%>%
+               unique(),
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
   left_join(networking%>%
               select(c(feature_number, network, NOSC)), by = "feature_number")%>%
   filter(network != "-1")%>%
@@ -761,6 +904,10 @@ org_glm <- log2_change_vals%>%
 
 pdf("plots/glm_NOSC_Mass.pdf", width = 15, height = 10)
 log2_change_vals%>%
+  inner_join(min_filter%>%
+               select(feature_number, Organism, DayNight)%>%
+               unique(),
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
   left_join(networking%>%
               select(feature_number, network, NOSC), by = "feature_number")%>%
   filter(network != "-1")%>%
@@ -794,6 +941,10 @@ log2_change_vals%>%
 dev.off()
 
 log2_change_vals%>%
+  inner_join(min_filter%>%
+               select(feature_number, Organism, DayNight)%>%
+               unique(),
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
   left_join(networking%>%
               select(feature_number, network, NOSC), by = "feature_number")%>%
   filter(network != "-1")%>%
@@ -1056,13 +1207,21 @@ dev.off()
 
 # GRAPHING -- N:C P:C ratios ----------------------------------------------
 unique_nc <- net_summary%>%
-  filter(num_organisms == 1)%>%
+  filter(num_organism == 1)%>%
   left_join(log2_change_vals%>%
               filter(DayNight == 'Day')%>%
               select(feature_number, Organism, T0, TF, log2_change, Replicate)%>%
               rename(unique_organism = Organism),
             by = c('feature_number', 'unique_organism'))%>%
-  group_by(unique_organism, Replicate)%>%
+  rename('Organism' = 'unique_organism')%>%
+  inner_join(org_exometabolites, by = c('feature_number', 'Organism'))%>%
+  inner_join(min_filter%>%
+               ungroup()%>%
+               filter(DayNight == 'Day')%>%
+               select(feature_number, Organism)%>%
+               unique(),
+             by = c('feature_number', 'Organism'))%>%
+  group_by(Organism, Replicate)%>%
   mutate(sample_t0_tic = sum(T0, na.rm = TRUE),
          sample_c = sum(C, na.rm = TRUE),
          sample_n = sum(N, na.rm = TRUE),
@@ -1074,13 +1233,14 @@ unique_nc <- net_summary%>%
   ungroup()
 
 unique_nc%>%
-  group_by(unique_organism, Replicate)%>%
+  group_by(Organism, Replicate)%>%
   summarize_if(is.numeric, mean, na.rm = TRUE)%>%
   ungroup()%>%
   mutate(Replicate = as.factor(Replicate))%>%
-  ggplot(aes(n, p, color = unique_organism, shape = Replicate)) +
+  ggplot(aes(N, P, color = Organism, shape = Replicate)) +
   geom_point(stat = 'identity') +
   scale_color_manual(values = wes_palette('Darjeeling1', 5, type = 'continuous'))
+
 # GRAPHING -- NOSC Vs Organism --------------------------------------------
 org_nosc <- log2_change_vals%>%
   filter(DayNight == "Day")%>%
@@ -1092,7 +1252,13 @@ org_nosc <- log2_change_vals%>%
   left_join(metadata%>%
               select(feature_number, `row m/z`, `row retention time`), by = "feature_number")%>%
   left_join(net_activity, by = 'network')%>%
-  inner_join(unique_benthic_metabolites, by = c('feature_number', 'Organism'))
+  inner_join(org_exometabolites, by = c('feature_number', 'Organism'))%>%
+  inner_join(min_filter%>%
+               ungroup()%>%
+               filter(DayNight == 'Day')%>%
+               select(feature_number, Organism)%>%
+               unique(),
+             by = c('feature_number', 'Organism'))
 
 org_nosc%>%
   mutate(Organism2 = Organism)%>%
@@ -1102,171 +1268,16 @@ org_nosc%>%
   geom_smooth(method = lm, aes(color = Organism2))
 
 
-# GRAPHING -- NOSC Vs. dG plot --------------------------------------------
-nosc_plot <- log2_change_vals%>%
-  filter(DayNight == "Day")%>%
-  group_by(feature_number, Organism, complete_removal)%>%
-  summarize_if(is.numeric, mean)%>%
-  ungroup()%>%
-  # filter(feature_number %in% osm_dunnett_features)%>%
-  # left_join(osm_dunnetts%>%
-  #             select(feature_number, CF_superclass), by = "feature_number")%>%
-  left_join(networking%>%
-              select(feature_number, network, dG, NOSC, N, O), by = "feature_number")%>%
-  left_join(metadata%>%
-              select(feature_number, `row m/z`, `row retention time`), by = "feature_number")%>%
-  left_join(net_activity, by = 'network')%>%
-  left_join(carbon_normalized_xic_NOSC%>%
-              filter(Timepoint == "T0",
-                     DayNight == "Day"), by = c("Organism", "feature_number"))
+org_nosc%>%
+  filter(activity != 'recalcitrant',
+         !is.na(activity))%>%
+  ggplot(aes(Organism, NOSC, color = activity)) +
+  geom_boxplot()
 
-#Original NOSC plots
-pdf('plots/lability_plots_052220.pdf', width = 6, height = 5)
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(complete_removal, `row m/z`)) +
-  geom_boxplot() +
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
+org_nosc%>%
+  filter(activity != 'recalcitrant',
+         !is.na(activity))%>%
+  ggplot(aes(activity, NOSC)) +
+  geom_boxplot()
 
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(complete_removal, log10(T0))) +
-  geom_boxplot() +
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(complete_removal, log2_change)) +
-  geom_boxplot() +
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(complete_removal, NOSC)) +
-  geom_boxplot() +
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'))%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(complete_removal, carbon_normalized_NOSC)) +
-  geom_boxplot() +
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         complete_removal != "accumolite",
-         activity == 'depletolite',)%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(`row m/z`, log2_change, color = carbon_normalized_NOSC)) +
-  ggtitle('accumolites') +
-  geom_point(stat = "identity") +
-  geom_smooth(method = lm, color = 'grey') +
-  xlim(c(125, 750)) +
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         activity == 'depletolite',
-         complete_removal == "semi-removed")%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(`row m/z`, log2_change, color = carbon_normalized_NOSC)) +
-  geom_point(stat = "identity") +
-  ggtitle('Not completely removed') +
-  geom_smooth(method = lm, color = 'grey') +
-  xlim(c(125, 750)) +
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         activity == 'depletolite',
-         complete_removal != "removed")%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(`row m/z`, log2_change, color = carbon_normalized_NOSC)) +
-  ggtitle('Completely removed') +
-  geom_point(stat = "identity") +
-  geom_smooth(method = lm, color = 'grey') +
-  xlim(c(125, 750)) +
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         activity == 'depletolite',
-         complete_removal == "semi-removed")%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(carbon_normalized_NOSC, log2_change, color = `row m/z`)) +
-  geom_point(stat = "identity") +
-  ggtitle('Not completely removed') +
-  geom_smooth(method = lm, color = 'grey') +
-  # xlim(c(125, 750)) +
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         activity == 'depletolite',
-         complete_removal == "semi-removed")%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(`row m/z`, NOSC, color = log2_change)) +
-  geom_point(stat = "identity") +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red') +
-  ggtitle('Not completely removed') +
-  geom_smooth(method = lm, color = 'grey') +
-  # xlim(c(125, 750)) +
-  facet_wrap(~CF_superclass)
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         activity == 'depletolite',
-         complete_removal == "removed")%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(`row m/z`, NOSC, color = log2_change)) +
-  geom_point(stat = "identity") +
-  ggtitle('Completely Removed') +
-  geom_smooth(method = lm, color = 'grey') +
-  # xlim(c(125, 750)) +x
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         activity == 'depletolite',
-         complete_removal == "semi-removed")%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(carbon_normalized_NOSC, log2_change, color = `row m/z`)) +
-  geom_point(stat = "identity") +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red') +
-  ggtitle('Not completely removed') +
-  geom_smooth(method = lm, color = 'grey') +
-  # xlim(c(125, 750)) +x
-  facet_wrap(~CF_superclass)
-
-
-nosc_plot%>%
-  filter(CF_superclass %like any% c('Alkaloids%', 'Benzen%', 'Lipids%', 'Organic acid%', '%hetero%', '%propan%'),
-         activity == 'depletolite',
-         complete_removal == "semi-removed")%>%
-  # ggplot(aes(dG, NOSC, color = log2_change)) +
-  ggplot(aes(NOSC, log2_change, color = `row m/z`)) +
-  geom_point(stat = "identity") +
-  ggtitle('Not completely removed') +
-  geom_smooth(method = lm, color = 'grey') +
-  # xlim(c(125, 750)) +x
-  facet_wrap(~CF_superclass) +
-  scale_color_gradient2(low='#5011D1', mid = 'grey', high='red')
-
-
-dev.off()
 
