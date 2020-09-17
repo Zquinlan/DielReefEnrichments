@@ -717,7 +717,6 @@ fdom_log10 <-fdom_wdf%>%
 
 
 doc_log10 <- moorea_doc%>%
-  mutate_if(is.numeric, log10)%>%
   filter(sample_name != "D_OF_1_T0N",
          sample_name != "D_IN_2_T0N",
          sample_name != "D_PL_3_TFN",
@@ -742,7 +741,8 @@ doc_log10 <- moorea_doc%>%
                                      TRUE ~ as.character(Organism)))%>%
   separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
   mutate(DayNight = case_when(DayNight == "D" ~ "Day",
-                              TRUE ~ "Night"))
+                              TRUE ~ "Night"),
+         DOC_log = log10(DOC))
 
 fdom_doc_log10 <- left_join(fdom_log10, doc_log10, by = "sample_name")%>%
   dplyr::select(-sample_name)
@@ -2476,9 +2476,11 @@ dev.off()
 # GRAPHING -- DOC and XIC -------------------------------------------------
 pdf("plots/doc_xic_compare.pdf", width = 6, height = 5)
 doc_log10%>%
-  filter(DayNight == "Day")%>%
+  filter(DayNight == "Day",
+         Organism != 'Influent',
+         Organism != "Offshore")%>%
   ggplot(aes(Organism, DOC)) + 
-  geom_bar(stat = "summary", fun.y = "mean") +
+  geom_boxplot() +
   facet_wrap(~Timepoint) + 
   theme(
     # legend.position = "none",
