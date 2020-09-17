@@ -1,0 +1,13 @@
+DayNight,Organism,Background_filter,Transient_filter,log2_timepoint_bottleneck,xic_filter,All_filters
+Day,CCA,13843,10605,8817,4172,536
+Day,Dictyota,13843,10605,8817,4918,1366
+Day,Pocillopora verrucosa,13843,10605,8817,4285,908
+Day,Porites lobata,13843,10605,8817,4155,546
+Day,Turf,13843,10605,8817,3775,468
+Day,Water control,13843,10605,8817,3728,0
+Night,CCA,13843,10605,9130,3879,455
+Night,Dictyota,13843,10605,9130,4578,927
+Night,Pocillopora verrucosa,13843,10605,9130,4652,1037
+Night,Porites lobata,13843,10605,9130,3971,421
+Night,Turf,13843,10605,9130,3877,407
+Night,Water control,13843,10605,9130,3576,0
