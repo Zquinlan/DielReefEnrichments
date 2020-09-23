@@ -773,7 +773,7 @@ plots_all_filter <- all_filter%>%
 # dev.off()
 
 
-# RELATIVIZATION AND NORMALIZATION -- xic_log10 -----------------
+# DORCIERR feature_table --------------------------------------------------
 feature_table_relnorm <- feature_table_no_back_trans%>%
   gather(sample_name, xic, 2:ncol(.))%>%
   ungroup()%>%
@@ -802,14 +802,9 @@ feature_table_relnorm <- feature_table_no_back_trans%>%
                          sum(xic) == 2000 ~ xic + Replicate,
                          TRUE ~ as.numeric(xic)))%>%
   ungroup()%>%
-  select(-c("Experiment", "Organism", "Replicate", "Timepoint", "DayNight"))%>%
-  group_by(sample_name)%>%
-  mutate(log10 = log10(xic),
-         ra = xic/sum(xic),
-         asin = asin(ra),
-         feature_number = as.character(feature_number))
+  select(-c("Experiment", "Organism", "Replicate", "Timepoint", "DayNight"))
 
-# DORCIERR feature_table --------------------------------------------------
+
 feature_table_combined <- right_join(metadata, feature_table_relnorm, by = "feature_number")
 
 dorcierr_features_wdf  <- feature_table_combined%>%
@@ -852,7 +847,7 @@ dorcierr_features_wdf  <- feature_table_combined%>%
 
 
 # PRE-CLEANING -- Making Dorcierr working data frame for stats -----------------------------
-write_csv(dorcierr_features_wdf, "~/Documents/GitHub/DORCIERR/data/analysis/Dorcierr_feature_table_master_post_filtered.csv")
+# write_csv(dorcierr_features_wdf, "~/Documents/GitHub/DORCIERR/data/analysis/Dorcierr_feature_table_master_post_filtered.csv")
 
 blanks_wdf <- dorcierr_features_wdf%>%
   filter(sample_name %like% "%Blank%",
@@ -886,7 +881,7 @@ dorc_wdf <- dorcierr_features_wdf%>%
   mutate(DayNight = case_when(DayNight == "D" ~ "Day",
                               TRUE ~ "Night"))
 
-# PRE-STATS CLEANING -- DOM-stats -----------------------------------------
+# PRE-STATS CLEANING -- DOM-stats - RELATIVIZATION AND NORMALIZATION -- xic_log10 -----------------------------------------
 dom_stats_wdf<- dorc_wdf%>%
   filter(!Organism == "Influent",
          !Organism == "Offshore",
@@ -900,7 +895,11 @@ feature_stats_wdf <- dom_stats_wdf%>%
                select(feature_number, Organism, DayNight)%>%
                unique(),
              by = c('Organism', 'DayNight', 'feature_number'))%>%
-  inner_join(org_exometabolites, by = c('feature_number', 'Organism', 'DayNight'))
+  inner_join(org_exometabolites, by = c('feature_number', 'Organism', 'DayNight'))%>%
+  group_by(Organism, Replicate, Timepoint, DayNight)%>%
+  mutate(log10 = log10(xic),
+         ra = xic/sum(xic),
+         asin = asin(ra))
 
 # SET SEED ----------------------------------------------------------------
 set.seed(2005)
@@ -928,9 +927,9 @@ net_test <- dom_stats_wdf%>%
                               TRUE ~ "recalcitrant"))
 
 net_activity <- net_test%>%
-  group_by(network, activity)%>%
+  group_by(network, DayNight, activity)%>%
   summarize_if(is.numeric, mean)%>%
-  select(network, activity)
+  select(network, DayNight, activity)
 
 # STATS -- One-Sample T-test ----------------------------------------------
 t_test <- feature_stats_wdf%>%
@@ -976,7 +975,7 @@ net_lm_df <- log2_change_vals%>%
          NOSC <= 0)%>%
   left_join(metadata%>%
               select(feature_number, `row m/z`), by = "feature_number")%>%
-  left_join(net_activity, by = 'network')%>%
+  left_join(net_activity, by = c('network', 'DayNight'))%>%
   mutate(activity = case_when(is.na(activity) ~ 'recalcitrant',
                               TRUE ~ as.character(activity)))%>% #This line was added because entire networks did not pass the log2 bottleneck
   select(-c(T0,TF))%>%
@@ -1021,7 +1020,7 @@ nosc_quadrants <- log2_change_vals%>%
   filter(network != "-1")%>%
   left_join(metadata%>%
               select(feature_number, `row m/z`), by = "feature_number")%>%
-  left_join(net_activity, by = 'network')%>%
+  left_join(net_activity, by = c('network', 'DayNight'))%>%
   filter(activity != 'recalcitrant')%>%
   group_by(feature_number, Organism, DayNight, network, activity)%>%
   summarize_if(is.numeric, mean)%>%
@@ -1292,7 +1291,7 @@ dev.off()
 
 
 # VIZUALIZATIONS -- RGB hex codes for orgs --------------------------------
-org_colors_no_water <- c("#CC6600","#669900", "#CC0033", "#9900FF", "#33CC33")
+org_colors_no_water <- c("#CC0033","#669900", "#CC6600", "#9900FF", "#33CC33")
 
 # VIZUALIZATIONS -- GLM ---------------------------------------------------
 glm_df <- log2_change_vals%>%
@@ -1302,7 +1301,7 @@ glm_df <- log2_change_vals%>%
          NOSC <= 0)%>%
   left_join(metadata%>%
               select(feature_number, `row m/z`), by = "feature_number")%>%
-  left_join(net_activity, by = 'network')%>%
+  left_join(net_activity, by = c('network', 'DayNight'))%>%
   filter(activity != 'recalcitrant',
          DayNight == 'Day')%>%
   mutate(activity2 = activity)%>% 
@@ -1396,7 +1395,7 @@ unique_nc <- log2_change_vals%>%
               filter(network != '-1'),
             by = 'feature_number')%>%
   left_join(net_activity,
-            by = 'network')%>%
+            by = c('network', 'DayNight'))%>%
   group_by(Organism, Replicate)%>%
   mutate(sample_log2 = sum(log2_change, na.rm = TRUE),
          sample_c = sum(C, na.rm = TRUE),
@@ -1523,7 +1522,77 @@ nc_filt_plots <- nc_no_filt%>%
   select(-data)
     
 
+# VIZUALIZATIONS -- Org Pie charts----------------------------------------------------------
+org_log2_ra <- feature_stats_wdf%>%
+  filter(Timepoint == "T0",
+         DayNight == "Day")%>%
+  left_join(log2_change_vals%>%
+              select(-c(Replicate, T0, TF, complete_removal))%>%
+              group_by(feature_number, Organism, DayNight)%>%
+              summarize_if(is.numeric, mean),
+            by = c("feature_number", "Organism", "DayNight"))%>%
+  left_join(networking%>%
+              select(feature_number, network),
+            by = 'feature_number')%>%
+  left_join(net_activity,
+            by = c('network', 'DayNight'))
+
+pdf("./plots/org_pie_091620.pdf", width = 15, height = 10)
+org_log2_ra%>%
+  filter(network != -1)%>%
+  group_by(Organism, DayNight, Replicate, Timepoint)%>%
+  select(-c(log10:asin))%>%
+  mutate(ra = xic/sum(xic))%>%
+  ungroup()%>%
+  group_by(Organism, activity)%>%
+  summarize_if(is.numeric, sum)%>%
+  ungroup()%>%
+  ggplot(aes(x="", y=ra, fill = activity)) +
+  geom_bar(width = 1, size = 0.5, color = "white", stat = "identity") +
+  labs(x =NULL, y = NULL, title = "") +
+  theme_classic() +
+  facet_wrap(~Organism) +
+  scale_fill_manual(values = c('#78B7C5', '#EBCC2A', "#00A08A")) +
+  theme(axis.line = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  coord_polar("y", start = 0)
+dev.off()
+
 # VIZUALIZATIONS -- Organism comparisons log2_change ----------------------
+pdf("./plots/org_relativechange_091620.pdf", width = 15, height = 10)
+org_log2_ra%>%
+  filter(activity == 'depletolite')%>%
+  group_by(feature_number, Organism, DayNight, activity)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  inner_join(t_pvals%>%
+               filter(activity == 'depletolite')%>%
+               select(feature_number, Organism, DayNight),
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
+  group_by(Organism, DayNight)%>%
+  mutate(relative_change = log2_change*sum(xic))%>%
+  ggplot(aes(Organism, relative_change)) +
+  # geom_point(stat = 'identity') +
+geom_boxplot() +
+  # scale_color_manual(values = org_colors_no_water) +
+  # facet_wrap(~ activity, scales = 'free_x') +
+  theme(
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_line('grey'), # get rid of major grid
+    panel.grid.minor = element_line('grey'), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"),
+    legend.position = 'none'
+  )
+dev.off()
+
+
 pdf("./plots/org_log2_091620.pdf", width = 15, height = 10)
 unique_nc%>%
   filter(activity == 'depletolite')%>%
@@ -1545,7 +1614,7 @@ unique_nc%>%
     legend.box.background = element_rect(fill = "transparent"),
     legend.position = 'top'
   )
-
+dev.off()
 
 # VIZUALIZATIONS -- N/C to activity ~ Organism ----------------------------
 unique_nc%>%
@@ -1570,8 +1639,48 @@ unique_nc%>%
     legend.position = 'top'
   )
 
-
-                
+org_log2_ra%>%
+  filter(activity == 'depletolite')%>%
+  group_by(Organism, DayNight, Replicate, Timepoint)%>%
+  select(-c(log10:asin))%>%
+  mutate(ra = xic/sum(xic))%>%
+  ungroup()%>%
+  left_join(networking%>%
+              select(feature_number, N,C),
+            by = 'feature_number')%>%
+  filter(!is.na(N))%>%
+  mutate(rel_nc = N/C*ra)%>%
+  filter(rel_nc < 0.1)%>%
+  ggplot(aes(Organism, rel_nc)) +
+  geom_boxplot()
+  
+  
+# N/C vs log2_change ------------------------------------------------------
+pdf("./plots/NC_log2_091620.pdf", width = 15, height = 10)
+unique_nc%>%
+  filter(activity != 'recalcitrant',
+         !is.na(activity))%>%
+  mutate(activity2 = activity)%>%
+  ggplot(aes(N/C, log2_change, color = activity)) +
+  geom_point(stat = 'identity') +
+  scale_color_manual(values = c('#78B7C5', '#EBCC2A')) +
+  new_scale('color') + 
+  geom_smooth(method = lm, aes(color = activity2)) +
+  scale_color_manual(values = c('#3B9AB2', '#E1AF00')) +
+  theme(
+    legend.position = "none",
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+dev.off()                
 
 # VIZUALIZATIONS -- Noise-removal effect ----------------------------------
 noise_removal_pdf <- plots_all_filter%>%
@@ -1600,7 +1709,7 @@ org_nosc <- log2_change_vals%>%
               select(feature_number, network, dG, NOSC, N, O, P, C, CLASS_STRING), by = "feature_number")%>%
   left_join(metadata%>%
               select(feature_number, `row m/z`, `row retention time`), by = "feature_number")%>%
-  left_join(net_activity, by = 'network')%>%
+  left_join(net_activity, by = c('network', 'DayNight'))%>%
   inner_join(org_exometabolites, by = c('feature_number', 'Organism'))%>%
   inner_join(min_filter%>%
                ungroup()%>%
@@ -1662,7 +1771,7 @@ cyto_deplete <- dorc_wdf%>%
               select(feature_number, network),
             by = 'feature_number')%>%
   left_join(net_activity,
-            by = 'network')%>%
+            by = c('network', 'DayNight'))%>%
   rename(net_activity = activity)%>%
   left_join(t_pvals%>%
               select(feature_number, Organism, DayNight, activity)%>%

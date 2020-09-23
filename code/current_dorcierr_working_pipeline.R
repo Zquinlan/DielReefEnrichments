@@ -2230,12 +2230,13 @@ fcm_graphing <- fcm_wdf%>%
                            Timepoint == "T6" ~ 37,
                            Timepoint == "TF" ~ 48))
 
-pdf("~/Documents/GitHub/DORCIERR/data/plots/osm_fcm_DayNight.pdf", width = 7, height = 5)
+pdf("~/Documents/GitHub/DORCIERR/data/plots/FCM_day.pdf", width = 7, height = 5)
 fcm_graphing%>%
   ggplot(aes(x= Hours, y = `Cells µL-1`, color = Organism))+
   geom_point(stat = "summary", fun.y = "mean") +
   geom_line(aes(group = Organism), stat = "summary", fun.y = "mean") +
-  facet_wrap(~ DayNight) +
+  scale_color_manual(values = c(org_colors_no_water, "#3B9AB2")) +
+  # facet_wrap(~ DayNight) +
   # scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   scale_y_continuous(limits = c(0,900), breaks= seq(0, 900, 100)) +
   scale_x_continuous(limits = c(0,50), breaks = seq(0, 50, 5)) +
