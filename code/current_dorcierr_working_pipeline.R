@@ -2946,7 +2946,7 @@ org_summary%>%
   )
 
 
-# SUMMARY -- Microbe filtering --------------------------------------------
+# SUMMARY -- Microbe filtering  --------------------------------------------
 microbe_summary <- microbe_combined%>%
   select(-c(Experiment, Organism, Replicate, Timepoint, DayNight, reads, asin, numOtus, sum))%>%
   spread(sample_code, ra)

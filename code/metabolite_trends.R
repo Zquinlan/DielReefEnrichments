@@ -137,14 +137,14 @@ inchikey_df <- read_csv("~/Documents/SDSU_Scripps/Moorea_2017/csi_inchikey.csv")
 #   distinct(FinalClass, feature_number, ClassString, Organism)
 
 # MolNetEnhancer
-molnet_class <- read_csv("analysis/Moorea2017_MolNetEnhancer.csv")%>%
+molnet_class <- read_csv("~/Documents/GitHub/DORCIERR/data/analysis/Moorea2017_MolNetEnhancer.csv")%>%
   rename(feature_number = "cluster index")%>%
   mutate(feature_number = as.character(feature_number))%>%
   select(feature_number, CF_kingdom, CF_class, CF_subclass, CF_superclass)%>%
   unite(molnet_string, c(CF_kingdom, CF_superclass, CF_class, CF_subclass), sep = ";")
 
 #PPl extraction efficiency
-extraction_efficiency <- read_csv("./raw/metabolomics/Extraction_efficiency.csv")%>%
+extraction_efficiency <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/Extraction_efficiency.csv")%>%
   select(-c(X6:X8))
 
 # compare <- deplete_classified%>%
@@ -885,7 +885,7 @@ dorc_wdf <- dorcierr_features_wdf%>%
 dom_stats_wdf<- dorc_wdf%>%
   filter(!Organism == "Influent",
          !Organism == "Offshore",
-         !Timepoint == c("T1", "T2", "T3", "T4"))%>%
+         Timepoint == "T0" | Timepoint == "TF")%>%
   select(feature_number, Organism:ncol(.))%>%
   inner_join(log2_features%>%
                select(feature_number, DayNight), by = c('DayNight', 'feature_number'))
@@ -1570,11 +1570,15 @@ org_log2_ra%>%
                filter(activity == 'depletolite')%>%
                select(feature_number, Organism, DayNight),
              by = c('feature_number', 'Organism', 'DayNight'))%>%
-  group_by(Organism, DayNight)%>%
-  mutate(relative_change = log2_change*sum(xic))%>%
+  group_by(feature_number, Organism, DayNight)%>%
+  mutate(relative_change = log2_change*mean(xic),
+         lability = case_when(log2_change > -8 ~ 'semi-labile',
+                              TRUE ~ 'labile'))%>%
+  filter(relative_change > -2e9)%>%
   ggplot(aes(Organism, relative_change)) +
   # geom_point(stat = 'identity') +
-geom_boxplot() +
+  geom_boxplot() +
+  # geom_bar(stat = 'identity') +
   # scale_color_manual(values = org_colors_no_water) +
   # facet_wrap(~ activity, scales = 'free_x') +
   theme(
@@ -1681,6 +1685,31 @@ unique_nc%>%
     legend.box.background = element_rect(fill = "transparent")
   )
 dev.off()                
+
+# NC compare 21 and 131 ---------------------------------------------------
+nc21_131 <- networking%>%
+  filter(network == '131' | network == '21')%>%
+  inner_join(t_pvals%>%
+               filter(activity == 'depletolite',
+                      DayNight == 'Day',
+                      Organism == 'Pocillopora verrucosa' | Organism == 'Porites lobata')%>%
+               select(feature_number, Organism),
+             by = 'feature_number')%>%
+  left_join(org_log2_ra%>%
+              filter(Timepoint == 'T0',
+                     DayNight == 'Day')%>%
+              ungroup()%>%
+              select(feature_number, Organism, xic, ra)%>%
+              group_by(feature_number, Organism)%>%
+              summarize_if(is.numeric, sum)%>%
+              ungroup(),
+            by = c('feature_number', 'Organism'))%>%
+  group_by(Organism)%>%
+  mutate(relative_nc = N/C*(xic/sum(xic)))
+
+nc21_131%>%
+  ggplot(aes(Organism, relative_nc)) +
+  geom_boxplot()
 
 # VIZUALIZATIONS -- Noise-removal effect ----------------------------------
 noise_removal_pdf <- plots_all_filter%>%
