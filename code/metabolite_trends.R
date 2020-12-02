@@ -26,6 +26,7 @@ library(randomForest)
 library(ggpubr)
 library(rsq)
 
+
 #PCoA, PERMANOVA
 library(vegan)
 library(ape)
@@ -36,6 +37,7 @@ library(RColorBrewer)
 library(gplots)
 library(gtable)
 library(ggnewscale)
+library(ggforce)
 
 #Defining functions and removing issues with overlapping function calls
 map <- purrr::map
@@ -954,7 +956,7 @@ t_pvals <- t_test%>%
                               FDR_lesser >= 0.05 & FDR_greater >= 0.05 | 
                                 is.na(FDR_lesser) & is.na(FDR_greater) ~ "recalcitrant"))
 
-# STATS - GLM Activity groupings -----------------------------------------------
+# STATS - OLD GLM Activity groupings -----------------------------------------------
 #Difference within activity groupings
 net_lm_df <- log2_change_vals%>%
   inner_join(min_filter%>%
@@ -1036,6 +1038,156 @@ nosc_quadrants <- log2_change_vals%>%
   filter(!is.na(quadrant))
 
 
+
+
+# STATS - multiple regressions --------------------------------------------
+mul_reg <- log2_change_vals%>%
+  inner_join(t_pvals%>%
+               # filter(activity != 'recalcitrant')%>%
+               # rename(feat_activity = activity)%>%
+               select(feature_number, Organism, DayNight)%>%
+               unique(), 
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
+  left_join(networking%>%
+              select(feature_number, network, N, P, C, NOSC)%>%
+              filter(network != '-1'),
+            by = 'feature_number')%>%
+  left_join(net_activity, by = c('network', 'DayNight'))%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`), by = "feature_number")%>%
+  group_by(Organism, DayNight, Replicate)%>%
+  mutate(nc = N/C,
+         pc = P/C,
+         activity2 = activity,
+         sample_nc = T0*nc/sum(T0),
+         sample_pc = T0*pc/sum(T0),
+         log_snc = log(sample_nc),
+         log_spc = log(sample_pc))%>%
+  ungroup()%>%
+  filter(NOSC <= 0,
+         DayNight == 'Day')
+
+pdf("./plots/correlation_verify.pdf", width = 15, height = 10)
+corr_verify <- mul_reg%>%
+  group_by(feature_number, Organism)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  select(log2_change, `row m/z`, NOSC, sample_nc, sample_pc)%>%
+  cor()%>%
+  corrplot::corrplot()
+dev.off()
+
+
+#can just impute mean for NA values
+n_p_mulreg <- mul_reg%>%
+  filter(N > 0,
+         P > 0)%>%
+  group_by(feature_number, Organism)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  lm(log2_change ~ `row m/z`+NOSC+log_snc+log_spc, data = .)
+
+p_mulreg <- mul_reg%>%
+  filter(N == 0,
+         P > 0)%>%
+  group_by(feature_number, Organism)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  lm(log2_change ~ `row m/z`+NOSC+log_spc, data = .)
+
+n_mulreg <- mul_reg%>%
+  filter(N > 0,
+         P == 0)%>%
+  group_by(feature_number, Organism)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  lm(log2_change ~ `row m/z`+NOSC+log_snc, data = .)
+
+mass_mulreg <- mul_reg%>%
+  filter(N == 0,
+         P == 0)%>%
+  group_by(feature_number, Organism)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  lm(log2_change ~ `row m/z`+ NOSC, data = .)
+
+sink("./analysis/multiple_reg_coefficients_whole_metabolome.txt")
+summary(n_p_mulreg)
+summary(p_mulreg)
+summary(n_mulreg)
+summary(mass_mulreg)
+sink()
+
+
+# STATS -- Log-Lin regression NC ------------------------------------------
+nc_loglin <- log2_change_vals%>%
+  inner_join(t_pvals%>%
+               # filter(activity != 'recalcitrant')%>%
+               # rename(feat_activity = activity)%>%
+               select(feature_number, Organism, DayNight)%>%
+               unique(), 
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
+  left_join(networking%>%
+              select(feature_number, network, C:dG)%>%
+              filter(network != '-1'),
+            by = 'feature_number')%>%
+  left_join(net_activity, by = c('network', 'DayNight'))%>%
+  group_by(Organism, DayNight, Replicate)%>%
+  mutate(nc = N/C,
+         activity2 = activity,
+         sample_nc = T0*nc/sum(T0))%>%
+  ungroup()%>%
+  filter(activity != 'recalcitrant',
+         nc > 0,
+         !is.na(nc))%>%
+  group_by(DayNight, activity)%>%
+  nest()%>%
+  mutate(model = map(data, ~ glm(log2_change ~ log(sample_nc), family = gaussian, .x)),
+         p_vals = map(model, ~tidy(.x)%>%
+                        filter(term == 'log(sample_nc)')),
+         r2 = map(model, ~with(summary(.x), 1-deviance/null.deviance)))%>%
+  select(-c(data, model))%>%
+  unnest(p_vals)%>%
+  ungroup()%>%
+  mutate(r2 = as.numeric(r2),
+         r = sqrt(r2),
+         FDR = p.adjust(p.value, method = 'BH'))
+
+pc_loglin <- log2_change_vals%>%
+  inner_join(t_pvals%>%
+               # filter(activity != 'recalcitrant')%>%
+               # rename(feat_activity = activity)%>%
+               select(feature_number, Organism, DayNight)%>%
+               unique(), 
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
+  left_join(networking%>%
+              select(feature_number, network, C:dG)%>%
+              filter(network != '-1'),
+            by = 'feature_number')%>%
+  left_join(net_activity, by = c('network', 'DayNight'))%>%
+  group_by(Organism, DayNight, Replicate)%>%
+  mutate(pc = P/C,
+         activity2 = activity,
+         sample_pc = T0*pc/sum(T0))%>%
+  ungroup()%>%
+  filter(activity != 'recalcitrant',
+         pc > 0,
+         !is.na(pc))%>%
+  group_by(DayNight, activity)%>%
+  nest()%>%
+  mutate(model = map(data, ~ glm(log2_change ~ log(sample_pc), family = gaussian, .x)),
+         p_vals = map(model, ~tidy(.x)%>%
+                        filter(term == 'log(sample_pc)')),
+         r2 = map(model, ~with(summary(.x), 1-deviance/null.deviance)))%>%
+  select(-c(data, model))%>%
+  unnest(p_vals)%>%
+  ungroup()%>%
+  mutate(r2 = as.numeric(r2),
+         r = sqrt(r2),
+         FDR = p.adjust(p.value, method = 'BH'))
+
+write_csv(nc_loglin, './analysis/nc_loglin_pvals.csv')
+write_csv(pc_loglin, './analysis/pc_loglin_pvals.csv')
 
 # STATS - ANOVA Activity groupings ----------------------------------------
 # Difference between activity groupings
@@ -1382,7 +1534,125 @@ glm_all_filt$plots[1]
 dev.off()
 
 
-# GRAPHING -- N:C P:C ratios ----------------------------------------------
+# VIZUALIZATIONS -- Logarithmic regression --------------------------------
+log_reg <- glm_df%>%
+  inner_join(min_filter%>%
+               select(feature_number, Organism, DayNight)%>%
+               unique(),
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
+  inner_join(org_exometabolites, 
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
+  inner_join(log2_features%>%
+               select(feature_number, DayNight), 
+             by = c('DayNight', 'feature_number'))
+
+pdf('./plots/glm_loglin_112320.pdf', width = 15, height = 10)
+log_reg%>% 
+  filter(response_var == 'NOSC',
+         activity == 'depletolite')%>%
+  mutate(NOSC = value)%>%
+  ggplot(aes(NOSC, log2_change, color = activity)) +
+  geom_point(stat = 'identity') +
+  scale_color_manual(values = c('#EBCC2A')) + # '#78B7C5',  accumolites
+  new_scale('color') +
+  geom_smooth(method = 'lm', formula = y ~ x, aes(color = activity2)) +
+  scale_color_manual(values = c('#E1AF00')) + # '#3B9AB2', accumolites
+  new_scale('color') +
+  scale_color_manual(values = c('#E1AF00')) +
+  labs(x = 'NOSC', y = bquote(Log[2] ~change)) +
+  geom_text(aes(x = -2.3, y = 12, color = 'depletolite',
+                label = paste("FDR p-value: ", (net_glm%>%
+                                                  filter(DayNight == 'Day',
+                                                         activity == 'depletolite',
+                                                         response_var == 'NOSC'))$FDR%>%
+                                formatC(format = "e", digits = 2), sep = "")), size = 7) + 
+  geom_text(aes(x = -2.3, y = 10.5, color = 'depletolite',
+                label = paste("r²: ", (net_glm%>%
+                                         filter(DayNight == 'Day',
+                                                activity == 'depletolite',
+                                                response_var == 'NOSC'))$r2%>%
+                                round(digits = 4), sep = "")), size = 7) +
+  # geom_text(aes(x = -2.285, y = 15, color = 'accumolite',
+  #               label = paste("FDR p-value: ", (net_glm%>%
+  #                                                 filter(DayNight == 'Day',
+  #                                                        activity == 'accumolite',
+  #                                                        response_var == 'NOSC'))$FDR%>%
+  #                               formatC(format = "e", digits = 2), "*", sep = "")), size = 7) +
+  # geom_text(aes(x = -2.3, y = 13.5, color = 'accumolite',
+  #               label = paste("r²: ", (net_glm%>%
+  #                                        filter(DayNight == 'Day',
+  #                                               activity == 'accumolite',
+  #                                               response_var == 'NOSC'))$r2%>%
+  #                               round(digits = 4), sep = "")), size = 7) +
+  theme(
+    legend.position = "none",
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(size = 25, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 25),
+    axis.title = element_text(size = 25),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+
+log_reg%>% 
+  filter(response_var == 'row m/z',
+         activity == 'depletolite')%>%
+  rename('row m/z' = value)%>%
+  ggplot(aes(`row m/z`, log2_change, color = activity)) +
+  geom_point(stat = 'identity') +
+  scale_color_manual(values = c('#EBCC2A')) + # '#78B7C5', for accumolites
+  new_scale('color') +
+  geom_smooth(method = 'lm', formula = y ~ x, aes(color = activity2)) +
+  scale_color_manual(values = c('#E1AF00')) + # '#3B9AB2', for accumolites
+  new_scale('color') +
+  scale_color_manual(values = c('#E1AF00')) +
+  labs(x = 'm/z', y = bquote(Log[2] ~change)) +
+  geom_text(aes(x = 251, y = 14, color = 'depletolite',
+                label = paste("FDR p-value: ", (net_glm%>%
+                                                  filter(DayNight == 'Day',
+                                                         activity == 'depletolite',
+                                                         response_var == 'row m/z'))$FDR%>%
+                                formatC(format = "e", digits = 2), "***", sep = "")), size = 7) +
+  geom_text(aes(x = 245, y = 12.5, color = 'depletolite',
+                label = paste("r²: ", (net_glm%>%
+                                                  filter(DayNight == 'Day',
+                                                         activity == 'depletolite',
+                                                         response_var == 'row m/z'))$r2%>%
+                                round(digits = 4), sep = "")), size = 7) +
+  # geom_text(aes(x = 245, y = 17, color = 'accumolite',
+  #               label = paste("FDR p-value: ", (net_glm%>%
+  #                                                 filter(DayNight == 'Day',
+  #                                                        activity == 'accumolite',
+  #                                                        response_var == 'row m/z'))$FDR%>%
+  #                               formatC(format = "e", digits = 2), sep = "")), size = 7) +
+  # geom_text(aes(x = 245, y = 15.5, color = 'accumolite',
+  #               label = paste("r²: ", (net_glm%>%
+  #                                        filter(DayNight == 'Day',
+  #                                               activity == 'accumolite',
+  #                                               response_var == 'row m/z'))$r2%>%
+  #                               round(digits = 4), sep = "")), size = 7) +
+  theme(
+    legend.position = "none",
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(size = 25, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 25),
+    axis.title = element_text(size = 25),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+dev.off()
+
+# GRAPHING -- BAD N:C P:C ratios ----------------------------------------------
 unique_nc <- log2_change_vals%>%
   select(feature_number, Organism, T0, TF, log2_change, Replicate, DayNight)%>%
   inner_join(t_pvals%>%
@@ -1522,6 +1792,195 @@ nc_filt_plots <- nc_no_filt%>%
   select(-data)
     
 
+# VIZUALIZATIONS -- NC log reg --------------------------------------------
+nc_logreg <- log2_change_vals%>%
+  inner_join(t_pvals%>%
+               # filter(activity != 'recalcitrant')%>%
+               # rename(feat_activity = activity)%>%
+               select(feature_number, Organism, DayNight)%>%
+               unique(), 
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
+  left_join(networking%>%
+              select(feature_number, network, C:dG)%>%
+              filter(network != '-1'),
+            by = 'feature_number')%>%
+  left_join(net_activity,
+            by = c('network', 'DayNight'))%>%
+  
+  group_by(Organism, DayNight, Replicate)%>%
+  mutate(nc = N/C,
+         pc = P/C,
+         sample_nc = T0*nc/sum(T0),
+         sample_pc = T0*pc/sum(T0),
+         activity2 = activity)%>%
+  ungroup()%>%
+  mutate(log_snc = log(sample_nc + 1),
+         log_spc = log(sample_pc + 1))
+
+pdf('./plots/nc_log2_logreg_112320.pdf', width = 15, height = 10)
+nc_logreg%>%
+  filter(activity == 'depletolite',
+         nc > 0,
+         !is.na(nc))%>%
+  ggplot(aes(log_snc, log2_change, color = activity)) +
+  geom_point(stat = 'identity') +
+  scale_color_manual(values = c('#EBCC2A')) + # '#78B7C5', 
+  new_scale('color') + 
+  geom_smooth(method = 'lm', formula = y ~ x, aes(color = activity)) +
+  scale_color_manual(values = c('#E1AF00')) + # '#3B9AB2', 
+  labs(x = "Log(Weighted N:C)", y = bquote(Log[2] ~change)) +
+  geom_text(aes(x = -6, y = 12, color = 'depletolite',
+                label = paste("FDR p-value: ", (nc_loglin%>%
+                                                  filter(DayNight == 'Day',
+                                                         activity == 'depletolite'))$FDR%>%
+                                formatC(format = "e", digits = 2), sep = "")), size = 7) +
+  geom_text(aes(x = -6, y = 10.5, color = 'depletolite',
+                label = paste("r²: ", (nc_loglin%>%
+                                         filter(DayNight == 'Day',
+                                                activity == 'depletolite'))$r2%>%
+                                formatC(format = "e", digits = 2), sep = "")), size = 7) +
+  # geom_text(aes(x = -6, y = 15, color = 'accumolite',
+  #               label = paste("FDR p-value: ", (nc_loglin%>%
+  #                                                 filter(DayNight == 'Day',
+  #                                                        activity == 'accumolite'))$FDR%>%
+  #                               formatC(format = "e", digits = 2), "***", sep = "")), size = 7) +
+  # geom_text(aes(x = -6, y = 13.5, color = 'accumolite',
+  #               label = paste("r²: ", (nc_loglin%>%
+  #                                        filter(DayNight == 'Day',
+  #                                               activity == 'accumolite'))$r2%>%
+  #                               round(digits = 4), sep = "")), size = 7) +
+  theme(
+    legend.position = "none",
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(size = 25, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 25),
+    axis.title = element_text(size = 25),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+
+nc_logreg%>%
+  filter(activity == 'depletolite',
+         # pc > 0,
+         # !is.na(pc)
+         )%>%
+  ggplot(aes(log_spc, log2_change, color = activity)) +
+  geom_point(stat = 'identity') +
+  scale_color_manual(values = c( '#EBCC2A')) + # '#78B7C5',
+  new_scale('color') + 
+  geom_smooth(method = 'lm', formula = y ~ x, aes(color = activity)) +
+  scale_color_manual(values = c('#E1AF00')) + # '#3B9AB2', 
+  labs(x = "Log(Weighted P:C)", y = bquote(Log[2] ~change)) +
+  # geom_text(aes(x = -12, y = 12, color = 'depletolite',
+  #               label = paste("FDR p-value: ", (pc_loglin%>%
+  #                                                 filter(DayNight == 'Day',
+  #                                                        activity == 'depletolite'))$FDR%>%
+  #                               formatC(format = "e", digits = 2), "***", sep = "")), size = 7) +
+  # geom_text(aes(x = -12, y = 10.5, color = 'depletolite',
+  #               label = paste("r²: ", (pc_loglin%>%
+  #                                        filter(DayNight == 'Day',
+  #                                               activity == 'depletolite'))$r2%>%
+  #                               round(digits = 4), sep = "")), size = 7) +
+  # geom_text(aes(x = -12, y = 15, color = 'accumolite',
+  #               label = paste("FDR p-value: ", (pc_loglin%>%
+  #                                                 filter(DayNight == 'Day',
+  #                                                        activity == 'accumolite'))$FDR%>%
+  #                               formatC(format = "e", digits = 2), "***", sep = "")), size = 7) +
+  # geom_text(aes(x = -12, y = 13.5, color = 'accumolite',
+  #               label = paste("r²: ", (pc_loglin%>%
+  #                                        filter(DayNight == 'Day',
+  #                                               activity == 'accumolite'))$r2%>%
+  #                               round(digits = 4), sep = "")), size = 7) +
+  theme(
+    legend.position = "none",
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    # plot.margin = margin(2,.8,2,.8, "cm"),
+    axis.text.x = element_text(size = 25, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 25),
+    axis.title = element_text(size = 25),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_blank(), # get rid of major grid
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent")
+  )
+dev.off()  
+
+# VIZUALIZATIONS -- Checking for gaussian distribution in NOSC, Mass, NC and PC --------
+# LilliFors and other tests for normallity will not be effective due to large sample size. 
+# QQ-plots used to establish how 'normal' the data appear
+
+log2_check <- (log_reg%>%
+                 filter(response_var == 'NOSC',
+                        activity != 'recalcitrant'))$log2_change
+
+nc_check <- (nc_logreg%>%
+               filter(activity != 'recalcitrant',
+                      nc > 0,
+                      !is.na(pc)))$sample_nc
+
+lnc_check <- (nc_logreg%>%
+               filter(activity != 'recalcitrant',
+                      nc > 0,
+                      !is.na(pc)))$log_snc
+
+pc_check <- (nc_logreg%>%
+               filter(activity != 'recalcitrant',
+                      pc > 0,
+                      !is.na(pc)))$sample_pc
+
+lpc_check <- (nc_logreg%>%
+                filter(activity == 'depletolite'))$log_spc
+
+
+nosc_check <- (log_reg%>%
+                 filter(response_var == 'NOSC',
+                        activity != 'recalcitrant')%>%
+                 mutate(NOSC = value))$NOSC
+
+mass_check <- (log_reg%>%
+                 filter(response_var == 'row m/z',
+                        activity != 'recalcitrant')%>%
+                 mutate(`row m/z` = value))$`row m/z`
+
+pdf("./plots/gaussian_distribution_non_transformed.pdf", width = 15, height = 10)
+car::qqPlot(nc_check, 
+            ylab = "Weighted N:C quantiles", xlab = "Normal quantiles",
+            main = 'QQ-plot: Weighted N:C')
+car::qqPlot(lnc_check, 
+            ylab = bquote(Log[10]~(Weighted ~N:C ~quantiles)), xlab = "Normal quantiles",
+            main = 'QQ-plot: Log transformed Weighted N:C')
+car::qqPlot(pc_check, 
+            ylab = 'Weighted P:C quantiles', xlab = "Normal quantiles",
+            main = 'QQ-plot: Weighted P:C')
+
+car::qqPlot(lpc_check, 
+            ylab = bquote(Log[10]~(Weighted ~P:C ~quantiles)), xlab = "Normal quantiles",
+            main = 'QQ-plot: Log transformed Weighted P:C')
+
+car::qqPlot(nosc_check, 
+            ylab = 'Nominal Oxidation State of Carbon (NOSC) quantiles', xlab = "Normal quantiles",
+            main = 'QQ-plot: NOSC')
+car::qqPlot(mass_check, 
+            ylab = "Mass/charge quantiles", xlab = "Normal quantiles",
+            main = 'QQ-plot: Mass/Charge')
+dev.off()
+        
+pdf("./plots/gaussian_distribution_log2change.pdf", width = 15, height = 10)
+car::qqPlot(log2_check, 
+            ylab = bquote(Log[2] ~change), xlab = "Normal quantiles",
+            main = bquote(QQ-plot: ~Log[2] ~change))
+car::qqPlot(log10(log2_check + 20),
+            ylab = bquote(Log[2] ~change), xlab = "Normal quantiles",
+            main = bquote(QQ-plot: ~Log[10](Log[2] ~change)))
+dev.off()
+  
 # VIZUALIZATIONS -- Org Pie charts----------------------------------------------------------
 org_log2_ra <- feature_stats_wdf%>%
   filter(Timepoint == "T0",
@@ -1537,30 +1996,127 @@ org_log2_ra <- feature_stats_wdf%>%
   left_join(net_activity,
             by = c('network', 'DayNight'))
 
-pdf("./plots/org_pie_091620.pdf", width = 15, height = 10)
-org_log2_ra%>%
+org_pie <- org_log2_ra%>%
   filter(network != -1)%>%
   group_by(Organism, DayNight, Replicate, Timepoint)%>%
   select(-c(log10:asin))%>%
-  mutate(ra = xic/sum(xic))%>%
+  mutate(ra = xic/sum(xic),
+         count = 1)%>%
+  ungroup()%>%
+  select(-Replicate)%>%
+  group_by(Organism, feature_number, activity)%>%
+  summarize_if(is.numeric, mean)%>%
   ungroup()%>%
   group_by(Organism, activity)%>%
   summarize_if(is.numeric, sum)%>%
   ungroup()%>%
-  ggplot(aes(x="", y=ra, fill = activity)) +
-  geom_bar(width = 1, size = 0.5, color = "white", stat = "identity") +
-  labs(x =NULL, y = NULL, title = "") +
-  theme_classic() +
-  facet_wrap(~Organism) +
-  scale_fill_manual(values = c('#78B7C5', '#EBCC2A', "#00A08A")) +
-  theme(axis.line = element_blank(),
-        axis.text = element_blank(),
-        axis.ticks = element_blank()) +
-  coord_polar("y", start = 0)
+  group_by(Organism)%>%
+  mutate(end = 2 * pi * cumsum(ra)/sum(ra),
+         start = lag(end, default = 0),
+         middle = 0.5 * (start + end),
+         hjust = ifelse(middle > pi, 1, 0),
+         vjust = ifelse(middle < pi/2 | middle > 3 * pi/2, 0, 1),
+         explosive = case_when(activity == 'depletolite' ~ 0.2,
+                               TRUE ~ 0),
+         texty = case_when(activity == 'depletolite' ~ 1.2*cos(middle),
+                           activity == 'accumolite' ~ 1.2*cos(middle),
+                           TRUE ~ 1.05*cos(middle)),
+         textx = case_when(activity == 'accumolite' & Organism == 'Pocillopora verrucosa' ~ -10*sin(middle),
+                           activity == 'accumolite' & Organism == 'CCA' ~ -3.5*sin(middle),
+                           activity == 'accumolite' & Organism == 'Dictyota' ~ -5*sin(middle),
+                           activity == 'accumolite' & Organism == 'Porites lobata' ~ -20*sin(middle),
+                           activity == 'accumolite' & Organism == 'Turf' ~ -2.2*sin(middle),
+                           activity == 'depletolite' & Organism == 'Turf' ~ 1.1*sin(middle),
+                           activity == 'depletolite' ~ 1.4*sin(middle),
+                           TRUE ~ 1.05*sin(middle)))%>%
+  ungroup()
+
+org_pie_vis <-org_pie%>%
+  group_by(Organism)%>%
+  nest()%>%
+  mutate(data = map(data, ~ggplot(.x) +
+                      geom_arc_bar(aes(x0 = 0, y0 = 0, r0 = 0, r = 1,
+                                       start = start, end = end, 
+                                       fill = activity, explode = explosive, linetype = NA)) +
+                      geom_text(aes(x = textx, y = texty, 
+                                    label =  paste(round(ra, digits = 4)*100, "%", sep = ""),
+                                    color = activity,
+                                    hjust = hjust, vjust = vjust), size = 20, show.legend = FALSE) +
+                      coord_fixed() +
+                      scale_x_continuous(limits = c(-1.5, 1.5),  # Adjust so labels are not cut off
+                                         name = "", breaks = NULL, labels = NULL) +
+                      scale_y_continuous(limits = c(-1.2, 1.3),      # Adjust so labels are not cut off
+                                         name = "", breaks = NULL, labels = NULL) +
+                      theme_classic() +
+                      ggtitle(Organism) + 
+                      # facet_wrap(~ Organism) +
+                      scale_fill_manual(values = c('#78B7C5', '#EBCC2A', "#00A08A")) +
+                      scale_color_manual(values = c('#78B7C5', '#EBCC2A', "#00A08A")) + 
+                      labs(fill = 'Network activity', color = 'Network activity') +
+                      theme(axis.line = element_blank(),
+                            axis.text = element_text(size = 20),
+                            axis.ticks = element_blank(),
+                            legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+                            legend.box.background = element_blank(),
+                            panel.background = element_rect(fill = "transparent"), # bg of the panel
+                            plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+                            strip.text = element_text(size=20),
+                            legend.text = element_text(size = 20),
+                            legend.title = element_text(size = 20),
+                            strip.background = element_blank())))
+
+pdf("./plots/org_pie_111720.pdf", width = 17, height = 10)
+org_pie_vis$data
+  
 dev.off()
 
 # VIZUALIZATIONS -- Organism comparisons log2_change ----------------------
-pdf("./plots/org_relativechange_091620.pdf", width = 15, height = 10)
+pdf("./plots/org_depletoliteebar_netactivity_111920.pdf", width = 15, height = 11)
+org_log2_ra%>%
+  # filter(activity == 'depletolite')%>%
+  group_by(feature_number, Organism, DayNight, activity)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  inner_join(t_pvals%>%
+               # filter(activity == 'depletolite')%>%
+               rename(feat_activity = activity)%>%
+               select(feature_number, Organism, DayNight, feat_activity),
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
+  # mutate(group_activity = case_when(activity == 'depletolite' & feat_activity == 'depletolite' ~ 'depletolite',
+  #                                   activity == 'accumolite' & feat_activity == 'accumolite' ~ 'accumolite',
+  #                                   TRUE ~ 'recalcitrant'))%>%
+  group_by(Organism, DayNight, activity)%>%
+  mutate(count = 1)%>%
+  summarize_if(is.numeric, sum)%>%
+  ungroup()%>%
+  filter(activity == 'depletolite')%>%
+  # filter(!is.na(activity))%>%
+  ggplot(aes(Organism, xic)) +
+  geom_bar(aes(fill = activity), stat = 'identity', position = 'stack') +
+  scale_fill_manual(values = c('#EBCC2A'
+    # '#78B7C5', '#EBCC2A', "#00A08A"
+    )) +
+  geom_text(aes(label = paste(count), vjust = -.2), size = 8) +
+  labs(y = 'Sum depletolite intensity', fill = 'Network Activity: ') +
+  theme(
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    axis.text.x = element_text(size = 25, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 25),
+    axis.title = element_text(size = 25),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_line('grey'), # get rid of major grid
+    panel.grid.minor = element_line('grey'), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"),
+    legend.position = 'top',
+    legend.text = element_text(size = 25),
+    legend.title = element_text(size = 25)
+  )
+dev.off()
+
+
+pdf("./plots/org_log2_091620.pdf", width = 15, height = 10)
 org_log2_ra%>%
   filter(activity == 'depletolite')%>%
   group_by(feature_number, Organism, DayNight, activity)%>%
@@ -1570,46 +2126,291 @@ org_log2_ra%>%
                filter(activity == 'depletolite')%>%
                select(feature_number, Organism, DayNight),
              by = c('feature_number', 'Organism', 'DayNight'))%>%
-  group_by(feature_number, Organism, DayNight)%>%
-  mutate(relative_change = log2_change*mean(xic),
-         lability = case_when(log2_change > -8 ~ 'semi-labile',
-                              TRUE ~ 'labile'))%>%
-  filter(relative_change > -2e9)%>%
-  ggplot(aes(Organism, relative_change)) +
-  # geom_point(stat = 'identity') +
-  geom_boxplot() +
-  # geom_bar(stat = 'identity') +
-  # scale_color_manual(values = org_colors_no_water) +
-  # facet_wrap(~ activity, scales = 'free_x') +
+  ggplot(aes(Organism, log2_change)) +
+  geom_boxplot(aes(color = '#EBCC2A')) +
+  labs(y = bquote(atop(Average ~depletolite, ~log[2] ~change))) +
+  scale_color_manual(values = '#EBCC2A') +
   theme(
     plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
-    # plot.margin = margin(2,.8,2,.8, "cm"),
-    axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
-    axis.text.y = element_text(size = 20),
+    axis.text.x = element_text(size = 25, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 25),
+    axis.title = element_text(size = 25),
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
     panel.grid.major = element_line('grey'), # get rid of major grid
     panel.grid.minor = element_line('grey'), # get rid of minor grid
     legend.background = element_rect(fill = "transparent"), # get rid of legend bg
     legend.box.background = element_rect(fill = "transparent"),
-    legend.position = 'none'
+    legend.position = 'top'
   )
 dev.off()
 
 
-pdf("./plots/org_log2_091620.pdf", width = 15, height = 10)
-unique_nc%>%
-  filter(activity == 'depletolite')%>%
-  ggplot(aes(Organism, log2_change)) +
-  # geom_point(stat = 'identity') +
-  geom_boxplot() +
-  # scale_color_manual(values = org_colors_no_water) +
-  # facet_wrap(~ activity, scales = 'free_x') +
+# VIZUALIZATION -- Nutrition/lability vs microbial community change -------
+fcm_T0_5 <- dorc_fcm_fdom%>%
+  select(-c(1:4, 9:36, 38, 39))%>%
+  filter(Timepoint == 'T0' | Timepoint == 'T5')%>%
+  spread(Timepoint, `Cells µL-1`)%>%
+  group_by(Organism, DayNight)%>%
+  mutate(T0 = mean(T0, na.rm = TRUE),
+                   cells_ul = T5-T0)%>%
+  select(-c(T0, T5))
+
+lability_val <- log2_change_vals%>%
+  inner_join(t_pvals%>%
+               # filter(activity != 'depletolite')%>%
+               select(feature_number, Organism, DayNight)%>%
+               unique(), 
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
+  left_join(networking%>%
+              select(feature_number, network, C:dG)%>%
+              filter(network != '-1'),
+            by = 'feature_number')%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`),
+            by = 'feature_number')%>%
+  left_join(net_activity,
+            by = c('network', 'DayNight'))%>%
+  left_join(net_glm%>%
+              filter(DayNight == 'Day',
+                     activity == 'depletolite',
+                     response_var == 'row m/z')%>%
+              select(DayNight, r2)%>%
+              rename(mass_r2 = r2),
+            by = 'DayNight')%>%
+  left_join(nc_loglin%>%
+              filter(activity == 'depletolite')%>%
+              select(DayNight, r2)%>%
+              rename(nc_r2 = r2),
+            by = 'DayNight')%>%
+  left_join(pc_loglin%>%
+              filter(activity == 'depletolite')%>%
+              select(DayNight, r2)%>%
+              rename(pc_r2 = r2),
+            by = 'DayNight')%>%
+  left_join(fcm_T0_5%>%
+              mutate(Replicate = as.numeric(Replicate)), 
+            by = c('Organism', 'DayNight', 'Replicate'))%>%
+  # filter(activity == 'depletolite')%>%
+  select(-c(Experiment, TF))%>%
+  group_by(Organism, DayNight, Replicate)%>%
+  mutate(nc = N/C,
+         pc = P/C,
+         sample_nc = T0*nc,
+         log_snc = log(sample_nc),
+         sample_pc = T0*pc,
+         log_spc = log(sample_pc),
+         activity2 = activity,
+         nc_ra = sample_nc/sum(T0),
+         pc_ra = sample_pc/sum(T0),
+         mass_x_r2 = `row m/z`/mean(`row m/z`)*mass_r2,
+         nc_x_r2 = nc_ra*nc_r2,
+         pc_x_r2 = pc_ra*pc_r2,
+         lability = mass_x_r2  + pc_x_r2) #nc was taken out because not significant p value
+
+sum_xic_x_log2 <- lability_val%>%
+  filter(!is.na(activity))%>%
+  # filter(activity == 'depletolite')%>%
+  group_by(Organism, DayNight, Replicate)%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  ungroup()%>%
+  group_by(Organism, Replicate)%>%
+  mutate(sum_xic = sum(T0),
+         change_x_xic = T0*log2_change)%>%
+  ungroup()
+
+# nutritional_stats <- lability_val%>%
+#   select(-feature_number)%>%
+#   filter(DayNight == 'Day')%>%
+#   group_by(Organism, Replicate)%>%
+#   summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+#   ungroup()%>%
+#   mutate(exp = "d")%>%
+#   group_by(exp)%>%
+#   nest()%>%
+#   mutate(model = map(data, ~ glm(lability ~ cells_ul, family = gaussian, .x)),
+#          p_vals = map(model, ~tidy(.x)%>%
+#                         filter(term == 'cells_ul')),
+#          r2 = map(model, ~with(summary(.x), 1-deviance/null.deviance)))%>%
+#   select(-c(data, model))%>%
+#   unnest(p_vals)%>%
+#   ungroup()%>%
+#   mutate(r2 = as.numeric(r2),
+#          r = sqrt(r2),
+#          FDR = p.adjust(p.value, method = 'BH'))
+
+# pdf("./plots/lability_nutrition_fcm.pdf", width = 15, height = 10)
+# lability_val%>%
+#   filter(DayNight == 'Day')%>%
+#   ggplot(aes(cells_ul, lability)) +
+#   geom_point(aes(color = Organism), stat = 'summary', fun.y = 'mean', size = 5) +
+#   scale_color_manual(values = org_colors_no_water) + 
+#   geom_smooth(method = 'lm') +
+#   labs(x = bquote('Cells'~µL^-1), y = "Metabolite pool nutritional value") +
+#   geom_text(aes(x = 425, y = 0.239,
+#                 label = paste("p-value: ", nutritional_stats$p.value%>%
+#                                 round(digits = 4), "*", sep = "")), size = 7) +
+#   geom_text(aes(x = 425, y = 0.2375, 
+#                 label = paste("r²: ", nutritional_stats$r2%>%
+#                                 round(digits = 4), sep = "")), size = 7) +
+#   theme(
+#     plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+#     axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
+#     axis.text.y = element_text(size = 20),
+#     axis.title = element_text(size = 20),
+#     panel.background = element_rect(fill = "transparent"), # bg of the panel
+#     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+#     panel.grid.major = element_line('grey'), # get rid of major grid
+#     panel.grid.minor = element_line('grey'), # get rid of minor grid
+#     legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+#     legend.box.background = element_rect(fill = "transparent"),
+#     legend.position = 'top'
+#   )
+# dev.off()
+
+
+# VIZUALIZATIONS -- Lability value from multiple regressions --------------
+pn_mass_coe <- n_p_mulreg$coefficients["`row m/z`"]
+pn_nosc_coe <- n_p_mulreg$coefficients["NOSC"]
+pn_n_coe <- n_p_mulreg$coefficients["log_snc"]
+# pn_p_coe <- n_p_mulreg$coefficients["log_spc"]  not significant
+pn_intercept <- n_p_mulreg$coefficients["(Intercept)"]
+
+p_mass_coe <- p_mulreg$coefficients["`row m/z`"]
+p_nosc_coe <- p_mulreg$coefficients["NOSC"]
+p_p_coe <- p_mulreg$coefficients["log_spc"]
+# p_intercept <- n_mulreg$coefficients["(Intercept)"] not significant 
+
+n_mass_coe <- n_mulreg$coefficients["`row m/z`"]
+n_nosc_coe <- n_mulreg$coefficients["NOSC"]
+n_n_coe <- n_mulreg$coefficients["log_snc"]
+n_intercept <- n_mulreg$coefficients["(Intercept)"]
+
+# m_mass_coe <- mass_mulreg$coefficients["`row m/z`"]  not significant
+m_nosc_coe <- mass_mulreg$coefficients["NOSC"]
+m_intercept <- mass_mulreg$coefficients["(Intercept)"]
+
+mul_reg_fcm <- lability_val%>%
+  ungroup()%>%
+  mutate(multiple_reg_lability = case_when(P > 0 & N > 0 ~ (`row m/z`*pn_mass_coe + NOSC*pn_nosc_coe + log_snc*pn_n_coe + pn_intercept),
+                                           P > 0 & N == 0 ~ (`row m/z`*p_mass_coe + NOSC*p_nosc_coe + log_spc*p_p_coe),
+                                           P == 0 & N > 0 ~ (`row m/z`*n_mass_coe + NOSC*n_nosc_coe + log_snc*n_n_coe + n_intercept),
+                                           P == 0 & N == 0 ~ (NOSC*m_nosc_coe + m_intercept),
+                                           TRUE ~ NA_real_))
+
+
+#Linear model
+lability_lm <- mul_reg_fcm%>%
+  filter(DayNight == 'Day',
+         NOSC < 0)%>%
+  group_by(Organism, Replicate)%>%
+  summarise_if(is.numeric, mean, na.rm = TRUE)%>%
+  ungroup()%>%
+  lm(cells_ul ~ multiple_reg_lability, data = .)
+
+lab_p <- (lability_lm%>% 
+            tidy()%>% 
+            filter(term == 'multiple_reg_lability'))$p.value
+
+lab_r2 <- summary(lability_lm)$adj.r.squared
+
+#Plotting
+pdf("./plots/lability_nultiple_regressions.pdf", width = 15, height = 10)
+mul_reg_fcm%>%
+  filter(DayNight == 'Day',
+         NOSC < 0)%>%
+  group_by(Organism, Replicate)%>%
+  summarise_if(is.numeric, mean, na.rm = TRUE)%>%
+  ungroup()%>%
+  ggplot(aes(multiple_reg_lability, cells_ul)) +
+  geom_point(aes(color = Organism), stat = 'identity', size = 5) +
+  scale_color_manual(values = org_colors_no_water) + 
+  geom_smooth(method = 'lm') +
+  labs(y = bquote('Cells'~µL^-1), x = "Metabolite pool nutritional value") +
+  geom_text(aes(x = -12.8, y = 680,
+                label = paste("p-value: ", lab_p%>%
+                                formatC(format = "e", digits = 2), "***", sep = "")), size = 9) +
+  geom_text(aes(x = -12.8, y = 650,
+                label = paste("r²: ", lab_r2%>%
+                                round(digits = 4), sep = "")), size = 9) +
   theme(
     plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
-    # plot.margin = margin(2,.8,2,.8, "cm"),
     axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
     axis.text.y = element_text(size = 20),
+    axis.title = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_line('grey'), # get rid of major grid
+    panel.grid.minor = element_line('grey'), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"),
+    legend.position = 'top'
+  )
+dev.off()
+
+lability_val_check <- mul_reg_fcm$multiple_reg_lability
+
+
+car::qqPlot(lability_val_check, 
+            ylab = "Lability value", xlab = "Normal quantiles",
+            main = 'QQ-plot: Lability value')
+
+# Supplemental xic/log2 change dont explain fcm ---------------------------
+pdf("./plots/supplemental_xiclog2_fcm.pdf", width = 15, height = 10)
+sum_xic_x_log2%>%
+  # filter(!is.na(activity))%>%
+  filter(DayNight == 'Day')%>%
+  ggplot(aes(change_x_xic, cells_ul)) +
+  geom_point(aes(color = Organism), stat = 'summary', fun.y = 'mean', size = 5) +
+  scale_color_manual(values = org_colors_no_water) + 
+  geom_smooth(method = 'lm') +
+  theme(
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 20),
+    axis.title = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_line('grey'), # get rid of major grid
+    panel.grid.minor = element_line('grey'), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"),
+    legend.position = 'top'
+  )
+
+sum_xic_x_log2%>%
+  # filter(!is.na(activity))%>%
+  filter(DayNight == 'Day')%>%
+  ggplot(aes(log2_change, cells_ul)) +
+  geom_point(aes(color = Organism), stat = 'summary', fun.y = 'mean', size = 5) +
+  scale_color_manual(values = org_colors_no_water) + 
+  geom_smooth(method = 'lm') +
+  theme(
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 20),
+    axis.title = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_line('grey'), # get rid of major grid
+    panel.grid.minor = element_line('grey'), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"),
+    legend.position = 'top'
+  )
+
+sum_xic_x_log2%>%
+  # filter(!is.na(activity))%>%
+  filter(DayNight == 'Day')%>%
+  ggplot(aes(sum_xic, cells_ul)) +
+  geom_point(aes(color = Organism), stat = 'summary', fun.y = 'mean', size = 5) +
+  scale_color_manual(values = org_colors_no_water) + 
+  geom_smooth(method = 'lm') +
+  theme(
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 20),
+    axis.title = element_text(size = 20),
     panel.background = element_rect(fill = "transparent"), # bg of the panel
     plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
     panel.grid.major = element_line('grey'), # get rid of major grid
@@ -1643,48 +2444,17 @@ unique_nc%>%
     legend.position = 'top'
   )
 
-org_log2_ra%>%
-  filter(activity == 'depletolite')%>%
-  group_by(Organism, DayNight, Replicate, Timepoint)%>%
-  select(-c(log10:asin))%>%
-  mutate(ra = xic/sum(xic))%>%
-  ungroup()%>%
-  left_join(networking%>%
-              select(feature_number, N,C),
+nc_logreg%>%
+  left_join(metadata%>%
+              select(feature_number, `row m/z`), 
             by = 'feature_number')%>%
-  filter(!is.na(N))%>%
-  mutate(rel_nc = N/C*ra)%>%
-  filter(rel_nc < 0.1)%>%
-  ggplot(aes(Organism, rel_nc)) +
-  geom_boxplot()
+  filter(activity == 'depletolite')%>%
+  filter(!is.na(N),
+         P > 0)%>%
+  ggplot(aes(Organism)) +
+  geom_boxplot(aes(y = `row m/z`))
+  # geom_boxplot(aes(y = log_snc))
   
-  
-# N/C vs log2_change ------------------------------------------------------
-pdf("./plots/NC_log2_091620.pdf", width = 15, height = 10)
-unique_nc%>%
-  filter(activity != 'recalcitrant',
-         !is.na(activity))%>%
-  mutate(activity2 = activity)%>%
-  ggplot(aes(N/C, log2_change, color = activity)) +
-  geom_point(stat = 'identity') +
-  scale_color_manual(values = c('#78B7C5', '#EBCC2A')) +
-  new_scale('color') + 
-  geom_smooth(method = lm, aes(color = activity2)) +
-  scale_color_manual(values = c('#3B9AB2', '#E1AF00')) +
-  theme(
-    legend.position = "none",
-    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
-    # plot.margin = margin(2,.8,2,.8, "cm"),
-    axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
-    axis.text.y = element_text(size = 20),
-    panel.background = element_rect(fill = "transparent"), # bg of the panel
-    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
-    panel.grid.major = element_blank(), # get rid of major grid
-    panel.grid.minor = element_blank(), # get rid of minor grid
-    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
-    legend.box.background = element_rect(fill = "transparent")
-  )
-dev.off()                
 
 # NC compare 21 and 131 ---------------------------------------------------
 nc21_131 <- networking%>%
