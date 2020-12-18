@@ -1,0 +1,138 @@
+Organism,network,molnet_string,modeled_lability,activity,log2_change,N,P,C,NOSC
+CCA,77,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,-635.88715783617,depletolite,-11.36762284281431,0,0,20,-1.2000000000000002
+CCA,80,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-285.30897332552627,depletolite,-2.0829205230541694,1.5714285714285714,0.2857142857142857,17.928571428571427,-0.6500927643784787
+CCA,167,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-458.32375304404917,depletolite,-4.694190655295434,0,0,18,-1.1111111111111107
+CCA,427,"Organic compounds;Lipids and lipid-like molecules;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-2.98376363752753,depletolite,-2.515179597295047,1,0,20,-1.0451127819548875
+CCA,923,Organic compounds;Benzenoids;Benzene and substituted derivatives;nan,-243.14367706684263,depletolite,1.8256581121392528,0,0,10,-0.7999999999999998
+CCA,1018,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,-3.2918875976134627,depletolite,-1.8124044776491286,2,1.3333333333333333,17,-1.6813897488820089
+CCA,1291,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Carbohydrates and carbohydrate conjugates,-2.450075053025688,depletolite,-3.999817892096411,1,0,19,-1.1578947368421053
+CCA,1370,Organic compounds;Organoheterocyclic compounds;Pyrans;Pyranones and derivatives,-3.2226495338762637,depletolite,-4.484390958355075,1,1,7,-1.8571428571428568
+CCA,1827,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;nan,-3.920532140383105,depletolite,-7.751125019114772,2,0,17,-0.35294117647058787
+CCA,2586,Organic compounds;Organoheterocyclic compounds;Benzene and substituted derivatives;nan,-389.419337596129,depletolite,-1.1441316295926514,0,2,12,-1
+CCA,3585,Organic compounds;Organoheterocyclic compounds;Pyrrolidines;nan,-2.7467711229916896,depletolite,-1.4967786501661502,1,0,16,-1.625
+CCA,4021,Organic compounds;Phenylpropanoids and polyketides;Macrolides and analogues;nan,-3.685890281561764,depletolite,-6.397482220395153,5,0,22,-0.2727272727272725
+Dictyota,17,"Organic compounds;Lipids and lipid-like molecules;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-3.979785699544422,depletolite,-2.2181382784675154,1.6,0.8,17,-1.3744677544677544
+Dictyota,21,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-3.4700151094412077,depletolite,-6.240031074633809,1,0,12.75,-1.012987012987013
+Dictyota,59,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Triterpenoids,-5.400319008859859,depletolite,-0.9387008418908155,8,1,19,-0.9473684210526319
+Dictyota,77,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,-758.1007857734256,depletolite,1.476053101722696,0,0,20,-0.5999999999999996
+Dictyota,80,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-165.19828986201432,depletolite,-2.203770760873864,1.5,0.25,17.5,-0.6535714285714287
+Dictyota,87,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,-2.7000158311718314,depletolite,3.445742280098913,1,0,15,-0.40000000000000036
+Dictyota,167,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-184.987694488259,depletolite,-4.2116953466249765,0.6666666666666666,0,20.666666666666668,-1.0939393939393938
+Dictyota,193,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty amides,-2.630235475604919,depletolite,-11.094048331572068,1,0,18,-1.5555555555555554
+Dictyota,200,Organic compounds;Lipids and lipid-like molecules;Glycerophospholipids;nan,-6.7716679331266,depletolite,-11.417357892321942,4,0,28,-1.25
+Dictyota,212,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Glycerophosphoethanolamines,-4.525718947037767,depletolite,-9.195430479335897,8,0.5,22.5,-0.9672619047619047
+Dictyota,231,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,-4.7064326995662356,depletolite,-2.58335309099058,4,0,36,-0.30555555555555536
+Dictyota,280,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-5.581276587606706,depletolite,-2.330250736733677,1,0,19,-1.0526315789473681
+Dictyota,336,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,-102.2963753931472,depletolite,-3.0460898406175736,1.3333333333333333,0,16,-0.9093162393162393
+Dictyota,427,"Organic compounds;Lipids and lipid-like molecules;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-171.24331650781915,depletolite,-2.511071871229858,0.6666666666666666,0,19.333333333333332,-0.9930381509328882
+Dictyota,490,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-4.278764240823127,depletolite,-0.14867388359757439,2,1,15,-1.5999999999999996
+Dictyota,550,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,-4.292029838388109,depletolite,-2.0888402341418355,2,1.5,11,-1.8952380952380952
+Dictyota,659,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Sesquiterpenoids,-4.0841189368391735,depletolite,-6.352477324532694,5,0,24,-0.7916666666666665
+Dictyota,709,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-2.6010463172473672,depletolite,-2.3345387834610243,1,0,7,-0.2857142857142856
+Dictyota,923,Organic compounds;Benzenoids;Benzene and substituted derivatives;nan,-243.14367706684263,depletolite,-2.738398492938068,0,0,10,-0.7999999999999998
+Dictyota,980,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,-4.297474059570834,depletolite,-3.321695492432862,2,0,25.333333333333332,-1.3811063627730296
+Dictyota,1018,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,-3.308744065505715,depletolite,-1.0713093291508184,2,1.3333333333333333,17,-1.6813897488820089
+Dictyota,1063,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,-3.6637351479395934,depletolite,-0.22813457937945422,4,0.25,21.25,-0.7230731225296443
+Dictyota,1095,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Diterpenoids,-2.907614031906384,depletolite,-3.506140122644747,2,0,14.5,-0.8952380952380952
+Dictyota,1291,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Carbohydrates and carbohydrate conjugates,-3.2750661154530416,depletolite,-0.965777100579284,1,0,18.428571428571427,-1.1782397169394074
+Dictyota,1332,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Diterpenoids,-3.4892774638261512,depletolite,-5.656054919635129,2,0,29,-0.5517241379310347
+Dictyota,1370,Organic compounds;Organoheterocyclic compounds;Pyrans;Pyranones and derivatives,-3.657676228260118,depletolite,0.17177353762274597,1,1,7,-1.8571428571428568
+Dictyota,1827,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;nan,-4.000186881332632,depletolite,-2.3275555883112014,2,0,16.5,-0.48897058823529393
+Dictyota,1969,"Organic compounds;Alkaloids and derivatives;Lupin alkaloids;Amino acids, peptides, and analogues",-3.345849480329158,depletolite,-10.709108876924052,3,0,20.5,-1.2572463768115942
+Dictyota,2108,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Vitamin D and derivatives,-4.4306097920557095,depletolite,-2.600058312016488,6,0,24,-0.75
+Dictyota,2232,Organic compounds;Phenylpropanoids and polyketides;Macrolactams;nan,-5.390539797328819,depletolite,-7.458436437784829,3,0,23,-0.5217391304347823
+Dictyota,2405,Organic compounds;Organoheterocyclic compounds;Piperidines;nan,-3.468821137982075,depletolite,-2.234447550723945,2,0,15,-0.8666666666666663
+Dictyota,3585,Organic compounds;Organoheterocyclic compounds;Pyrrolidines;nan,-2.764526020630071,depletolite,-1.7870889515396826,1,0,16,-1.625
+Dictyota,4779,Organic compounds;Organoheterocyclic compounds;Tropane alkaloids;nan,-3.5424994263513403,depletolite,-3.3838543316082923,1,0,14,-0.8571428571428568
+Dictyota,4953,Organic compounds;Lipids and lipid-like molecules;Benzene and substituted derivatives;Amines,-3.395407642099343,depletolite,-4.8473860933930695,2,0,13,-1.0769230769230766
+Pocillopora verrucosa,17,"Organic compounds;Lipids and lipid-like molecules;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-3.8949905096388053,depletolite,-9.735352592460218,1.1428571428571428,1,19.428571428571427,-1.5668354298241036
+Pocillopora verrucosa,21,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-3.406190904536531,depletolite,-8.975817671423801,1.2045454545454546,0.022727272727272728,20.84090909090909,-1.2657275887011321
+Pocillopora verrucosa,77,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,-635.88715783617,depletolite,-3.1300238094824553,0,0,20,-1.2000000000000002
+Pocillopora verrucosa,80,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-282.4989580532537,depletolite,-1.2599513537811524,1.6071428571428572,0.2857142857142857,18.607142857142858,-0.6541670027694872
+Pocillopora verrucosa,87,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,-4.540671673927112,depletolite,-4.020634025358119,1.4444444444444444,0.1111111111111111,24,-0.5796354603251154
+Pocillopora verrucosa,113,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-4.331726306383801,depletolite,-5.457520871164649,4.5,0.5,18,-1.0551948051948052
+Pocillopora verrucosa,155,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Monoterpenoids,-4.222573389479506,depletolite,-12.495545044671799,3,0,11.166666666666666,-0.893939393939394
+Pocillopora verrucosa,167,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-479.14352732300256,depletolite,-4.99542590879509,0,0,19,-1.1555555555555554
+Pocillopora verrucosa,193,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty amides,-2.5465461053057217,depletolite,-10.888755950189923,1,0,18,-1.5555555555555554
+Pocillopora verrucosa,212,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Glycerophosphoethanolamines,-5.428529870965067,depletolite,-12.402361815677715,8,0.5,22.5,-0.9672619047619047
+Pocillopora verrucosa,280,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-5.397094688346917,depletolite,-1.3874574378373241,1,0,19,-1.0526315789473681
+Pocillopora verrucosa,343,Organic compounds;Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines,-4.141326139667912,depletolite,-2.06359781254272,1,1,25,-1.2400000000000002
+Pocillopora verrucosa,427,"Organic compounds;Lipids and lipid-like molecules;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-292.8811559326752,depletolite,-3.9985265382670816,0.3333333333333333,0,18.333333333333332,-1.0868347338935573
+Pocillopora verrucosa,434,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Sesquiterpenoids,-484.3637504410705,depletolite,-5.041432477035192,0,0,14,-0.8571428571428568
+Pocillopora verrucosa,490,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-2.74408966921428,depletolite,-4.715541621643647,1,0,21,-1.2380952380952381
+Pocillopora verrucosa,550,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,-516.7862509190005,depletolite,-5.384878657264016,1.8,0.2,21.4,-0.45547112158206604
+Pocillopora verrucosa,709,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-2.8510994881129585,depletolite,-5.2724026248809155,1,0,11,-0.9090909090909092
+Pocillopora verrucosa,923,Organic compounds;Benzenoids;Benzene and substituted derivatives;nan,-212.19882425591217,depletolite,-0.701610954640101,0.25,0,11,-0.6393939393939396
+Pocillopora verrucosa,980,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,-4.309528609587124,depletolite,-1.6172244527012445,2,0.3333333333333333,25.5,-1.3583285849952518
+Pocillopora verrucosa,1018,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,-3.3273699189492,depletolite,-0.8378116501069339,1.6,1.6,15.8,-2.0374052779006337
+Pocillopora verrucosa,1063,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,-3.3919036337322757,depletolite,-0.1401252412498658,4,0,20,-0.75
+Pocillopora verrucosa,1095,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Diterpenoids,-2.72302754714634,depletolite,-9.085696705757076,2,0,14,-0.8571428571428568
+Pocillopora verrucosa,1153,Organic compounds;Organoheterocyclic compounds;Benzene and substituted derivatives;nan,-3.028110674642872,depletolite,-4.312358207465751,1,0,14,-0.8571428571428568
+Pocillopora verrucosa,1306,Organic compounds;Organoheterocyclic compounds;Phenol ethers;nan,-3.7591168378508177,depletolite,-3.7377824281939276,4,0.6666666666666666,14.333333333333334,-1.145224171539961
+Pocillopora verrucosa,1370,Organic compounds;Organoheterocyclic compounds;Pyrans;Pyranones and derivatives,-3.827483265091339,depletolite,-9.914689977937618,1,1,7,-1.8571428571428568
+Pocillopora verrucosa,1704,Organic compounds;Organoheterocyclic compounds;Benzene and substituted derivatives;nan,-4.241145257944205,depletolite,-3.6723542913915983,1,0,20,-1.2000000000000002
+Pocillopora verrucosa,1841,Organic compounds;Phenylpropanoids and polyketides;Coumarins and derivatives;Hydroxycoumarins,-3.334538096449598,depletolite,-4.565140447609865,1,0,14,-0.7142857142857144
+Pocillopora verrucosa,1969,"Organic compounds;Alkaloids and derivatives;Lupin alkaloids;Amino acids, peptides, and analogues",-3.8901778114413705,depletolite,-12.04436159717145,3,0,20.5,-1.2572463768115942
+Pocillopora verrucosa,2035,Organic compounds;Organoheterocyclic compounds;Phenols;nan,-3.777449644815801,depletolite,-2.679166036908919,3.25,0.5,13.75,-0.91875
+Pocillopora verrucosa,2108,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Vitamin D and derivatives,-4.141904908350557,depletolite,-3.3347967123838465,6,0,24,-0.75
+Pocillopora verrucosa,2117,Organic compounds;Phenylpropanoids and polyketides;Macrolactams;nan,-3.1319813152385114,depletolite,-9.591384955075597,1,1,20,-1.5
+Pocillopora verrucosa,2237,Organic compounds;Organoheterocyclic compounds;Phenol ethers;nan,-4.512756092214488,depletolite,-11.08671218198867,10.5,1,18,-0.75
+Pocillopora verrucosa,2248,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-3.745206477807119,depletolite,-1.0419940441844724,2,0,21,-0.7142857142857144
+Pocillopora verrucosa,2261,Organic compounds;Organoheterocyclic compounds;Tetrahydroisoquinolines;nan,-2.973399091226214,depletolite,-4.0839420646358935,1,0,11.666666666666666,-0.3989898989898988
+Pocillopora verrucosa,2292,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids,-499.9633991760579,depletolite,-3.4398276518751834,0,0,20,-1.2000000000000002
+Pocillopora verrucosa,2393,Organic compounds;Benzenoids;Phenol ethers;nan,-3.3381992815900423,depletolite,-6.761690354904889,1.5,0,19,-1.1805555555555554
+Pocillopora verrucosa,3585,Organic compounds;Organoheterocyclic compounds;Pyrrolidines;nan,-2.882050335985393,depletolite,-4.157455454326301,1,0,16,-1.625
+Pocillopora verrucosa,4013,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-4.230990161619107,depletolite,-3.4303007803454695,1,0,20,-1.2000000000000002
+Pocillopora verrucosa,4021,Organic compounds;Phenylpropanoids and polyketides;Macrolides and analogues;nan,-4.155237715310178,depletolite,-9.777481942723451,5,0,22,-0.2727272727272725
+Pocillopora verrucosa,4896,Organic compounds;Alkaloids and derivatives;Amaryllidaceae alkaloids;nan,-3.0655586135148836,depletolite,-2.3961591585563102,1,0,16,-1.625
+Pocillopora verrucosa,5082,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-3.6398773141926606,depletolite,-9.13175557038712,1,0,14,-1.7142857142857144
+Pocillopora verrucosa,5520,"Organic compounds;Organoheterocyclic compounds;Diazanaphthalenes;Amino acids, peptides, and analogues",-391.46595834852025,depletolite,-3.205235471967838,0,0,16,-0.75
+Pocillopora verrucosa,6137,Organic compounds;Organoheterocyclic compounds;Benzene and substituted derivatives;nan,-676.5492471135082,depletolite,-3.0342181516301174,0,0,20,-0.5999999999999996
+Pocillopora verrucosa,6163,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Beta hydroxy acids and derivatives,-2.483299726317761,depletolite,-6.629611146705476,1,0,21,-1.2380952380952381
+Porites lobata,17,"Organic compounds;Lipids and lipid-like molecules;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-4.6354267589109694,depletolite,-3.1091506609384876,1,0,22,-1
+Porites lobata,21,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-3.1426372881589524,depletolite,-9.71212115468166,1.3,0.05,18.45,-1.2394474988525332
+Porites lobata,77,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,-635.88715783617,depletolite,-3.138928792613715,0,0,20,-1.2000000000000002
+Porites lobata,80,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-248.62629295182626,depletolite,-1.170541045928041,1.5,0.25,18.4375,-0.6836038961038962
+Porites lobata,87,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,-3.624830773232376,depletolite,-3.482724640276569,1,0,26.4,-0.5926944779358572
+Porites lobata,167,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-393.13467019617144,depletolite,-4.0343742106267175,0,0,15.5,-0.9401709401709399
+Porites lobata,193,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Fatty amides,-2.4552982948142335,depletolite,-3.3368633687608056,1,0,18,-1.5555555555555554
+Porites lobata,212,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Glycerophosphoethanolamines,-4.999498734801585,depletolite,-12.13929310286072,8,0.5,22.5,-0.9672619047619047
+Porites lobata,343,Organic compounds;Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines,-3.877105815253164,depletolite,-1.4473742878115021,1,1,25,-1.2800000000000002
+Porites lobata,427,"Organic compounds;Lipids and lipid-like molecules;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-3.7019975265966556,depletolite,-6.68181397243716,1,0,21,-1.1428571428571432
+Porites lobata,550,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,-878.7531632170827,depletolite,-3.8132935907633723,0,0,26,-0.615384615384615
+Porites lobata,772,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-4.789542621557913,depletolite,-4.113488744803622,2,0,15,-0.5333333333333332
+Porites lobata,923,Organic compounds;Benzenoids;Benzene and substituted derivatives;nan,-123.25991068505736,depletolite,-1.2385451705638315,0.5,0,11,-0.7333333333333334
+Porites lobata,980,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,-4.2239155524444065,depletolite,-3.6419131707219226,2,0.3333333333333333,25.5,-1.3583285849952518
+Porites lobata,1018,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,-3.1259050226589933,depletolite,-1.176440461484968,3,1,19,-1.1578947368421053
+Porites lobata,1063,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,-4.499726078805903,depletolite,-4.289260704126211,7.333333333333333,0.6666666666666666,20.666666666666668,-0.7579365079365079
+Porites lobata,1153,Organic compounds;Organoheterocyclic compounds;Benzene and substituted derivatives;nan,-3.025931100054531,depletolite,-4.634610059783736,1,0,14,-0.8571428571428568
+Porites lobata,1291,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Carbohydrates and carbohydrate conjugates,-2.4316231185747927,depletolite,-8.80009992384657,1,0,18,-1.1671826625386998
+Porites lobata,1306,Organic compounds;Organoheterocyclic compounds;Phenol ethers;nan,-4.033025605875165,depletolite,-5.899900876729038,5.5,1,12.5,-1.1622807017543861
+Porites lobata,1370,Organic compounds;Organoheterocyclic compounds;Pyrans;Pyranones and derivatives,-3.9307427093369354,depletolite,-6.530559779585859,1,1,7,-1.8571428571428568
+Porites lobata,2035,Organic compounds;Organoheterocyclic compounds;Phenols;nan,-4.356205672800718,depletolite,-4.2374178629116335,5.5,1,12,-1
+Porites lobata,2261,Organic compounds;Organoheterocyclic compounds;Tetrahydroisoquinolines;nan,-3.154148434396869,depletolite,-3.5187242800993577,1,0,12,-0.33333333333333304
+Porites lobata,2393,Organic compounds;Benzenoids;Phenol ethers;nan,-2.904878811881651,depletolite,-10.119583708047651,1,0,18,-1.1111111111111107
+Porites lobata,3585,Organic compounds;Organoheterocyclic compounds;Pyrrolidines;nan,-2.815123337815911,depletolite,-2.44346342803428,1,0,16,-1.625
+Porites lobata,4021,Organic compounds;Phenylpropanoids and polyketides;Macrolides and analogues;nan,-4.019763447588985,depletolite,-7.806390157209905,5,0,22,-0.2727272727272725
+Porites lobata,5082,"Organic compounds;Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-3.164325910644968,depletolite,-12.474744676441107,1,0,14,-1.7142857142857144
+Porites lobata,5520,"Organic compounds;Organoheterocyclic compounds;Diazanaphthalenes;Amino acids, peptides, and analogues",-391.46595834852025,depletolite,-3.7764859416165995,0,0,16,-0.75
+Porites lobata,6163,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Beta hydroxy acids and derivatives,-2.6774212316003743,depletolite,-8.829333518890042,1,0,21,-1.2380952380952381
+Turf,21,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-2.1236619796550764,depletolite,-8.198083537476974,1,0,15,-1.2000000000000002
+Turf,77,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,-758.1007857734256,depletolite,-2.292131211056023,0,0,20,-0.5999999999999996
+Turf,80,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-262.88375137186955,depletolite,-1.2442649477599494,1.8,0.4,17.6,-0.7257142857142858
+Turf,280,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-5.624029699737856,depletolite,-6.207410402610138,1,0,19,-1.0526315789473681
+Turf,336,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,-2.2460135281151326,depletolite,-0.16466129626976267,2,0,13,-0.9230769230769234
+Turf,427,"Organic compounds;Lipids and lipid-like molecules;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",-3.504620748428997,depletolite,-10.692886912427863,1,0,21,-1.1428571428571432
+Turf,490,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,-4.5551624694361905,depletolite,-6.556300567875836,6,1.5,12,-1.411111111111111
+Turf,887,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Oxosteroids,-233.1718500057393,depletolite,-13.286963815707928,1,0,18,-1.1547987616099071
+Turf,918,Organic compounds;Organoheterocyclic compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates,-4.011636166889275,depletolite,-11.59909367405564,2.5,0,18,-0.7472619969040246
+Turf,923,Organic compounds;Benzenoids;Benzene and substituted derivatives;nan,-288.94776446956934,depletolite,-3.0116877009787153,0,0,11,-0.7333333333333334
+Turf,1332,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Diterpenoids,-3.738812688960256,depletolite,-8.869046546964718,2,0,29,-0.5517241379310347
+Turf,1370,Organic compounds;Organoheterocyclic compounds;Pyrans;Pyranones and derivatives,-3.612428466550031,depletolite,-4.4616313979164435,1,1,7,-1.8571428571428568
+Turf,1583,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Piperidinones,-3.7041349711477762,depletolite,-3.757352857982205,1,0,18,-1.2222222222222223
+Turf,1730,Organic compounds;Phenylpropanoids and polyketides;Macrolactams;nan,-5.061836707426376,depletolite,-3.4954109802141793,6,0,18,-0.33333333333333304
+Turf,1827,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;nan,-3.5366322923416584,depletolite,-5.515337107517592,4.5,0.5,15,-0.4457013574660631
+Turf,2261,Organic compounds;Organoheterocyclic compounds;Tetrahydroisoquinolines;nan,-3.4305568473629604,depletolite,-3.7000492176189232,1,0,12,-0.33333333333333304
+Turf,2393,Organic compounds;Benzenoids;Phenol ethers;nan,-2.653925377986055,depletolite,-8.437862281434477,1,0,18,-1.1111111111111107
+Turf,3585,Organic compounds;Organoheterocyclic compounds;Pyrrolidines;nan,-2.7860610214168338,depletolite,-0.9557083693146017,1,0,16,-1.625
+Turf,4021,Organic compounds;Phenylpropanoids and polyketides;Macrolides and analogues;nan,-3.6127940397987777,depletolite,-8.475499607212546,5,0,22,-0.2727272727272725

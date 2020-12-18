@@ -1042,78 +1042,72 @@ nosc_quadrants <- log2_change_vals%>%
 
 # STATS - multiple regressions --------------------------------------------
 mul_reg <- log2_change_vals%>%
-  inner_join(t_pvals%>%
-               # filter(activity != 'recalcitrant')%>%
-               # rename(feat_activity = activity)%>%
+  inner_join(feature_stats_wdf%>%
+               ungroup()%>%
                select(feature_number, Organism, DayNight)%>%
                unique(), 
              by = c('feature_number', 'Organism', 'DayNight'))%>%
   left_join(networking%>%
-              select(feature_number, network, N, P, C, NOSC)%>%
-              filter(network != '-1'),
+              select(feature_number, network, N, P, C, NOSC),
             by = 'feature_number')%>%
-  left_join(net_activity, by = c('network', 'DayNight'))%>%
   left_join(metadata%>%
               select(feature_number, `row m/z`), by = "feature_number")%>%
-  group_by(Organism, DayNight, Replicate)%>%
+  filter(NOSC < 0,
+         DayNight == 'Day')%>%
+  mutate(n_presence = case_when(N > 0 ~ 1,
+                                TRUE ~ 1))%>%
   mutate(nc = N/C,
          pc = P/C,
-         activity2 = activity,
-         sample_nc = T0*nc/sum(T0),
-         sample_pc = T0*pc/sum(T0),
+         sample_nc = T0*nc,  
+         sample_pc = T0*pc, 
          log_snc = log(sample_nc),
-         log_spc = log(sample_pc))%>%
-  ungroup()%>%
-  filter(NOSC <= 0,
-         DayNight == 'Day')
+         log_spc = log(sample_pc))
 
 pdf("./plots/correlation_verify.pdf", width = 15, height = 10)
 corr_verify <- mul_reg%>%
   group_by(feature_number, Organism)%>%
   summarize_if(is.numeric, mean)%>%
   ungroup()%>%
-  select(log2_change, `row m/z`, NOSC, sample_nc, sample_pc)%>%
+  select(log2_change, `row m/z`, NOSC, sample_pc)%>%
   cor()%>%
   corrplot::corrplot()
 dev.off()
 
 
 #can just impute mean for NA values
-n_p_mulreg <- mul_reg%>%
-  filter(N > 0,
-         P > 0)%>%
-  group_by(feature_number, Organism)%>%
-  summarize_if(is.numeric, mean)%>%
-  ungroup()%>%
-  lm(log2_change ~ `row m/z`+NOSC+log_snc+log_spc, data = .)
+# n_p_mulreg <- mul_reg%>%
+#   filter(N > 0,
+#          P > 0)%>%
+#   group_by(feature_number, Organism)%>%
+#   summarize_if(is.numeric, mean)%>%
+#   ungroup()%>%
+#   lm(log2_change ~ `row m/z`+NOSC+log_snc+log_spc, data = .)
 
-p_mulreg <- mul_reg%>%
-  filter(N == 0,
-         P > 0)%>%
-  group_by(feature_number, Organism)%>%
-  summarize_if(is.numeric, mean)%>%
-  ungroup()%>%
-  lm(log2_change ~ `row m/z`+NOSC+log_spc, data = .)
+# p_mulreg <- mul_reg%>%
+#   filter(N == 0,
+#          P > 0)%>%
+#   group_by(feature_number, Organism)%>%
+#   summarize_if(is.numeric, mean)%>%
+#   ungroup()%>%
+#   lm(log2_change ~ `row m/z`+NOSC+log_spc, data = .)
 
 n_mulreg <- mul_reg%>%
-  filter(N > 0,
-         P == 0)%>%
+  filter(N > 0)%>%
   group_by(feature_number, Organism)%>%
   summarize_if(is.numeric, mean)%>%
   ungroup()%>%
   lm(log2_change ~ `row m/z`+NOSC+log_snc, data = .)
 
 mass_mulreg <- mul_reg%>%
-  filter(N == 0,
-         P == 0)%>%
+  filter(N == 0)%>%
   group_by(feature_number, Organism)%>%
   summarize_if(is.numeric, mean)%>%
   ungroup()%>%
-  lm(log2_change ~ `row m/z`+ NOSC, data = .)
+  lm(log2_change ~ `row m/z`+NOSC, data = .)
 
 sink("./analysis/multiple_reg_coefficients_whole_metabolome.txt")
-summary(n_p_mulreg)
-summary(p_mulreg)
+# summary(n_p_mulreg)
+# summary(p_mulreg)
 summary(n_mulreg)
 summary(mass_mulreg)
 sink()
@@ -2071,26 +2065,20 @@ org_pie_vis$data
 dev.off()
 
 # VIZUALIZATIONS -- Organism comparisons log2_change ----------------------
-pdf("./plots/org_depletoliteebar_netactivity_111920.pdf", width = 15, height = 11)
+pdf("./plots/org_depletoliteebar_netactivity_120720.pdf", width = 15, height = 11)
 org_log2_ra%>%
-  # filter(activity == 'depletolite')%>%
+  inner_join(feature_stats_wdf%>%
+               ungroup()%>%
+               select(feature_number, Organism, DayNight),
+             by = c('feature_number', 'Organism', 'DayNight'))%>%
   group_by(feature_number, Organism, DayNight, activity)%>%
   summarize_if(is.numeric, mean)%>%
   ungroup()%>%
-  inner_join(t_pvals%>%
-               # filter(activity == 'depletolite')%>%
-               rename(feat_activity = activity)%>%
-               select(feature_number, Organism, DayNight, feat_activity),
-             by = c('feature_number', 'Organism', 'DayNight'))%>%
-  # mutate(group_activity = case_when(activity == 'depletolite' & feat_activity == 'depletolite' ~ 'depletolite',
-  #                                   activity == 'accumolite' & feat_activity == 'accumolite' ~ 'accumolite',
-  #                                   TRUE ~ 'recalcitrant'))%>%
   group_by(Organism, DayNight, activity)%>%
   mutate(count = 1)%>%
   summarize_if(is.numeric, sum)%>%
   ungroup()%>%
   filter(activity == 'depletolite')%>%
-  # filter(!is.na(activity))%>%
   ggplot(aes(Organism, xic)) +
   geom_bar(aes(fill = activity), stat = 'identity', position = 'stack') +
   scale_fill_manual(values = c('#EBCC2A'
@@ -2116,14 +2104,14 @@ org_log2_ra%>%
 dev.off()
 
 
-pdf("./plots/org_log2_091620.pdf", width = 15, height = 10)
+pdf("./plots/org_log2_120720.pdf", width = 15, height = 10)
 org_log2_ra%>%
   filter(activity == 'depletolite')%>%
   group_by(feature_number, Organism, DayNight, activity)%>%
   summarize_if(is.numeric, mean)%>%
   ungroup()%>%
-  inner_join(t_pvals%>%
-               filter(activity == 'depletolite')%>%
+  inner_join(feature_stats_wdf%>%
+               ungroup()%>%
                select(feature_number, Organism, DayNight),
              by = c('feature_number', 'Organism', 'DayNight'))%>%
   ggplot(aes(Organism, log2_change)) +
@@ -2212,7 +2200,7 @@ sum_xic_x_log2 <- lability_val%>%
   filter(!is.na(activity))%>%
   # filter(activity == 'depletolite')%>%
   group_by(Organism, DayNight, Replicate)%>%
-  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  summarize_if(is.numeric, median, na.rm = TRUE)%>%
   ungroup()%>%
   group_by(Organism, Replicate)%>%
   mutate(sum_xic = sum(T0),
@@ -2270,42 +2258,57 @@ sum_xic_x_log2 <- lability_val%>%
 
 
 # VIZUALIZATIONS -- Lability value from multiple regressions --------------
-pn_mass_coe <- n_p_mulreg$coefficients["`row m/z`"]
-pn_nosc_coe <- n_p_mulreg$coefficients["NOSC"]
-pn_n_coe <- n_p_mulreg$coefficients["log_snc"]
-# pn_p_coe <- n_p_mulreg$coefficients["log_spc"]  not significant
-pn_intercept <- n_p_mulreg$coefficients["(Intercept)"]
+# PN has been removed. Only N present or absent
+# pn_mass_coe <- n_p_mulreg$coefficients["`row m/z`"]
+# pn_nosc_coe <- n_p_mulreg$coefficients["NOSC"]
+# pn_n_coe <- n_p_mulreg$coefficients["log_snc"]
+# # pn_p_coe <- n_p_mulreg$coefficients["log_spc"]  not significant
+# pn_intercept <- n_p_mulreg$coefficients["(Intercept)"]
 
-p_mass_coe <- p_mulreg$coefficients["`row m/z`"]
-p_nosc_coe <- p_mulreg$coefficients["NOSC"]
-p_p_coe <- p_mulreg$coefficients["log_spc"]
+# p_mass_coe <- p_mulreg$coefficients["`row m/z`"]
+# p_nosc_coe <- p_mulreg$coefficients["NOSC"]
+# p_p_coe <- p_mulreg$coefficients["log_spc"]
 # p_intercept <- n_mulreg$coefficients["(Intercept)"] not significant 
 
+# N present
 n_mass_coe <- n_mulreg$coefficients["`row m/z`"]
 n_nosc_coe <- n_mulreg$coefficients["NOSC"]
 n_n_coe <- n_mulreg$coefficients["log_snc"]
 n_intercept <- n_mulreg$coefficients["(Intercept)"]
+# n_mano_coe <- n_mulreg$coefficients["`row m/z`:NOSC"]
 
-# m_mass_coe <- mass_mulreg$coefficients["`row m/z`"]  not significant
+#N absent
+m_mass_coe <- mass_mulreg$coefficients["`row m/z`"]
 m_nosc_coe <- mass_mulreg$coefficients["NOSC"]
 m_intercept <- mass_mulreg$coefficients["(Intercept)"]
 
-mul_reg_fcm <- lability_val%>%
+# Old four way model
+# mul_reg_fcm <- lability_val%>%
+#   ungroup()%>%
+#   mutate(multiple_reg_lability = case_when(P > 0 & N > 0 ~ (`row m/z`*pn_mass_coe + NOSC*pn_nosc_coe + log_snc*pn_n_coe + pn_intercept),
+#                                            P > 0 & N == 0 ~ (`row m/z`*p_mass_coe + NOSC*p_nosc_coe + log_spc*p_p_coe),
+#                                            P == 0 & N > 0 ~ (`row m/z`*n_mass_coe + NOSC*n_nosc_coe + log_snc*n_n_coe + n_intercept),
+#                                            P == 0 & N == 0 ~ (NOSC*m_nosc_coe + m_intercept),
+#                                            TRUE ~ NA_real_))
+
+mul_reg_fcm <- mul_reg%>%
   ungroup()%>%
-  mutate(multiple_reg_lability = case_when(P > 0 & N > 0 ~ (`row m/z`*pn_mass_coe + NOSC*pn_nosc_coe + log_snc*pn_n_coe + pn_intercept),
-                                           P > 0 & N == 0 ~ (`row m/z`*p_mass_coe + NOSC*p_nosc_coe + log_spc*p_p_coe),
-                                           P == 0 & N > 0 ~ (`row m/z`*n_mass_coe + NOSC*n_nosc_coe + log_snc*n_n_coe + n_intercept),
-                                           P == 0 & N == 0 ~ (NOSC*m_nosc_coe + m_intercept),
-                                           TRUE ~ NA_real_))
-
-
-#Linear model
-lability_lm <- mul_reg_fcm%>%
+  mutate(multiple_reg_lability = case_when(N > 0 ~ (`row m/z`*n_mass_coe + NOSC*n_nosc_coe + log_snc*n_n_coe + n_intercept),
+                                           N == 0 ~ (`row m/z`*m_mass_coe + NOSC*m_nosc_coe + m_intercept),
+                                           TRUE ~ NA_real_))%>%
   filter(DayNight == 'Day',
          NOSC < 0)%>%
   group_by(Organism, Replicate)%>%
-  summarise_if(is.numeric, mean, na.rm = TRUE)%>%
+  summarise_if(is.numeric, median, na.rm = TRUE)%>%
   ungroup()%>%
+  left_join(fcm_T0_5%>%
+              filter(DayNight == 'Day')%>%
+              mutate(Replicate = as.numeric(Replicate)), 
+            by = c('Organism', 'Replicate'))
+  
+
+#Linear model
+lability_lm <- mul_reg_fcm%>%
   lm(cells_ul ~ multiple_reg_lability, data = .)
 
 lab_p <- (lability_lm%>% 
@@ -2317,20 +2320,15 @@ lab_r2 <- summary(lability_lm)$adj.r.squared
 #Plotting
 pdf("./plots/lability_nultiple_regressions.pdf", width = 15, height = 10)
 mul_reg_fcm%>%
-  filter(DayNight == 'Day',
-         NOSC < 0)%>%
-  group_by(Organism, Replicate)%>%
-  summarise_if(is.numeric, mean, na.rm = TRUE)%>%
-  ungroup()%>%
   ggplot(aes(multiple_reg_lability, cells_ul)) +
   geom_point(aes(color = Organism), stat = 'identity', size = 5) +
   scale_color_manual(values = org_colors_no_water) + 
   geom_smooth(method = 'lm') +
-  labs(y = bquote('Cells'~µL^-1), x = "Metabolite pool nutritional value") +
-  geom_text(aes(x = -12.8, y = 680,
+  labs(y = bquote('Cells'~µL^-1), x = "Metabolite pool median modeled lability") +
+  geom_text(aes(x = -1.37, y = 700,
                 label = paste("p-value: ", lab_p%>%
                                 formatC(format = "e", digits = 2), "***", sep = "")), size = 9) +
-  geom_text(aes(x = -12.8, y = 650,
+  geom_text(aes(x = -1.37, y = 670,
                 label = paste("r²: ", lab_r2%>%
                                 round(digits = 4), sep = "")), size = 9) +
   theme(
@@ -2348,7 +2346,13 @@ mul_reg_fcm%>%
   )
 dev.off()
 
-lability_val_check <- mul_reg_fcm$multiple_reg_lability
+lability_val_check <- (mul_reg%>%
+  ungroup()%>%
+  mutate(multiple_reg_lability = case_when(N > 0 ~ (`row m/z`*n_mass_coe + NOSC*n_nosc_coe + log_snc*n_n_coe + n_intercept),
+                                           N == 0 ~ (`row m/z`*m_mass_coe + NOSC*m_nosc_coe + m_intercept),
+                                           TRUE ~ NA_real_))%>%
+  filter(DayNight == 'Day',
+         NOSC < 0))$multiple_reg_lability
 
 
 car::qqPlot(lability_val_check, 
@@ -2380,7 +2384,8 @@ sum_xic_x_log2%>%
 
 sum_xic_x_log2%>%
   # filter(!is.na(activity))%>%
-  filter(DayNight == 'Day')%>%
+  filter(DayNight == 'Day',
+         NOSC < 0)%>%
   ggplot(aes(log2_change, cells_ul)) +
   geom_point(aes(color = Organism), stat = 'summary', fun.y = 'mean', size = 5) +
   scale_color_manual(values = org_colors_no_water) + 
