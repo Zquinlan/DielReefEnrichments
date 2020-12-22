@@ -253,7 +253,7 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 10739,1,no,yes,no,no,no,yes
 10741,2,yes,yes,no,no,no,yes
 10752,1,no,yes,no,no,no,yes
-10755,3,no,yes,yes,yes,no,yes
+10755,4,yes,yes,yes,yes,no,yes
 10757,2,yes,yes,no,no,no,yes
 10760,3,no,yes,yes,yes,no,yes
 10763,3,yes,yes,yes,no,no,yes
@@ -296,7 +296,7 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 10883,5,yes,yes,yes,yes,yes,yes
 10886,3,yes,yes,no,no,yes,yes
 10888,1,no,yes,no,no,no,yes
-10889,1,no,yes,no,no,no,yes
+10889,2,no,yes,no,yes,no,yes
 10890,1,no,yes,no,no,no,yes
 10891,1,no,yes,no,no,no,yes
 10894,1,no,yes,no,no,no,yes
@@ -509,7 +509,7 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 11872,5,yes,yes,yes,yes,yes,yes
 11874,1,no,no,yes,no,no,yes
 11881,4,yes,no,yes,yes,yes,yes
-11894,3,no,yes,yes,yes,no,yes
+11894,4,yes,yes,yes,yes,no,yes
 11897,2,no,yes,yes,no,no,yes
 11901,2,no,no,yes,yes,no,yes
 11904,2,no,yes,yes,no,no,yes
@@ -548,7 +548,7 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 12099,1,no,yes,no,no,no,yes
 12102,1,no,yes,no,no,no,yes
 12103,2,yes,yes,no,no,no,yes
-12105,3,no,yes,yes,no,yes,yes
+12105,4,yes,yes,yes,no,yes,yes
 12106,1,no,yes,no,no,no,yes
 12111,4,yes,yes,no,yes,yes,yes
 12114,1,no,yes,no,no,no,yes
@@ -935,7 +935,7 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 14915,1,no,no,no,yes,no,yes
 14919,1,no,no,no,yes,no,yes
 14930,1,no,no,yes,no,no,yes
-14934,1,no,no,no,no,yes,yes
+14934,2,no,yes,no,no,yes,yes
 14941,4,no,yes,yes,yes,yes,yes
 14948,3,yes,yes,yes,no,no,yes
 14949,1,yes,no,no,no,no,yes
@@ -1346,6 +1346,8 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 18335,3,no,yes,yes,yes,no,yes
 18336,3,yes,yes,no,no,yes,yes
 18338,3,yes,no,yes,yes,no,yes
+18345,2,no,yes,no,yes,no,yes
+18348,2,no,no,yes,no,yes,yes
 18382,2,yes,no,yes,no,no,yes
 18386,4,yes,yes,no,yes,yes,yes
 18390,1,yes,no,no,no,no,yes
@@ -1400,7 +1402,7 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 19066,1,no,yes,no,no,no,yes
 19119,2,no,yes,no,no,yes,yes
 19146,4,yes,yes,no,yes,yes,yes
-19156,2,no,no,yes,yes,no,yes
+19156,3,no,no,yes,yes,yes,yes
 19162,4,yes,yes,no,yes,yes,yes
 19170,1,no,no,yes,no,no,yes
 19182,4,yes,no,yes,yes,yes,yes
@@ -1496,7 +1498,7 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 19730,1,no,yes,no,no,no,yes
 19731,2,yes,yes,no,no,no,yes
 19739,2,no,yes,no,no,yes,yes
-19742,1,no,yes,no,no,no,yes
+19742,3,yes,yes,yes,no,no,yes
 19743,1,no,yes,no,no,no,yes
 19747,2,no,yes,no,no,yes,yes
 19748,4,yes,yes,yes,no,yes,yes
@@ -1653,7 +1655,7 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 20657,4,no,yes,yes,yes,yes,yes
 20658,5,yes,yes,yes,yes,yes,yes
 20660,4,yes,no,yes,yes,yes,yes
-20664,4,no,yes,yes,yes,yes,yes
+20664,5,yes,yes,yes,yes,yes,yes
 20666,5,yes,yes,yes,yes,yes,yes
 20667,1,no,no,yes,no,no,yes
 20668,5,yes,yes,yes,yes,yes,yes
@@ -2407,7 +2409,7 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 7226,1,no,no,no,no,yes,yes
 7230,2,no,no,no,yes,yes,yes
 7232,3,no,yes,no,yes,yes,yes
-7238,2,no,yes,no,no,yes,yes
+7238,3,yes,yes,no,no,yes,yes
 7242,3,yes,yes,no,no,yes,yes
 7253,5,yes,yes,yes,yes,yes,yes
 7258,1,no,no,no,no,yes,yes
@@ -2596,7 +2598,7 @@ feature_number,num_organism,CCA_produced,Dictyota_produced,Pocillopora verrucosa
 8175,2,yes,no,yes,no,no,yes
 8181,1,no,yes,no,no,no,yes
 8184,1,no,yes,no,no,no,yes
-8185,4,yes,yes,no,yes,yes,yes
+8185,5,yes,yes,yes,yes,yes,yes
 8186,1,no,yes,no,no,no,yes
 8188,4,yes,yes,yes,yes,no,yes
 8189,1,no,yes,no,no,no,yes
