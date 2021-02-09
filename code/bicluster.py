@@ -13,7 +13,8 @@ args = parser.parse_args()
 df = pd.read_csv(args.infile)
 
 #Setting font and color pallette
-current_palette = sns.color_palette("Greys", 200)
+current_palette = sns.color_palette("Greys", 200)  #grey palette
+#current_palette = sns.diverging_palette(220, 20, as_cmap=True) #diverging bluered
 #sns.set(font_scale = 0.3)
 
 #set sample name and color
@@ -30,5 +31,5 @@ fig.set_size_inches((20, 16))
 
 
 #Showing the plot
-plt.savefig('microbes_hc.png', dpi = 600)
+plt.savefig('depletolites_hc.png', dpi = 600)
 plt.show()
