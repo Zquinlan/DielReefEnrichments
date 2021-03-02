@@ -150,8 +150,38 @@ canopus_weighted_lability <- feature_stats_wdf%>%
 # # test <- AIC(lm_test_canopus)
 # 
 
+canopus_weighted_lability_stats <- feature_stats_wdf%>%
+  filter(Timepoint == 'T0',
+         DayNight == 'Day')%>%
+  inner_join(canopus_mulreg%>%
+               rownames_to_column("row")%>%
+               separate(row, c('feature_number', 'Organism'), sep = "_")%>%
+               select(-log2_change)%>%
+               gather(variable, value, 3:ncol(.))%>%
+               inner_join(canopus_coeff, by = 'variable')%>%
+               mutate(modeled_lab = value*coefficients)%>%
+               select(feature_number, Organism, modeled_lab)%>%
+               group_by(feature_number, Organism)%>%
+               summarize_if(is.numeric, sum)%>%
+               ungroup()%>%
+               mutate(modeled_lab = modeled_lab + intercept),
+             by = c('feature_number', 'Organism'))%>%
+  group_by(Organism, Replicate)%>%
+  mutate(weighted_lability = spatstat::weighted.median(modeled_lab, log10))%>%
+  # mutate(weighted_lability = mean(modeled_lab))%>%
+  group_by(Organism)%>%
+  mutate(x_err = sd(weighted_lability))%>%
+  select(Organism, weighted_lability, x_err)%>%
+  unique()%>%
+  left_join(fcm_T0_5%>%
+              filter(DayNight == 'Day')%>%
+              group_by(Organism)%>%
+              mutate(y_err = sd(cells_ul))%>%
+              summarize_if(is.numeric, mean),
+            by = c('Organism'))
+
 #Linear model
-weight_lability_lm <- canopus_weighted_lability%>%
+weight_lability_lm <- canopus_weighted_lability_stats%>%
   lm(cells_ul ~ weighted_lability, data = .)
 
 wlab_p <- (weight_lability_lm%>% 
@@ -168,7 +198,7 @@ wlab_intercept <- weight_lability_lm$coefficients["(Intercept)"]
 
 wlab_r2 <- summary(weight_lability_lm)$adj.r.squared
 
-pdf('~/Documents/GitHub/DORCIERR/data/plots/canopus_weighted_lability.pdf', width = 15, height = 10)
+pdf('~/Documents/GitHub/DORCIERR/data/plots/canopus_weighted_lability.pdf', width = 12, height = 10)
 canopus_weighted_lability%>%
   ggplot(aes(weighted_lability, cells_ul)) +
   geom_point(aes(color = Organism), stat = 'identity', size = 5) +
@@ -177,16 +207,16 @@ canopus_weighted_lability%>%
   scale_color_manual(values = org_colors_no_water) +
   geom_smooth(method = 'lm') +
   labs(y = bquote(Specific ~growth ~rate ~('Cells'~µL^-1 ~hr^-1)), x = "Metabolite pool modeled lability") +
-  geom_text(aes(x = -1.4, y = 0.09,
+  geom_text(aes(x = -1.3, y = 0.09,
                 label = paste("p-value: ", wlab_p%>%
                                 formatC(format = "e", digits = 2), sep = "")), size = 9) +
-  geom_text(aes(x = -1.4, y = 0.086,
+  geom_text(aes(x = -1.3, y = 0.086,
                 label = paste("F statistic: ", wlab_f%>%
                                 round(digits = 4), sep = "")), size = 9) +
-  geom_text(aes(x = -1.4, y = 0.082,
+  geom_text(aes(x = -1.3, y = 0.082,
                 label = paste("r²: ", wlab_r2%>%
                                 round(digits = 4), sep = "")), size = 9) +
-  geom_text(aes(x = -1.4, y = 0.078,
+  geom_text(aes(x = -1.3, y = 0.078,
                 label = paste("Cells µL^-1", " = ", wlab_slope%>%
                                 round(digits = 2), "*lability + ", wlab_intercept%>%
                                 round(digits = 2), sep = "")), size = 9) +
