@@ -2121,7 +2121,6 @@ training_rf_variables <- canopus_training%>%
 
 test_rf_variable <- canopus_test
 
-
 rf_can_model <- lm(log2_change ~ ., data = training_rf_variables)
 
 rf_canopus_coeff <- coef(rf_can_model)%>%
@@ -2372,17 +2371,18 @@ linda_mean_diff <- linda_sum%>%
   mutate(difference = TF-T0)%>%
   filter(activity != 'recalcitrant')
 
-png("./plots/change_xic_activity.png", width = 1600, height = 1000)
+png("./plots/change_xic_activity.png", width = 2000, height = 1000)
 linda_sum%>%
   filter(activity != 'recalcitrant')%>%
   mutate(log10 = log10(xic))%>%
-  ggplot(aes(xic, org_activity, color = Organism, shape = shape)) +
+  ggplot(aes(xic, Organism, color = Organism, shape = shape)) +
   geom_point(stat = 'identity', size = 14, alpha = 0.45) +
   # geom_errorbarh(aes(xmin = xic - err, xmax = xic + err)) +
-  geom_line(aes(group = org_activity)) +
-  geom_text(data = linda_mean_diff, aes(x = x_val, y = org_activity, 
+  geom_line(aes(group = Organism)) +
+  geom_text(data = linda_mean_diff, aes(x = x_val, y = Organism, 
                                         label = formatC(difference, format = 'e', digits = 2), 
                                         shape = NULL), vjust = -1, size = 7) +
+  facet_wrap(~activity, nrow = 1, scales = 'free_x') +
   scale_color_manual(values = org_colors_no_water) +
   scale_shape_manual(values = c("\u25A0", "\u25BA", "\u25C4")) +
   labs(x = 'Sum Intensity (xic)', y = 'Organism / Metabolite pool', color = 'Organism: ', shape = 'Sample:') +
@@ -2392,6 +2392,7 @@ linda_sum%>%
   theme(axis.line = element_blank(),
         axis.text = element_text(size = 20),
         axis.ticks = element_blank(),
+        axis.text.x = element_text(angle = 30, hjust = 1),
         legend.background = element_rect(fill = "transparent"), # get rid of legend bg
         legend.box.background = element_blank(),
         panel.background = element_rect(fill = "transparent"), # bg of the panel
