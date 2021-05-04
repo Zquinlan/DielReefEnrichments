@@ -1,0 +1,64 @@
+
+Call:
+lm(formula = log2_change ~ `row m/z` + NOSC + log_nc + hc + oc, 
+    data = .)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-15.337  -1.727   1.081   2.804  10.092 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  4.0035830  0.8783604   4.558 5.53e-06 ***
+`row m/z`   -0.0001755  0.0009924  -0.177  0.85967    
+NOSC        -1.2155878  0.4270768  -2.846  0.00448 ** 
+log_nc       3.1081468  0.5000783   6.215 6.41e-10 ***
+hc          -3.8697696  0.5008034  -7.727 1.85e-14 ***
+oc           7.5611118  0.9824573   7.696 2.34e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.23 on 1727 degrees of freedom
+Multiple R-squared:  0.07636,	Adjusted R-squared:  0.07368 
+F-statistic: 28.55 on 5 and 1727 DF,  p-value: < 2.2e-16
+
+
+Call:
+lm(formula = log2_change ~ `row m/z` + NOSC + hc, data = .)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.3394  -1.1452   0.6512   1.7382   8.5901 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  2.388044   0.559679   4.267 2.16e-05 ***
+`row m/z`   -0.004875   0.001240  -3.932 8.97e-05 ***
+NOSC         0.237822   0.241468   0.985 0.324892    
+hc          -1.178714   0.342445  -3.442 0.000599 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.08 on 1087 degrees of freedom
+Multiple R-squared:  0.03929,	Adjusted R-squared:  0.03664 
+F-statistic: 14.82 on 3 and 1087 DF,  p-value: 1.843e-09
+
+
+Call:
+lm(formula = log2_change ~ `row m/z`, data = .)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-12.970  -1.325   1.255   2.551  10.429 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1.6268601  0.3433691  -4.738 2.52e-06 ***
+`row m/z`   -0.0014065  0.0005426  -2.592   0.0097 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.089 on 875 degrees of freedom
+Multiple R-squared:  0.00762,	Adjusted R-squared:  0.006486 
+F-statistic: 6.719 on 1 and 875 DF,  p-value: 0.0097
+

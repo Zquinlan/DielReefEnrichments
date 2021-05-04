@@ -1,0 +1,28 @@
+content:
+- children:
+  - title: canopus_model.R
+    url: /_pages/contents/canopus_model.R/
+  - title: bicluster.py
+    url: /_pages/contents/bicluster.py/
+  - title: Microbial_pipeline.R
+    url: /_pages/contents/Microbial_pipeline.R/
+  - title: metabolite_modeled_lability.R
+    url: /_pages/contents/metabolite_modeled_lability.R/
+  - title: 12182019DORCIERR_working_pipeline.R
+    url: /_pages/contents/12182019DORCIERR_working_pipeline.R/
+  - title: metabolite_trends.R
+    url: /_pages/contents/metabolite_trends.R/
+  - title: current_dorcierr_working_pipeline.R
+    url: /_pages/contents/current_dorcierr_working_pipeline.R/
+  title: Repository Contents
+- title: Photos
+  url: assets/images/album
+- title: Paper
+  url: https://www.doi.org/
+main:
+- title: Repository Contents
+  url: _pages/contents/
+- title: Photos
+  url: assets/images/album
+- title: Paper
+  url: https://www.doi.org/

@@ -1,0 +1,41 @@
+
+Call:
+lm(formula = log2_change ~ `row m/z` + NOSC + log_snc, data = .)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-15.1364  -1.2819   0.8664   2.3698  10.5022 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  9.0530819  0.6474659  13.982  < 2e-16 ***
+`row m/z`   -0.0047259  0.0007761  -6.089 1.34e-09 ***
+NOSC         0.6972919  0.1602399   4.352 1.42e-05 ***
+log_snc     -0.6424103  0.0353793 -18.158  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.64 on 2121 degrees of freedom
+Multiple R-squared:  0.1411,	Adjusted R-squared:  0.1399 
+F-statistic: 116.1 on 3 and 2121 DF,  p-value: < 2.2e-16
+
+
+Call:
+lm(formula = log2_change ~ `row m/z` + NOSC, data = .)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.0421  -1.2736   0.2231   1.4964  11.9603 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  1.045303   0.540417   1.934   0.0534 .  
+`row m/z`   -0.002805   0.001362  -2.059   0.0398 *  
+NOSC         1.238192   0.271412   4.562 5.89e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.011 on 776 degrees of freedom
+Multiple R-squared:  0.02937,	Adjusted R-squared:  0.02687 
+F-statistic: 11.74 on 2 and 776 DF,  p-value: 9.484e-06
+
