@@ -1,0 +1,238 @@
+I"Z%<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>angular_transform &lt;- function(x) {
+  asin(sqrt(x))
+}
+
+
+# cutoff_canl2 &lt;- canopus_chemonnt_tidy%&gt;%
+#   group_by(canopus_annotation)%&gt;%
+#   filter(max(canopus_probability) &gt;= 0.3)%&gt;%
+#   ungroup()%&gt;%
+#   separate(CLASS_STRING, paste('L', 1:5, sep = ""), sep = ";")%&gt;%
+#   group_by(L3)%&gt;%
+#   filter(mean(canopus_probability) &gt;= 0.001)%&gt;%
+#   group_by(L3)%&gt;%
+#   mutate(max_prob = max(canopus_probability))%&gt;%
+#   select(name, L3, max_prob)%&gt;%
+#   unique()%&gt;%
+#   spread(L3, max_prob)
+#   
+cutoff_canopus &lt;- canopus_anotations%&gt;%
+  gather(classification, value, 2:ncol(.))%&gt;%
+  group_by(classification)%&gt;%
+  filter(max(value) &gt;= 0.4)%&gt;%
+  spread(classification, value)
+
+canopus_mulreg &lt;- mul_reg%&gt;%
+  filter(NOSC &lt; 0)%&gt;%
+  group_by(feature_number, Organism)%&gt;%
+  summarize_if(is.numeric, mean)%&gt;%
+  ungroup()%&gt;%
+  select(feature_number, Organism, log2_change, `row m/z`, NOSC, logxic)%&gt;%
+  inner_join(cutoff_canopus%&gt;%
+               rename(feature_number = name)%&gt;%
+               mutate(feature_number = as.character(feature_number))%&gt;%
+               mutate_if(is.numeric, angular_transform), by = 'feature_number')%&gt;%
+  left_join(sirius_zodiac_anotations%&gt;%
+              select(feature_number, ZodiacScore)%&gt;%
+              mutate(feature_number = as.character(feature_number)), by = 'feature_number')%&gt;%
+  filter(ZodiacScore &gt;= .98)%&gt;%
+  select(-ZodiacScore)%&gt;%
+  unite(row, c('feature_number', 'Organism'), sep = "_")%&gt;%
+  column_to_rownames('row')
+
+recipe &lt;- canopus_mulreg%&gt;%
+  recipe(log2_change ~ .)%&gt;%
+  step_center(all_predictors())%&gt;%
+  step_scale(all_predictors())
+
+#checking gaussian
+pdf("./plots/canopus_gaussian_check.pdf")
+gaussian_check &lt;- prep(recipe)%&gt;%
+  juice()%&gt;%
+  gather(variable, value)%&gt;%
+  inner_join(canopus_coeff%&gt;% select(variable),
+             by = 'variable')%&gt;%
+  group_by(variable)%&gt;%
+  nest()%&gt;%
+  mutate(non_transformed = map(data, ~ .x$value%&gt;%
+                                 na.omit()%&gt;%
+                                 car::qqPlot(ylab = variable, xlab = "Normal quantiles",
+                                             main = paste("Non-transformed", variable))))
+dev.off()
+
+##canopus training set testing
+
+canopus_split &lt;- rsample::initial_split(canopus_mulreg, 9/10)
+
+canopus_training &lt;- rsample::training(canopus_split)
+canopus_test &lt;- rsample::testing(canopus_split)
+
+canopus_x &lt;- canopus_training[2:ncol(canopus_training)]%&gt;%
+  as.matrix()
+
+canopus_y &lt;- canopus_training['log2_change']%&gt;%
+  as.matrix()
+
+canopus_test_x &lt;-  canopus_test[2:ncol(canopus_test)]%&gt;%
+  as.matrix()
+
+canopus_test_y &lt;- canopus_test['log2_change']%&gt;%
+  as.matrix()
+
+#running 
+glmnet_canopus &lt;- cv.glmnet(canopus_x, canopus_y, parallel = TRUE)
+
+lambda_se &lt;- glmnet_canopus$lambda.1se
+
+#running model with parameters after lasso
+canopus_model &lt;- glmnet(canopus_x, canopus_y, intercept = TRUE, lambda = lambda_se, standarize = TRUE)
+
+canopus_coeff &lt;- coef(canopus_model)%&gt;%
+  as.matrix()%&gt;%
+  as.data.frame()%&gt;%
+  rename(coefficients = 1)%&gt;%
+  rownames_to_column("variable")%&gt;%
+  filter(coefficients != 0)
+
+intercept &lt;- canopus_coeff[[1,2]]
+
+predicted_training &lt;- predict(canopus_model, newx = canopus_x)
+predicted &lt;- predict(canopus_model, newx = canopus_test_x)
+
+rootmse &lt;- rmse_vec(as.vector(canopus_test_y), as.vector(predicted))
+rootmse_training &lt;- rmse_vec(as.vector(canopus_y), as.vector(predicted_training))
+
+canopus_model$dev.ratio
+
+predicted%&gt;%
+  as.data.frame()%&gt;%
+  rename(predicted = 1)%&gt;%
+  add_column(actuals = canopus_test_y)%&gt;%
+  rownames_to_column('sample')%&gt;%
+  ggplot() +
+  geom_point(aes(sample, actuals), color = 'blue') +
+  geom_point(aes(sample, predicted), color = 'red')
+
+
+
+canopus_weighted_lability &lt;- feature_stats_wdf%&gt;%
+  filter(Timepoint == 'T0',
+         DayNight == 'Day')%&gt;%
+  inner_join(canopus_mulreg%&gt;%
+              rownames_to_column("row")%&gt;%
+              separate(row, c('feature_number', 'Organism'), sep = "_")%&gt;%
+              select(-log2_change)%&gt;%
+              gather(variable, value, 3:ncol(.))%&gt;%
+              inner_join(canopus_coeff, by = 'variable')%&gt;%
+              mutate(modeled_lab = value*coefficients)%&gt;%
+              select(feature_number, Organism, modeled_lab)%&gt;%
+              group_by(feature_number, Organism)%&gt;%
+              summarize_if(is.numeric, sum)%&gt;%
+              ungroup()%&gt;%
+              mutate(modeled_lab = modeled_lab + intercept),
+            by = c('feature_number', 'Organism'))%&gt;%
+  group_by(Organism, Replicate)%&gt;%
+  mutate(weighted_lability = spatstat::weighted.median(modeled_lab, log10))%&gt;%
+  # mutate(weighted_lability = mean(modeled_lab))%&gt;%
+  group_by(Organism)%&gt;%
+  mutate(x_err = sd(weighted_lability))%&gt;%
+  select(Organism, weighted_lability, x_err)%&gt;%
+  unique()%&gt;%
+  summarize_if(is.numeric, mean)%&gt;%
+  left_join(fcm_T0_5%&gt;%
+              filter(DayNight == 'Day')%&gt;%
+              group_by(Organism)%&gt;%
+              mutate(y_err = sd(cells_ul))%&gt;%
+              summarize_if(is.numeric, mean),
+            by = c('Organism'))
+# 
+# # dredge_n_select &lt;- MuMIn::dredge(lm_test_canopus)
+# # test &lt;- AIC(lm_test_canopus)
+# 
+
+canopus_weighted_lability_stats &lt;- feature_stats_wdf%&gt;%
+  filter(Timepoint == 'T0',
+         DayNight == 'Day')%&gt;%
+  inner_join(canopus_mulreg%&gt;%
+               rownames_to_column("row")%&gt;%
+               separate(row, c('feature_number', 'Organism'), sep = "_")%&gt;%
+               select(-log2_change)%&gt;%
+               gather(variable, value, 3:ncol(.))%&gt;%
+               inner_join(canopus_coeff, by = 'variable')%&gt;%
+               mutate(modeled_lab = value*coefficients)%&gt;%
+               select(feature_number, Organism, modeled_lab)%&gt;%
+               group_by(feature_number, Organism)%&gt;%
+               summarize_if(is.numeric, sum)%&gt;%
+               ungroup()%&gt;%
+               mutate(modeled_lab = modeled_lab + intercept),
+             by = c('feature_number', 'Organism'))%&gt;%
+  group_by(Organism, Replicate)%&gt;%
+  mutate(weighted_lability = spatstat::weighted.median(modeled_lab, log10))%&gt;%
+  # mutate(weighted_lability = mean(modeled_lab))%&gt;%
+  group_by(Organism)%&gt;%
+  mutate(x_err = sd(weighted_lability))%&gt;%
+  select(Organism, weighted_lability, x_err)%&gt;%
+  unique()%&gt;%
+  left_join(fcm_T0_5%&gt;%
+              filter(DayNight == 'Day')%&gt;%
+              group_by(Organism)%&gt;%
+              mutate(y_err = sd(cells_ul))%&gt;%
+              summarize_if(is.numeric, mean),
+            by = c('Organism'))
+
+#Linear model
+weight_lability_lm &lt;- canopus_weighted_lability_stats%&gt;%
+  lm(cells_ul ~ weighted_lability, data = .)
+
+wlab_p &lt;- (weight_lability_lm%&gt;% 
+             tidy()%&gt;% 
+             filter(term == 'weighted_lability'))$p.value
+
+wlab_f &lt;- (weight_lability_lm%&gt;% 
+             tidy()%&gt;% 
+             filter(term == 'weighted_lability'))$statistic
+
+wlab_slope &lt;- weight_lability_lm$coefficients["weighted_lability"]
+wlab_intercept &lt;- weight_lability_lm$coefficients["(Intercept)"]
+
+
+wlab_r2 &lt;- summary(weight_lability_lm)$adj.r.squared
+
+pdf('~/Documents/GitHub/DORCIERR/data/plots/canopus_weighted_lability.pdf', width = 12, height = 10)
+canopus_weighted_lability%&gt;%
+  ggplot(aes(weighted_lability, cells_ul)) +
+  geom_point(aes(color = Organism), stat = 'identity', size = 5) +
+  geom_errorbar(aes(ymin = cells_ul - y_err, ymax = cells_ul + y_err)) +
+  geom_errorbarh(aes(xmin = weighted_lability - x_err, xmax = weighted_lability + x_err))+
+  scale_color_manual(values = org_colors_no_water) +
+  geom_smooth(method = 'lm') +
+  labs(y = bquote(Specific ~growth ~rate ~('Cells'~µL^-1 ~hr^-1)), x = "Metabolite pool modeled lability") +
+  geom_text(aes(x = -1.3, y = 0.09,
+                label = paste("p-value: ", wlab_p%&gt;%
+                                formatC(format = "e", digits = 2), sep = "")), size = 9) +
+  geom_text(aes(x = -1.3, y = 0.086,
+                label = paste("F statistic: ", wlab_f%&gt;%
+                                round(digits = 4), sep = "")), size = 9) +
+  geom_text(aes(x = -1.3, y = 0.082,
+                label = paste("r²: ", wlab_r2%&gt;%
+                                round(digits = 4), sep = "")), size = 9) +
+  geom_text(aes(x = -1.3, y = 0.078,
+                label = paste("Cells µL^-1", " = ", wlab_slope%&gt;%
+                                round(digits = 2), "*lability + ", wlab_intercept%&gt;%
+                                round(digits = 2), sep = "")), size = 9) +
+  theme(
+    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+    axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
+    axis.text.y = element_text(size = 20),
+    axis.title = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major = element_line('grey'), # get rid of major grid
+    panel.grid.minor = element_line('grey'), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"),
+    legend.position = 'top'
+  )
+dev.off()
+</code></pre></div></div>
+:ET

@@ -1,0 +1,121 @@
+I"
+
+<div class="feature__wrapper">
+
+  
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/repoContents.png" alt="Contents" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Repository Contents</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>All contents of the github repository</p>
+
+            </div>
+          
+
+          
+            <p><a href="/_pages/contents/" class="btn btn--primary">Learn more</a></p>
+          
+        </div>
+      </div>
+    </div>
+  
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/photos.jpg" alt="Photos" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Research Photos</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Photos from the paper!</p>
+
+            </div>
+          
+
+          
+            <p><a href="/assets/images/album/" class="btn btn--primary">Learn more</a></p>
+          
+        </div>
+      </div>
+    </div>
+  
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/paper.jpg" alt="Paper" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Read the Paper!</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Read our paper in its entirety!</p>
+
+            </div>
+          
+
+          
+            <p><a href="https://www.frontiersin.org/articles/10.3389/fmicb.2019.02397/" class="btn btn--primary">Learn more</a></p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+</div>
+
+<h1 id="dorcierr">DORCIERR</h1>
+
+<hr />
+<h1 id="contents">Contents:</h1>
+<h2 id="code">Code:</h2>
+<ul>
+  <li>metabolite_modeled_lability.R</li>
+  <li>bicluster.py</li>
+</ul>
+
+<p><br /><br /></p>
+<h2 id="data">Data:</h2>
+<h3 id="analysis">Analysis</h3>
+<ul>
+  <li>Spreadsheets after cleaning and statistics</li>
+</ul>
+
+<p><br /></p>
+<h3 id="plots">Plots</h3>
+<ul>
+  <li>Plots and figures generated in R or Python</li>
+</ul>
+
+<p><br /></p>
+<h3 id="raw">raw</h3>
+<ul>
+  <li>Raw data imports for the project</li>
+</ul>
+:ET

@@ -1,0 +1,5 @@
+I"H<p>```
+angular_transform &lt;- function(x) {
+  asin(sqrt(x))
+}</p>
+:ET

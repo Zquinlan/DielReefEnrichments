@@ -1,0 +1,21 @@
+
+Call:
+lm(formula = log2_change ~ log_snc + log_soc + log_shc, data = n_mulreg)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.6998  -1.5283   0.3205   1.7008   7.8064 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   8.1133     0.6483  12.515  < 2e-16 ***
+log_snc       0.9057     0.1887   4.799 1.74e-06 ***
+log_soc       1.3960     0.2235   6.247 5.26e-10 ***
+log_shc      -3.3725     0.3205 -10.523  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.338 on 1729 degrees of freedom
+Multiple R-squared:  0.1172,	Adjusted R-squared:  0.1156 
+F-statistic: 76.49 on 3 and 1729 DF,  p-value: < 2.2e-16
+

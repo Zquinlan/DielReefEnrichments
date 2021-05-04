@@ -1,0 +1,351 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Bicluster.py - DORCIERR</title>
+<meta name="description" content="``` import seaborn as sns import matplotlib.pyplot as plt import pandas as pd import argparse">
+
+
+  <meta name="author" content="Zach Quinlan">
+  
+  <meta property="article:author" content="Zach Quinlan">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="DORCIERR">
+<meta property="og:title" content="Bicluster.py">
+<meta property="og:url" content="/contents/bicluster.py/">
+
+
+  <meta property="og:description" content="``` import seaborn as sns import matplotlib.pyplot as plt import pandas as pd import argparse">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2021-05-04T13:31:45-07:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/contents/bicluster.py/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Zach Quinlan",
+      "url": "/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="DORCIERR Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--posts wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt="DORCIERR"></a>
+        
+        <a class="site-title" href="/">
+          DORCIERR
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/_pages/contents/">Repository Contents</a>
+            </li><li class="masthead__menu-item">
+              <a href="/assets/images/album">Photos</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.doi.org/">Paper</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Repository Contents</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/_pages/contents/canopus_model.R/">canopus_model.R</a></li>
+          
+            <li><a href="/_pages/contents/bicluster.py/">bicluster.py</a></li>
+          
+            <li><a href="/_pages/contents/Microbial_pipeline.R/">Microbial_pipeline.R</a></li>
+          
+            <li><a href="/_pages/contents/metabolite_modeled_lability.R/">metabolite_modeled_lability.R</a></li>
+          
+            <li><a href="/_pages/contents/12182019DORCIERR_working_pipeline.R/">12182019DORCIERR_working_pipeline.R</a></li>
+          
+            <li><a href="/_pages/contents/metabolite_trends.R/">metabolite_trends.R</a></li>
+          
+            <li><a href="/_pages/contents/current_dorcierr_working_pipeline.R/">current_dorcierr_working_pipeline.R</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <a href="/assets/images/album"><span class="nav__sub-title">Photos</span></a>
+        
+
+        
+      </li>
+    
+      <li>
+        
+          <a href="https://www.doi.org/"><span class="nav__sub-title">Paper</span></a>
+        
+
+        
+      </li>
+    
+  </ul>
+</nav>
+
+    
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Bicluster.py</h1>
+    
+    <p>```
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+import argparse</p>
+
+<p>#Arguments
+parser = argparse.ArgumentParser()
+parser.add_argument(‘infile’, help = ‘csv_dataframe’)
+parser.add_argument(‘sample_column’, help = ‘what is the name of the sample_column’)
+args = parser.parse_args()</p>
+
+<p>#Reading in file
+df = pd.read_csv(args.infile)</p>
+
+<p>#Setting font and color pallette
+#current_palette = sns.color_palette(“Greys”, 200)  #grey palette
+#current_palette = sns.color_palette(“ch:start=.2,rot=-.3”, 200) # dark blues
+current_palette = sns.color_palette(“Blues”, 200)  #grey palette
+#current_palette = sns.diverging_palette(220, 20, as_cmap=True) #diverging bluered
+#sns.set(font_scale = 0.3)</p>
+
+<p>#set sample name and color
+sample = df.pop(args.sample_column)</p>
+
+<p>#Designing the plot
+g = sns.clustermap(df, cmap = current_palette, robust = True, yticklabels = sample, xticklabels = 1)
+plt.setp(g.ax_heatmap.xaxis.get_ticklabels(), fontsize = 15)
+plt.setp(g.ax_heatmap.yaxis.get_ticklabels(), fontsize = 8)
+plt.gcf().subplots_adjust(bottom=0.35)
+fig = plt.gcf()
+fig.set_size_inches((20, 16))</p>
+
+<p>#Showing the plot
+plt.savefig(‘depletolites_hc_lightblues.png’, dpi = 600)
+plt.show()```</p>
+
+
+<ul class="taxonomy__index">
+  
+  
+</ul>
+
+
+
+
+
+  </div>
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    <ul class="author__urls social-icons">
+      
+        
+          
+            <li><a href="" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://www.twitter.com/zquinlan" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://www.researchgate.net/profile/zachary-quinlan" rel="nofollow noopener noreferrer"><i class="fab fa-researchgate" aria-hidden="true"></i><span class="label">ResearchGate</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/zquinlan" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://orcid.org/" rel="nofollow noopener noreferrer"><i class="fab fa-orcid" aria-hidden="true"></i><span class="label">OrcID</span></a></li>
+          
+        
+      
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Zach Quinlan. Powered by <a href = "https://zquinlan.github.io/acio">AcIo</a> &amp; <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

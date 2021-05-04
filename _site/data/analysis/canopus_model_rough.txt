@@ -1,0 +1,218 @@
+
+Call:
+lm(formula = log2_change ~ ., data = canopus_mulreg)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.0879 -0.0564  0.0000  0.0304  3.5776 
+
+Coefficients: (224 not defined because of singularities)
+                                                           Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                                              -2.069e+02  6.766e+01  -3.058 0.002343 ** 
+`row m/z`                                                 2.065e-02  1.343e-02   1.537 0.124798    
+NOSC                                                      8.445e+01  3.050e+01   2.769 0.005825 ** 
+log_nc                                                    7.068e+01  3.140e+01   2.251 0.024815 *  
+log_oc                                                   -1.853e+02  6.464e+01  -2.867 0.004310 ** 
+log_hc                                                    4.319e+02  1.490e+02   2.900 0.003896 ** 
+logxic                                                   -1.001e+00  1.239e-01  -8.076 4.72e-15 ***
+`Inorganic compounds`                                    -1.299e+03  1.144e+03  -1.136 0.256474    
+`Organoheterocyclic compounds`                            7.747e+01  3.184e+01   2.433 0.015314 *  
+`Organosulfur compounds`                                  1.196e+01  8.397e+01   0.142 0.886762    
+Amidines                                                 -3.057e+02  1.276e+02  -2.395 0.016965 *  
+`Carbohydrates and carbohydrate conjugates`               1.024e+02  3.761e+01   2.723 0.006684 ** 
+`Lipids and lipid-like molecules`                         1.646e+00  1.645e+01   0.100 0.920310    
+`Amino acids, peptides, and analogues`                   -1.659e+02  8.215e+01  -2.019 0.043961 *  
+Phenylbutylamines                                        -2.166e+03  6.858e+02  -3.158 0.001679 ** 
+Dibenzofurans                                            -2.314e+05  8.401e+04  -2.755 0.006083 ** 
+Cycloalkenes                                              1.838e+03  1.703e+03   1.079 0.280877    
+Anthracenes                                               2.674e+03  1.019e+03   2.625 0.008929 ** 
+Fluorenes                                                -7.094e+04  1.972e+04  -3.597 0.000353 ***
+`Indenes and isoindenes`                                  2.585e+04  9.165e+03   2.821 0.004974 ** 
+Naphthacenes                                             -5.187e+03  2.616e+03  -1.983 0.047912 *  
+Naphthalenes                                             -8.580e+02  2.591e+02  -3.312 0.000990 ***
+`Phenanthrenes and derivatives`                          -2.003e+03  1.110e+03  -1.805 0.071733 .  
+`Purine ribonucleoside bisphosphates`                    -4.657e+03  1.798e+03  -2.590 0.009879 ** 
+Indanes                                                   1.218e+03  5.955e+02   2.046 0.041253 *  
+Cinnamaldehydes                                          -2.653e+03  2.024e+03  -1.311 0.190547    
+Benzenesulfonamides                                      -1.576e+03  5.676e+02  -2.776 0.005708 ** 
+`Benzenesulfonic acids and derivatives`                   2.012e+04  6.811e+03   2.953 0.003287 ** 
+`Benzyl alcohols`                                        -1.046e+04  3.881e+03  -2.696 0.007246 ** 
+Halobenzenes                                             -3.890e+03  1.286e+03  -3.024 0.002617 ** 
+Nitrobenzenes                                             6.080e+02  1.771e+02   3.434 0.000643 ***
+Styrenes                                                 -2.493e+03  1.063e+03  -2.344 0.019432 *  
+Sulfanilides                                              5.114e+03  1.748e+03   2.925 0.003597 ** 
+`Biphenyls and derivatives`                              -4.734e+03  1.774e+03  -2.668 0.007859 ** 
+Tetralins                                                -7.484e+03  3.251e+03  -2.302 0.021747 *  
+Lactones                                                  4.442e+02  1.422e+02   3.124 0.001887 ** 
+`Aromatic monoterpenoids`                                -5.792e+03  2.344e+03  -2.471 0.013810 *  
+`Aminoquinolines and derivatives`                        -4.422e+03  2.055e+03  -2.152 0.031843 *  
+Benzylisoquinolines                                      -2.006e+04  7.805e+03  -2.570 0.010456 *  
+`Quinolones and derivatives`                              2.409e+02  1.055e+03   0.228 0.819440    
+Hydroxyquinolines                                         8.662e+02  1.173e+03   0.739 0.460540    
+Morphinans                                                6.435e+04  2.109e+04   3.051 0.002402 ** 
+`Coumaric acids and derivatives`                         -3.237e+04  1.151e+04  -2.812 0.005114 ** 
+`Alpha amino acids and derivatives`                      -1.267e+01  1.527e+01  -0.830 0.406910    
+Indoloquinolines                                          1.688e+04  5.908e+03   2.857 0.004455 ** 
+Macrolactams                                              1.077e+02  4.703e+01   2.290 0.022405 *  
+Oxazepines                                               -3.326e+03  1.304e+03  -2.550 0.011064 *  
+Pyrazines                                                 5.369e+02  1.789e+02   3.001 0.002819 ** 
+Azepines                                                 -2.190e+02  1.202e+02  -1.822 0.069061 .  
+Oxetanes                                                 -2.094e+03  6.740e+02  -3.107 0.001991 ** 
+Diazepines                                               -1.530e+03  7.365e+02  -2.077 0.038254 *  
+Dibenzodiazepines                                        -1.091e+05  3.114e+04  -3.504 0.000499 ***
+`Pyridazines and derivatives`                             1.607e+03  5.390e+02   2.981 0.003012 ** 
+`Pyrimidines and pyrimidine derivatives`                 -4.083e+01  3.057e+01  -1.336 0.182259    
+Furans                                                    1.309e+03  5.574e+02   2.349 0.019195 *  
+Imidazoles                                               -5.604e+02  2.229e+02  -2.514 0.012251 *  
+Imidazolines                                              5.716e+02  1.723e+02   3.317 0.000973 ***
+Indazoles                                                -1.090e+04  3.358e+03  -3.246 0.001247 ** 
+Isoxazoles                                                2.147e+03  6.659e+02   3.225 0.001340 ** 
+Oxazoles                                                 -1.588e+03  6.164e+02  -2.577 0.010255 *  
+Oxazolines                                                4.137e+03  1.166e+03   3.547 0.000424 ***
+Pyrans                                                    5.121e+01  3.694e+01   1.386 0.166264    
+Pyrazoles                                                -1.125e+03  3.873e+02  -2.904 0.003836 ** 
+Pyrazolines                                               1.891e+02  2.280e+02   0.830 0.407192    
+`Pyridines and derivatives`                              -5.647e+02  2.158e+02  -2.617 0.009137 ** 
+Pyrroles                                                 -1.673e+02  1.083e+02  -1.544 0.123275    
+Pyrrolines                                               -2.021e+03  6.934e+02  -2.914 0.003720 ** 
+Thiadiazoles                                              4.160e+02  2.186e+02   1.903 0.057529 .  
+Thiazines                                                 3.084e+03  1.954e+03   1.579 0.115061    
+Thiazoles                                                 2.603e+03  7.597e+02   3.426 0.000661 ***
+Thiophenes                                               -7.865e+02  2.831e+02  -2.778 0.005671 ** 
+Triazines                                                 3.794e+02  2.644e+02   1.435 0.151963    
+Triazoles                                                 8.779e+01  3.636e+01   2.415 0.016090 *  
+`Phenanthridines and derivatives`                         1.255e+04  4.577e+03   2.741 0.006332 ** 
+Azetidines                                                7.506e+03  2.350e+03   3.194 0.001486 ** 
+Aziridines                                                1.121e+03  4.951e+02   2.264 0.023981 *  
+Dioxolanes                                                1.326e+02  2.454e+02   0.540 0.589182    
+Oxazinanes                                                1.477e+03  4.801e+02   3.076 0.002207 ** 
+Oxazolidines                                              4.071e+02  2.857e+02   1.425 0.154770    
+`Pteridines and derivatives`                             -1.865e+03  1.321e+03  -1.412 0.158444    
+`Pterins and derivatives`                                 4.096e+04  1.442e+04   2.841 0.004681 ** 
+Tetrazoles                                               -2.631e+02  1.003e+02  -2.624 0.008935 ** 
+`Hydrazines and derivatives`                             -8.959e+02  2.993e+02  -2.993 0.002891 ** 
+Phenylhydrazines                                          4.254e+03  1.461e+03   2.911 0.003756 ** 
+Semicarbazides                                           -3.657e+02  2.974e+02  -1.230 0.219354    
+Hydrazones                                                7.905e+02  2.653e+02   2.980 0.003015 ** 
+Imines                                                   -1.725e+02  7.562e+01  -2.281 0.022930 *  
+Ketones                                                   5.574e+01  2.329e+01   2.393 0.017054 *  
+Acetophenones                                            -8.934e+03  3.205e+03  -2.788 0.005502 ** 
+Benzophenones                                            -8.876e+03  3.538e+03  -2.509 0.012420 *  
+`Alpha-amino ketones`                                     3.622e+01  2.027e+01   1.787 0.074496 .  
+Benzopyrans                                               1.113e+03  4.305e+02   2.584 0.010037 *  
+Aldehydes                                                 1.324e+03  3.812e+02   3.474 0.000556 ***
+Quinomethanes                                            -9.331e+03  3.052e+03  -3.057 0.002349 ** 
+Isoindoles                                               -1.407e+03  6.292e+02  -2.236 0.025765 *  
+`Alkyl aryl ethers`                                       6.318e+01  1.847e+02   0.342 0.732494    
+`Alcohols and polyols`                                   -4.418e+01  2.155e+01  -2.050 0.040867 *  
+`Azaspirodecane derivatives`                              6.672e+02  4.349e+02   1.534 0.125610    
+Enols                                                     1.497e+03  4.995e+02   2.996 0.002866 ** 
+`1,3-dicarbonyl compounds`                               -2.034e+02  8.590e+01  -2.368 0.018250 *  
+Phenols                                                  -2.641e+02  1.921e+02  -1.375 0.169771    
+Catechols                                                -1.226e+03  8.573e+02  -1.430 0.153413    
+Hydroquinones                                             2.466e+04  8.342e+03   2.956 0.003254 ** 
+Resorcinols                                               1.476e+03  9.095e+02   1.623 0.105240    
+Anisoles                                                 -2.206e+03  6.766e+02  -3.261 0.001185 ** 
+`Tyrosols and derivatives`                               -1.004e+04  4.053e+03  -2.476 0.013594 *  
+Aminophenols                                             -5.683e+03  3.231e+03  -1.759 0.079176 .  
+Nitrophenols                                             -1.190e+03  8.425e+02  -1.412 0.158564    
+Chromones                                                 7.750e+03  3.664e+03   2.115 0.034880 *  
+`Coumarins and derivatives`                              -1.269e+04  3.953e+03  -3.210 0.001409 ** 
+`Macrolides and analogues`                                8.134e+01  2.761e+01   2.946 0.003361 ** 
+Anthraquinones                                            4.263e+02  8.402e+02   0.507 0.612052    
+Naphthoquinones                                           1.185e+04  3.972e+03   2.984 0.002981 ** 
+Tetracenequinones                                        -1.144e+04  6.945e+03  -1.647 0.100092    
+`N-organohydroxylamines`                                 -1.096e+02  7.787e+01  -1.407 0.159907    
+Epoxides                                                 -1.167e+03  3.973e+02  -2.936 0.003469 ** 
+Lactams                                                  -7.025e+01  5.146e+01  -1.365 0.172817    
+`Beta lactams`                                            9.396e+03  3.679e+03   2.554 0.010948 *  
+Caprolactams                                             -5.675e+03  2.096e+03  -2.707 0.007015 ** 
+`Delta lactams`                                          -4.352e+02  2.810e+02  -1.549 0.121993    
+Thiolactams                                              -3.140e+03  1.011e+03  -3.105 0.002006 ** 
+Monobactams                                              -5.192e+02  9.471e+02  -0.548 0.583797    
+Glycerolipids                                            -1.916e+01  1.875e+01  -1.022 0.307277    
+`Benzoic acids and derivatives`                          -4.031e+03  1.190e+03  -3.388 0.000757 ***
+Benzamides                                                3.645e+03  1.186e+03   3.073 0.002231 ** 
+`Hippuric acids and derivatives`                          3.179e+03  9.671e+02   3.288 0.001079 ** 
+Tetracyclines                                             2.176e+03  7.206e+02   3.020 0.002656 ** 
+`Tryptamines and derivatives`                            -1.233e+03  6.081e+02  -2.028 0.043051 *  
+Phenylmethylamines                                        1.779e+03  8.415e+02   2.114 0.035023 *  
+Phenethylamines                                          -4.462e+02  2.321e+02  -1.923 0.055059 .  
+Phenylpropylamines                                       -1.665e+03  3.640e+03  -0.457 0.647535    
+`Amphetamines and derivatives`                            8.797e+02  3.854e+02   2.283 0.022855 *  
+Piperazines                                              -2.691e+03  1.024e+03  -2.627 0.008862 ** 
+Methoxyphenols                                           -3.313e+00  2.494e+02  -0.013 0.989408    
+Nitrofurans                                               4.198e+03  1.469e+03   2.858 0.004430 ** 
+Piperidines                                               1.087e+02  5.896e+01   1.844 0.065763 .  
+Oxazolidinones                                           -2.045e+02  2.710e+02  -0.755 0.450794    
+Oligosaccharides                                          1.997e+02  6.995e+01   2.854 0.004484 ** 
+Xanthenes                                                 3.576e+04  1.985e+04   1.802 0.072169 .  
+Psoralens                                                 7.000e+03  2.478e+03   2.825 0.004903 ** 
+Xanthones                                                -5.232e+03  1.736e+03  -3.013 0.002711 ** 
+Pyrazolones                                              -1.187e+03  4.399e+02  -2.699 0.007191 ** 
+Phthalazines                                             -7.859e+03  2.879e+03  -2.730 0.006549 ** 
+Pyridazinones                                             2.613e+02  3.702e+02   0.706 0.480591    
+Phthalazinones                                            2.164e+04  7.126e+03   3.037 0.002514 ** 
+Carbazoles                                               -5.833e+03  1.582e+03  -3.686 0.000252 ***
+`Indoles and derivatives`                                -2.768e+02  1.508e+02  -1.835 0.067114 .  
+Porphyrins                                                2.349e+02  1.438e+02   1.633 0.103076    
+Pyrrolopyridines                                          4.092e+03  1.390e+03   2.945 0.003379 ** 
+`Sugar acids and derivatives`                             4.191e+00  2.611e+01   0.160 0.872564    
+Indolizines                                              -1.486e+04  5.304e+03  -2.803 0.005259 ** 
+Pyrazolidines                                            -3.978e+02  2.714e+02  -1.465 0.143419    
+Pyrrolidines                                              2.600e+02  1.216e+02   2.138 0.033023 *  
+Pyrrolizines                                              6.380e+02  4.088e+02   1.560 0.119269    
+Quinolizidines                                            8.651e+02  2.435e+02   3.552 0.000417 ***
+Quinolizines                                             -8.510e+03  4.172e+03  -2.040 0.041903 *  
+Hydrophenanthrenes                                        6.161e+02  3.538e+02   1.741 0.082242 .  
+Thiadiazines                                             -1.075e+04  5.428e+03  -1.980 0.048248 *  
+Thiazolidines                                            -5.451e+01  1.879e+02  -0.290 0.771874    
+Thiazolidinones                                          -3.936e+03  1.806e+03  -2.179 0.029779 *  
+Thiazolidinediones                                        6.715e+03  2.416e+03   2.779 0.005652 ** 
+Thiazolines                                               3.189e+03  9.574e+02   3.330 0.000929 ***
+Thiolanes                                                 7.229e+03  2.724e+03   2.654 0.008201 ** 
+Tannins                                                  -3.332e+04  1.346e+04  -2.476 0.013605 *  
+Nitroimidazoles                                           1.271e+03  4.219e+02   3.012 0.002724 ** 
+`Purines and purine derivatives`                          6.067e+02  2.088e+02   2.906 0.003821 ** 
+Hypoxanthines                                             3.112e+03  1.121e+03   2.775 0.005715 ** 
+Xanthines                                                -1.287e+03  1.043e+03  -1.234 0.217662    
+Imidazolidines                                           -1.351e+02  2.210e+02  -0.611 0.541204    
+Indolizidines                                             2.547e+03  8.962e+02   2.842 0.004654 ** 
+Quinuclidines                                             8.279e+02  4.698e+02   1.762 0.078621 .  
+Stilbenes                                                 3.926e+04  1.352e+04   2.903 0.003851 ** 
+Ethers                                                   -9.035e+01  3.876e+01  -2.331 0.020127 *  
+Glycerophospholipids                                     -1.838e+02  8.865e+01  -2.073 0.038655 *  
+Sphingolipids                                             4.588e+02  1.746e+02   2.627 0.008872 ** 
+`Steroids and steroid derivatives`                       -1.793e+03  7.426e+02  -2.415 0.016086 *  
+`Prenol lipids`                                           1.428e+02  5.802e+01   2.461 0.014195 *  
+`Monohydroxy bile acids, alcohols and derivatives`       -4.746e+03  2.296e+03  -2.067 0.039192 *  
+`Phenylpropanoids and polyketides`                       -2.683e+02  8.418e+01  -3.187 0.001526 ** 
+`Fatty acids and conjugates`                              5.653e+01  4.534e+01   1.247 0.213033    
+`Organic acids and derivatives`                          -1.802e+01  1.298e+01  -1.388 0.165774    
+`Carboxylic acids and derivatives`                        3.243e+02  1.074e+02   3.019 0.002665 ** 
+`Short-chain hydroxy acids and derivatives`               1.720e+02  1.129e+02   1.524 0.128167    
+`Organohalogen compounds`                                -2.298e+03  8.771e+02  -2.620 0.009056 ** 
+`Sulfinic acids and derivatives`                          2.666e+04  8.988e+03   2.966 0.003158 ** 
+`Organosulfonic acids and derivatives`                   -1.491e+03  5.588e+02  -2.669 0.007858 ** 
+`Carbamic acids`                                          2.339e+03  8.026e+02   2.914 0.003720 ** 
+Acridines                                                -1.478e+04  4.279e+03  -3.454 0.000597 ***
+`Acryloyl compounds`                                      3.182e+03  1.243e+03   2.560 0.010738 *  
+`Organonitrogen compounds`                                6.658e+01  2.377e+01   2.801 0.005287 ** 
+`Alkaloids and derivatives`                              -4.857e+02  2.176e+02  -2.232 0.026062 *  
+`Beta-amino ketones`                                      1.861e+02  2.233e+02   0.833 0.405063    
+`Aminobenzoic acids and derivatives`                     -1.230e+03  8.353e+02  -1.473 0.141455    
+Aminoglycosides                                          -1.479e+02  5.193e+01  -2.847 0.004588 ** 
+`Aminopyridines and derivatives`                          6.097e+02  3.833e+02   1.591 0.112270    
+`Aniline and substituted anilines`                        7.659e+02  2.752e+02   2.783 0.005586 ** 
+Anilides                                                 -1.996e+02  1.243e+02  -1.606 0.108919    
+`Primary alcohols`                                        4.900e+01  1.954e+01   2.507 0.012484 *  
+`Nucleosides, nucleotides, and analogues`                -2.638e+02  8.595e+01  -3.069 0.002259 ** 
+Pyrimidones                                              -1.418e+02  7.993e+01  -1.774 0.076701 .  
+ [ reached getOption("max.print") -- omitted 1094 rows ]
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.355 on 518 degrees of freedom
+Multiple R-squared:  0.9024,	Adjusted R-squared:  0.7008 
+F-statistic: 4.478 on 1069 and 518 DF,  p-value: < 2.2e-16
+

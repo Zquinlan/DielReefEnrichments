@@ -1,0 +1,114 @@
+I"ð<h1 id="contents-of-github-repository--dorcierr">Contents of Github Repository:  DORCIERR</h1>
+<ul>
+  <li>README.md
+    <h1 id="code">code</h1>
+  </li>
+  <li><a href="canopus_model.R/">canopus_model.R</a></li>
+  <li><a href="bicluster.py/">bicluster.py</a></li>
+  <li><a href="Microbial_pipeline.R/">Microbial_pipeline.R</a></li>
+  <li><a href="metabolite_modeled_lability.R/">metabolite_modeled_lability.R</a></li>
+  <li><a href="12182019DORCIERR_working_pipeline.R/">12182019DORCIERR_working_pipeline.R</a></li>
+  <li><a href="metabolite_trends.R/">metabolite_trends.R</a></li>
+  <li><a href="current_dorcierr_working_pipeline.R/">current_dorcierr_working_pipeline.R</a>
+    <h1 id="data">data</h1>
+  </li>
+  <li>test.csv</li>
+  <li>mlr_df.csv
+    <h2 id="analysis">analysis</h2>
+  </li>
+  <li>hc_depletolites_df.csv</li>
+  <li>canopus_model_rough.txt</li>
+  <li>multiple_reg_coefficients_whole_metabolome_aic_models.txt</li>
+  <li>identify_nets_libid.csv</li>
+  <li>lindaDepletolites.csv</li>
+  <li>canopus_filtered_tidy.csv</li>
+  <li>identify_nets_libid.numbers</li>
+  <li>n_mulreg.csv</li>
+  <li>Moorea2017_MolNetEnhancer.csv</li>
+  <li>cyto_depletes.csv</li>
+  <li>multiple_reg_coefficients_whole_metabolome_threemodels.txt</li>
+  <li>lindaPieChartMetadata.csv</li>
+  <li>model_rmse_r2.txt</li>
+  <li>deplete_networks.csv</li>
+  <li>org_random_residsmodels.txt</li>
+  <li>multiple_reg_coefficients_whole_metabolome.txt</li>
+  <li>canopus_df.csv</li>
+  <li>aic_model_selection.txt</li>
+  <li>dorcierr_day_benthic_exometabolite_features.csv</li>
+  <li>tukey_log2.txt</li>
+  <li>linear_model_dredged_variabled.txt</li>
+  <li>dredge_model_selection.txt
+    <h2 id="raw">raw</h2>
+    <h3 id="metabolomics">metabolomics</h3>
+  </li>
+  <li>SIRIUS_Zodiac_converted.csv</li>
+  <li>Dorcierr_DIC_TopDepletolitesClass.csv</li>
+  <li>Dorcierr_CCA_TopDepletolitesClassified.csv</li>
+  <li>Extraction_efficiency.csv</li>
+  <li>Morrea_Feayures-Table_all_Gap-Filled5.csv</li>
+  <li>Analog-Hits.tsv</li>
+  <li>Library-Hits.tsv</li>
+  <li>Node_info.tsv</li>
+  <li>Dorcierr_POC_TopDepletolites_Classified.csv</li>
+  <li>Moâ€™orea 2017 Mass spec sample codes - Sheet1.csv</li>
+  <li>summary_csi_fingerid.tsv</li>
+  <li>categories.canopus.strings.nelsonMarch2019.CSV</li>
+  <li>MS2LDA_pairs.csv</li>
+  <li>Canopus_classes.csv</li>
+  <li>moorea2017_NAP.tsv
+    <h3 id="doc_fdom_fcm">DOC_fDOM_FCM</h3>
+  </li>
+  <li>DORCIERR_fDOM_FCM.xlsx</li>
+  <li>MO17_ExpSummary_DOC.2018.04.04.xlsx
+    <h3 id="microbes">microbes</h3>
+    <h4 id="mcr201716snelsonpipelineoctober2019">MCR2017.16S.Nelson.Pipeline.October2019</h4>
+  </li>
+  <li>annotations_100.taxonomy.tsv</li>
+  <li>abundance_table_100.shared.tsv</li>
+  <li>all_alphaDiversity_100.summary.tsv</li>
+  <li>all_unifrac_100.weighted.dist.tsv</li>
+  <li>all_postprocessing_100.relabund.tsv</li>
+  <li>sequences_100.fasta</li>
+  <li>all_betaDiversity_100.summary.tsv</li>
+  <li>sequences_per_sample_per_step_100 (1).tsv
+    <h2 id="plots">plots</h2>
+  </li>
+  <li>SpecificGrowthRate.pdf</li>
+  <li>gaussian_distribution_non_transformed.pdf</li>
+  <li>weighted_lability_nultiple_regressions_aic.pdf</li>
+  <li>weighted_lability_nultiple_regressions.pdf</li>
+  <li>venn_depletolites.png.2021-04-26_13-29-07.log</li>
+  <li>venn_depletolites.png.2021-04-19_12-04-05.log</li>
+  <li>depletolites_hc_bluered.png</li>
+  <li>venn_depletolites.png.2021-04-21_18-07-48.log</li>
+  <li>change_xic_activity_ra.png</li>
+  <li>FCM_day.pdf</li>
+  <li>venn_depletolites.png.2021-04-19_12-00-10.log</li>
+  <li>canopus_weighted_lability.pdf</li>
+  <li>org_depletoliteebar_netactivity.pdf</li>
+  <li>venn_depletolites.tiff.2021-04-16_11-22-31.log</li>
+  <li>change_xic_activity.png</li>
+  <li>depletolites_hc_blues.png</li>
+  <li>lability_metrics_log10.pdf</li>
+  <li>lability_nultiple_regressions.pdf</li>
+  <li>org_pie_111720.pdf</li>
+  <li>depletolites_hc.png</li>
+  <li>venn_depletolites.png.2021-04-23_09-00-07.log</li>
+  <li>org_log2.pdf</li>
+  <li>canopus_gaussian_check.pdf</li>
+  <li>supplemental_xiclog2_fcm.pdf</li>
+  <li>org_depletoliteebar_netactivity_120720.pdf</li>
+  <li>correlation_verify.pdf</li>
+  <li>venn_depletolites.png.2021-04-21_10-24-24.log</li>
+  <li>org_pie.pdf</li>
+  <li>weighted_lability_nultiple_regressions_nomz.pdf</li>
+  <li>venn_depletolites.png</li>
+  <li>org_log2_120720.pdf</li>
+  <li>xicweighted_log2_fcm.pdf</li>
+  <li>weighted_log2_boxplot.pdf</li>
+  <li>depletolites_hc_greys.png</li>
+  <li>venn_depletolites.tiff.2021-04-16_11-23-08.log</li>
+  <li>gaussian_distribution_log2change.pdf</li>
+  <li>depletolites_hc_lightblues.png</li>
+</ul>
+:ET
