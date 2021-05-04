@@ -26,6 +26,7 @@ library(classyfireR)
 library(randomForest)
 library(ggpubr)
 library(rsq)
+library(VennDiagram)
 
 
 #PCoA, PERMANOVA
@@ -206,16 +207,18 @@ fcm_T0_5 <- dorc_fcm_fdom%>%
                           Organism == 'Dictyota'  ~ 23,
                           Organism == 'CCA'  ~ 23,
                           Organism == 'Porites lobata' ~ 48,
-                          Organism == 'Pocillopora verrucosa' ~ 37),
+                          Organism == 'Pocillopora verrucosa' ~ 37,
+                          Organism == 'Water control' ~ 37),
          final_cells = case_when(Organism == 'Turf' ~ T4,
                                  Organism == 'Dictyota'  ~ T4,
                                  Organism == 'CCA'  ~ T4,
                                  Organism == 'Porites lobata' ~ TF,
-                                 Organism == 'Pocillopora verrucosa' ~ T6))%>%
+                                 Organism == 'Pocillopora verrucosa' ~ T6,
+                                 Organism == 'Water control' ~ T6))%>%
   group_by(Organism, DayNight)%>%
   mutate(T0 = mean(T0, na.rm = TRUE),
          cells_ul = (log(final_cells) - log(T0))/(hour))%>%
-  select(-c(T0:TF, final_cells, hour))
+  select(-c(T0:TF, hour))
 
 # SET -- CANOPUS filters --------------------------------------------------
 # Canopus annotations which are above level 3 AND 80% probability
@@ -471,7 +474,7 @@ log2_change_vals <- feature_table_no_back_trans%>%
                                  TF == 0 & T0 > 0 ~ -6.6,
                                  TF == 0 & T0 == 0 ~ 0,
                                  TRUE ~ as.numeric(log2_change)))
-  
+
 
 
 # FILTERING -- Log2 Exometabolites ----------------------------------------
@@ -580,6 +583,7 @@ min_filter <- min_filter_pre%>%
   filter(max(xic) >= 1*10^6)%>%
   left_join(networking%>%
               select(network, feature_number), by = 'feature_number')
+
 # FILTERING -- Effect of all three filters --------------------------------
 min_filter_feature_tag <- min_filter%>%
   ungroup()%>%
@@ -645,6 +649,36 @@ num_features_all_filter <- all_filter%>%
   summarize_if(is.numeric, sum)%>%
   ungroup()
 
+num_features_incremental <- no_min_filter%>%
+  ungroup()%>%
+  filter(DayNight == 'Day')%>%
+  nest(data = everything())%>%
+  mutate(log2 = map(data, ~inner_join(.x, log2_features%>%
+                                        select(DayNight, feature_number), by = c('DayNight', 'feature_number'))%>%
+                      select(feature_number)%>%
+                      unique()%>%
+                      nrow()),
+         exometabolite = map(data, ~inner_join(.x, log2_features%>%
+                                                 select(DayNight, feature_number), by = c('DayNight', 'feature_number'))%>%
+                               inner_join(min_filter%>%
+                                            select(feature_number, DayNight, Organism), by = c('DayNight', 'Organism', 'feature_number'))%>%
+                               select(feature_number, Organism)%>%
+                               unique()%>%
+                               group_by(Organism)%>%
+                               mutate(count = 1)%>%
+                               summarize_if(is.numeric, sum)),
+         min = map(data, ~ inner_join(.x, log2_features%>%
+                                        select(DayNight, feature_number), by = c('DayNight', 'feature_number'))%>%
+                     inner_join(min_filter%>%
+                                  select(feature_number, DayNight, Organism), by = c('DayNight', 'Organism', 'feature_number'))%>%
+                     inner_join(org_exometabolites, by = c('DayNight', 'Organism', 'feature_number'))%>%
+                     select(feature_number, Organism)%>%
+                     unique()%>%
+                     group_by(Organism)%>%
+                     mutate(count = 1)%>%
+                     summarize_if(is.numeric, sum))
+         )%>%
+  select(-data)
 
 
 
@@ -657,7 +691,7 @@ plots_no_filter <- no_min_filter%>%
   mutate(mean = mean(xic),
          sd = sd(xic),
          fill_color = case_when(is.na(xic_min_filter) ~ "#F98400",
-                                TRUE ~ "#00A08A"),
+                                TRUE ~ "#006658"),
          fill_name = case_when(is.na(xic_min_filter) ~ 'b_Noise',
                                TRUE ~ 'a_Real'))%>%
   select(-c(xic, Replicate, xic_min_filter))%>%
@@ -672,7 +706,7 @@ plots_no_filter <- no_min_filter%>%
 # mutate(plots = map(data, ~ ggplot(.x, aes(Timepoint, mean, fill = fill_bl, color = feature_number)) +
 #                      geom_bar(stat = 'identity', size = 0.0001) +
 #                      facet_wrap(~Organism) +
-#                      scale_fill_manual(values = c("#F2AD00", "#00A08A")) +
+#                      scale_fill_manual(values = c("#F2AD00", "#006658")) +
 #                      ylab("Mean feature XIC") +
 #                      scale_color_manual(values = .x$color_b) +
 #                      ggtitle(sprintf("Net:%4.0f (%3.0f features)", network, num_features)) +
@@ -701,7 +735,7 @@ plots_log2_filter <- log2_filter%>%
   left_join(num_features_log2_filter, by = 'network')%>%
   arrange(network)%>%
   mutate(color_b = 'black',
-         fill_color = "#00A08A",
+         fill_color = "#006658",
          fill_name = "black",
          label = 'Timepoint filters')
 # group_by(network, num_features)%>%
@@ -737,7 +771,7 @@ plots_all_filter <- all_filter%>%
   left_join(num_features_all_filter, by = 'network')%>%
   arrange(network)%>%
   mutate(color_b = 'black',
-         fill_color = "#00A08A",
+         fill_color = "#006658",
          fill_name = "black",
          label = 'All filters')%>%
   bind_rows(plots_no_filter, plots_log2_filter)%>%
@@ -754,7 +788,7 @@ plots_all_filter <- all_filter%>%
                        facet_wrap(~Organism) +
                        ylab("Mean feature XIC") +
                        scale_color_manual(values = .x$color_b) +
-                       scale_fill_manual(values = c("#00A08A", "#F2AD00")) +
+                       scale_fill_manual(values = c("#006658", "#F2AD00")) +
                        ggtitle(sprintf("Net:%4.0f (%3.0f features)", network, num_features)) +
                        ylim(0, min(.x$y_max)) +
                        theme(legend.position = 'none',
@@ -909,7 +943,7 @@ all_activity <- net_test%>%
                               FDR_lesser < 0.05 ~ "accumolite",
                               TRUE ~ "recalcitrant"))%>%
   select(net_act, DayNight, activity)
-  
+
 
 # STATS - multiple regressions --------------------------------------------
 mul_reg <- log2_change_vals%>%
@@ -968,7 +1002,7 @@ n_mulreg <- mul_reg%>%
   group_by(feature_number, Organism)%>%
   summarize_if(is.numeric, mean)%>%
   ungroup()
- 
+
 
 lm_test_mulreg <- lm(log2_change ~ `row m/z`+ NOSC + log_nc + log_oc + log_hc + logxic, data = n_mulreg)
 
@@ -1118,7 +1152,7 @@ lm_orgrand <- lme4::lmer(log2_change ~ logxic + NOSC + (1|Organism), data = abse
 # sink()
 
 # VIZUALIZATIONS -- RGB hex codes for orgs --------------------------------
-org_colors_no_water <- c("#CC0033","#669900", "#CC6600", "#9900FF", "#33CC33")
+org_colors_no_water <- c("#A30029","#669900", "#FF850A", "#9900FF", "#33CC33")
 
 # Supplemental -- Checking for gaussian distribution in NOSC, Mass, NC and PC --------
 # LilliFors and other tests for normallity will not be effective due to large sample size. 
@@ -1248,9 +1282,6 @@ car::qqPlot(log10(log2_check + 20),
             main = bquote(QQ-plot: ~Log[10](Log[2] ~change)))
 dev.off()
 
-# VIZUALIZATIONS -- PCoA --------------------------------------------------
-
-
 # VIZUALIZATIONS -- Org Pie charts----------------------------------------------------------
 org_log2_ra <- feature_stats_wdf%>%
   filter(Timepoint == "T0",
@@ -1336,8 +1367,8 @@ org_pie <- org_log2_ra%>%
 #                       theme_classic() +
 #                       ggtitle(paste0(Organism, " (n = ", n, ")")) + 
 #                       # facet_wrap(~ Organism) +
-#                       scale_fill_manual(values = c('#78B7C5', '#EBCC2A', "#00A08A")) +
-#                       scale_color_manual(values = c('#78B7C5', '#EBCC2A', "#00A08A")) + 
+#                       scale_fill_manual(values = c('#78B7C5', '#EBCC2A', "#006658")) +
+#                       scale_color_manual(values = c('#78B7C5', '#EBCC2A', "#006658")) + 
 #                       labs(fill = 'Network activity', color = 'Network activity') +
 #                       theme(axis.line = element_blank(),
 #                             axis.text = element_text(size = 20),
@@ -1373,8 +1404,8 @@ org_pie_noerr <-org_pie%>%
                       theme_classic() +
                       ggtitle(paste0(Organism, " (n = ", n, ")")) + 
                       # facet_wrap(~ Organism) +
-                      scale_fill_manual(values = c('#78B7C5', '#EBCC2A', "#00A08A")) +
-                      scale_color_manual(values = c('#78B7C5', '#EBCC2A', "#00A08A")) + 
+                      scale_fill_manual(values = c('#78B7C5', '#EBCC2A', "#006658")) +
+                      scale_color_manual(values = c('#78B7C5', '#EBCC2A', "#006658")) + 
                       labs(fill = 'Network activity', color = 'Network activity') +
                       theme(axis.line = element_blank(),
                             axis.text = element_text(size = 20),
@@ -1428,8 +1459,8 @@ org_t0tf%>%
   geom_bar(aes(fill = Timepoint), stat = 'identity', position = position_dodge2(width= 1)) +
   geom_errorbar(aes(min = xic - err, max = xic + err), position = position_dodge2(width= 1)) +
   scale_fill_manual(values = c('#EBCC2A', '#EBCC2A' 
-                               # '#78B7C5', '#EBCC2A', "#00A08A"
-                               )) +
+                               # '#78B7C5', '#EBCC2A', "#006658"
+  )) +
   # geom_text(aes(label = paste0(count), vjust = -1.5), size = 8) +
   labs(y = 'Depletolites intensity (xic)', fill = 'Timepoint: ') +
   ylim(0, 1.3e+10) +
@@ -1470,13 +1501,13 @@ org_log2_anova <- boxplot_df%>%
   group_by(activity)%>%
   nest()%>%
   mutate(anova = map(data, ~ aov(log2_change ~ Organism, data = .x)%>%
-                      tidy()),
+                       tidy()),
          tukey = map(data, ~ aov(log2_change ~ Organism, data = .x)%>%
                        TukeyHSD(p.adjust.methods = 'BH')%>%
                        tidy()))%>%
   select(-data)%>%
   unnest(tukey)
-         
+
 sink('./analysis/tukey_log2.txt')
 org_log2_anova$anova
 
@@ -1538,6 +1569,41 @@ boxplot_df%>%
   )
 dev.off()
 
+
+# VIZUALIZATIONS -- Venn Diagram ------------------------------------------
+venn <- boxplot_df%>%
+  ungroup()%>%
+  filter(activity == 'depletolite')%>%
+  select(feature_number, Organism)%>%
+  unique()
+
+venn_list <- venn$feature_number%>%
+  as.vector()
+
+venn_split <- split(venn_list, venn$Organism)
+
+venn.diagram(venn_split, 
+             './plots/venn_depletolites.png',
+             category.names = c('CCA', 'Dic', 'Poc', 'Por', 'T'),
+             imagetype = 'png',  
+             height = 1500, 
+             width = 1800,
+             resolution = 300,
+             fill = org_colors_no_water)
+
+venn_features <- calculate.overlap(venn_split)[c('a1', 'a2', 'a3', 'a4', 'a5', 'a13', 'a31', 'a10')]
+
+names(venn_features) <- c('CCA', 'Dictyota', 'Poc', 'Por', 'Turf', 'coral', 'Primary producers', 'fleshy algae')
+
+venn_df <- venn_features%>%
+  unlist()%>%
+  as.data.frame()%>%
+  rename('feature_number' = 1)%>%
+  rownames_to_column(var = 'Intersection')%>%
+  mutate(Intersection = gsub('([0-9])', '', Intersection))%>%
+  left_join(metadata%>% 
+              select(combined_ID, binary_ID, feature_number), 
+            by= 'feature_number')
 
 # VIZUALIZATIONS -- Nutrition/lability vs microbial community change -------
 lability_val <- log2_change_vals%>%
@@ -1757,7 +1823,7 @@ n_mulreg%>%
     legend.box.background = element_rect(fill = "transparent"),
     legend.position = 'top'
   )
-  
+
 #Run ANOVAS in conjunction with these and this will be a supplemental figure
 
 # VIZUALIZATIONS -- Lability value from multiple regressions --------------
@@ -1800,8 +1866,8 @@ wlab_p <- (weight_lability_lm%>%
              filter(term == 'weighted_lability'))$p.value
 
 wlab_f <- (weight_lability_lm%>% 
-            tidy()%>% 
-            filter(term == 'weighted_lability'))$statistic
+             tidy()%>% 
+             filter(term == 'weighted_lability'))$statistic
 
 wlab_slope <- weight_lability_lm$coefficients["weighted_lability"]
 wlab_intercept <- weight_lability_lm$coefficients["(Intercept)"]
@@ -1830,21 +1896,21 @@ weighted_lability%>%
   #                               round(digits = 4), sep = "")), size = 9) +
   # geom_text(aes(x = -1.15, y = 700,
   #               label = paste("Cells µL^-1", " = ", wlab_slope%>%
-  #                               round(digits = 2), "*lability - ", -wlab_intercept%>%
-  #                               round(digits = 2), sep = "")), size = 9) +
-  theme(
-    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
-    axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
-    axis.text.y = element_text(size = 20),
-    axis.title = element_text(size = 20),
-    panel.background = element_rect(fill = "transparent"), # bg of the panel
-    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
-    panel.grid.major = element_line('grey'), # get rid of major grid
-    panel.grid.minor = element_line('grey'), # get rid of minor grid
-    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
-    legend.box.background = element_rect(fill = "transparent"),
-    legend.position = 'top'
-  )
+#                               round(digits = 2), "*lability - ", -wlab_intercept%>%
+#                               round(digits = 2), sep = "")), size = 9) +
+theme(
+  plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+  axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
+  axis.text.y = element_text(size = 20),
+  axis.title = element_text(size = 20),
+  panel.background = element_rect(fill = "transparent"), # bg of the panel
+  plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+  panel.grid.major = element_line('grey'), # get rid of major grid
+  panel.grid.minor = element_line('grey'), # get rid of minor grid
+  legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+  legend.box.background = element_rect(fill = "transparent"),
+  legend.position = 'top'
+)
 dev.off()
 
 
@@ -1852,9 +1918,9 @@ dev.off()
 lability_val_check <- (mul_reg%>%
                          ungroup()%>%
                          mutate(multiple_reg_lability = case_when(N > 0 & O > 0 & NOSC < 0 ~ (NOSC*n_nosc_coe + log_nc*n_n_coe + oc*n_o_coe + hc*n_h_coe + n_intercept),
-                                                                            N == 0 & NOSC < 0 | O == 0 & NOSC < 0 ~ (`row m/z`*no_mass_coe + hc*no_h_coe + no_intercept),
-                                                                            is.na(NOSC) | NOSC >= 0 ~ (`row m/z`*m_mass + m_intercept),
-                                                                            TRUE ~ NA_real_))%>%
+                                                                  N == 0 & NOSC < 0 | O == 0 & NOSC < 0 ~ (`row m/z`*no_mass_coe + hc*no_h_coe + no_intercept),
+                                                                  is.na(NOSC) | NOSC >= 0 ~ (`row m/z`*m_mass + m_intercept),
+                                                                  TRUE ~ NA_real_))%>%
                          filter(DayNight == 'Day'))$multiple_reg_lability
 
 
@@ -2057,22 +2123,22 @@ canopus_weighted_lability%>%
   #                               round(digits = 4), sep = "")), size = 9) +
   # geom_text(aes(x = -1.3, y = 0.078,
   #               label = paste("Cells µL^-1", " = ", wlab_slope%>%
-  #                               round(digits = 2), "*lability + ", wlab_intercept%>%
-  #                               round(digits = 2), sep = "")), size = 9) +
-  theme(
-    plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
-    axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
-    axis.text.y = element_text(size = 20),
-    axis.title = element_text(size = 20),
-    panel.background = element_rect(fill = "transparent"), # bg of the panel
-    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
-    panel.grid.major = element_line('grey'), # get rid of major grid
-    panel.grid.minor = element_line('grey'), # get rid of minor grid
-    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
-    legend.box.background = element_rect(fill = "transparent"),
-    legend.position = 'top'
-  )
- dev.off()
+#                               round(digits = 2), "*lability + ", wlab_intercept%>%
+#                               round(digits = 2), sep = "")), size = 9) +
+theme(
+  plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+  axis.text.x = element_text(size = 15, angle = 60, hjust = 1),
+  axis.text.y = element_text(size = 20),
+  axis.title = element_text(size = 20),
+  panel.background = element_rect(fill = "transparent"), # bg of the panel
+  plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+  panel.grid.major = element_line('grey'), # get rid of major grid
+  panel.grid.minor = element_line('grey'), # get rid of minor grid
+  legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+  legend.box.background = element_rect(fill = "transparent"),
+  legend.position = 'top'
+)
+dev.off()
 
 #checking gaussian
 pdf("./plots/canopus_gaussian_check.pdf")
@@ -2094,8 +2160,8 @@ dev.off()
 names(canopus_training) <- make.names(names(canopus_training))
 
 rf <- foreach(ntree = 100, .combine=randomForest::combine, .multicombine=TRUE, .packages='randomForest') %dopar% {
-                randomForest(log2_change ~ ., canopus_training, importance = TRUE, proximity = TRUE, ntree = ntree)
-  }
+  randomForest(log2_change ~ ., canopus_training, importance = TRUE, proximity = TRUE, ntree = ntree)
+}
 
 mda_canopus <- rf$importance%>%
   as.data.frame()%>%
@@ -2149,10 +2215,10 @@ fcm_graphing <- fcm_wdf%>%
   mutate(st_err = sd(`Cells µL-1`))%>%
   summarize_if(is.numeric, mean)
 
-pdf("~/Documents/GitHub/DORCIERR/data/plots/FCM_day.pdf", width = 7, height = 5)
+pdf("~/Documents/GitHub/DORCIERR/data/plots/FCM_day.pdf", width = 10, height = 10)
 fcm_graphing%>%
   ggplot(aes(x= Hours, y = `Cells µL-1`, color = Organism))+
-  geom_point(stat = "identity") +
+  geom_point(stat = "identity", size = 5) +
   geom_errorbar(aes(ymin = `Cells µL-1` - st_err, ymax = `Cells µL-1` + st_err)) +
   geom_line(aes(group = Organism)) +
   scale_color_manual(values = c(org_colors_no_water, "#3B9AB2")) +
@@ -2161,6 +2227,58 @@ fcm_graphing%>%
   # scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   scale_y_continuous(limits = c(0,900), breaks= seq(0, 900, 100)) +
   scale_x_continuous(limits = c(0,50), breaks = seq(0, 50, 5)) +
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    axis.text = element_text(size = 20),
+    axis.title = element_text(size = 20),
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major.x = element_blank(), # get rid of major grid
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(), # get rid of minor grid
+    legend.position = 'top',
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent") # get rid of legend panel bg
+  )
+dev.off()
+
+fcm_err <- fcm_T0_5%>%
+  group_by(Organism, DayNight)%>%
+  mutate(final_err = sd(final_cells),
+         cells_err = sd(cells_ul))%>%
+  summarize_if(is.numeric, mean)%>%
+  filter(DayNight == 'Day',
+         Organism != 'Offshore',
+         Organism != 'Influent')%>%
+  mutate(Replicate = 1)%>%
+  # select(-c(final_cells, cells_ul))%>%
+  mutate(Replicate = as.character(Replicate))
+
+organism_order_sgr <- as.factor(fcm_T0_5$Organism)%>%
+  relevel(c('Turf', 'Dictyota', 'Pocillopora Verrucosa', 'CCA'))%>%
+  levels()%>%
+  as.vector()
+
+sgr_colors <- c("#3B9AB2", "#9900FF", "#A30029", "#FF850A", "#669900", "#33CC33")
+
+pdf("~/Documents/GitHub/DORCIERR/data/plots/SpecificGrowthRate.pdf", width = 7, height = 7)
+fcm_T0_5%>%
+  filter(DayNight == 'Day',
+         Organism != 'Offshore',
+         Organism != 'Influent')%>%
+  # left_join(fcm_err, 
+  #           by = c('Organism', 'Replicate'))%>%
+  mutate(Organism = factor(Organism, levels = c('Water control', 'Porites lobata', 'CCA', 'Pocillopora verrucosa', 'Dictyota', 'Turf')))%>%
+  ggplot(aes(cells_ul, final_cells, color = Organism)) +
+  # geom_boxplot() +
+  geom_point(aes(alpha = 0.2), stat = 'identity', size = 7) +
+  geom_errorbarh(data = fcm_err, aes(xmin = cells_ul - cells_err, xmax = cells_ul + cells_err)) +
+  geom_errorbar(data = fcm_err, aes(ymin = final_cells - final_err, ymax = final_cells + final_err)) +
+  # coord_flip() +
+  scale_color_manual(values = c(sgr_colors, sgr_colors)) +
+  labs(x = bquote(Specific ~Growth ~Rate ~(Cells ~µL^-1 ~hr^-1)), y = bquote(Maximmum ~microbial ~load ~(cells ~µL^-1))) +
+  scale_y_continuous(limits = c(0,900), breaks= seq(0, 900, 100)) +
+  xlim(0.02, 0.09) +
   theme(
     axis.text.x = element_text(angle = 60, hjust = 1),
     panel.background = element_rect(fill = "transparent"), # bg of the panel
@@ -2210,11 +2328,23 @@ deplete_nets <- mul_reg%>%
   ungroup()%>%
   left_join(molnet_class_network, by = 'network')%>%
   select(Organism, network, molnet_string, modeled_lab, everything())
-  
+
 write_csv(deplete_nets, './analysis/deplete_networks.csv')  
 
+identify_depletes <- deplete_nets%>%
+  select(Organism, network)%>%
+  left_join(metadata%>%
+              select(feature_number, network, combined_ID, binary_ID),
+            by = 'network')
+# filter(binary_ID != 3,
+#        network != -1,
+#        binary_ID == 1)
+
+
+write_csv(identify_depletes, './analysis/identify_nets_libid.csv')
+
 top_nets <- (deplete_nets%>%
-               filter(log2_change < -5.64)%>%
+               filter(log2_change < -5.64)%>% # log2(50)
                # group_by(Organism)%>%
                # nest()%>%
                # mutate(data = map(data, ~ top_n(.x, 5, -log2_change)%>%
@@ -2244,7 +2374,7 @@ dendogram_df <- log2_change_vals%>%
   spread(network, zscore)
 
 write_csv(dendogram_df, './analysis/hc_depletolites_df.csv')  
-  
+
 # VIZUALIZATIONS -- Cytoscape ---------------------------------------------
 filtered_features <- feature_stats_wdf%>%
   ungroup()%>%
@@ -2329,11 +2459,11 @@ linda_sum <- linda_df%>%
   group_by(Organism, Replicate, Timepoint)%>%
   mutate(ra = xic/sum(xic, na.rm = TRUE))%>%
   ungroup()
-  
+
 
 # png("./plots/change_xic_activity.png", width = 1500, height = 1000)
 # linda_sum%>%
-#   # filter(activity != 'recalcitrant')%>%
+#   filter(activity != 'recalcitrant')%>%
 #   mutate(log10 = log10(xic))%>%
 #   ggplot(aes(ra, org_activity, color = Organism, shape = shape)) +
 #   geom_point(stat = 'identity', size = 14, alpha = 0.45) +
@@ -2343,7 +2473,7 @@ linda_sum <- linda_df%>%
 #   scale_shape_manual(values = c("\u25A0", "\u25C4", "\u25BA")) +
 #   labs(x = 'Relative Abundance', y = 'Organism / Activity') +
 #   # scale_x_log10() +
-#   # facet_wrap(~activity, nrow = 3) +
+#   facet_wrap(~activity, nrow = 1, ) +
 #   theme(axis.line = element_blank(),
 #         axis.text = element_text(size = 20),
 #         axis.ticks = element_blank(),
@@ -2371,7 +2501,7 @@ linda_mean_diff <- linda_sum%>%
   mutate(difference = TF-T0)%>%
   filter(activity != 'recalcitrant')
 
-png("./plots/change_xic_activity.png", width = 2000, height = 1000)
+png("./plots/change_xic_activity.png", width = 2000, height = 1500)
 linda_sum%>%
   filter(activity != 'recalcitrant')%>%
   mutate(log10 = log10(xic))%>%
@@ -2385,7 +2515,7 @@ linda_sum%>%
   facet_wrap(~activity, nrow = 1, scales = 'free_x') +
   scale_color_manual(values = org_colors_no_water) +
   scale_shape_manual(values = c("\u25A0", "\u25BA", "\u25C4")) +
-  labs(x = 'Sum Intensity (xic)', y = 'Organism / Metabolite pool', color = 'Organism: ', shape = 'Sample:') +
+  labs(x = 'Sum Intensity (xic)', y = 'Organism', color = 'Organism: ', shape = 'Sample:') +
   # xlim(0,0.3) +
   # scale_x_log10() +
   # facet_wrap(~activity, nrow = 3) +
@@ -2420,4 +2550,23 @@ dev.off()
 # write_csv(`Turf`, '~/Documents/SDSU_Scripps/DORCIERR/Datasets/linda_features_turf.csv')
 # write_csv(`Dictyota`, '~/Documents/SDSU_Scripps/DORCIERR/Datasets/linda_features_dictyota.csv')
 
+linda_pie_features <- org_log2_ra%>%
+  filter(DayNight == 'Day')%>%
+  group_by(feature_number, Organism, network, activity)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  left_join(metadata%>%
+              select(combined_ID, binary_ID, feature_number, ZodiacMF, ZodiacScore, C, H, N, O, P, S, NOSC, dG),
+            by = 'feature_number')
 
+write_csv(linda_pie_features, '~/Documents/GitHub/DORCIERR/data/analysis/lindaPieChartMetadata.csv')  
+
+linda_depletolites <- venn%>%
+  left_join(metadata%>%
+              select(combined_ID, binary_ID, SmilesLibrary_, SmilesAnalog_, feature_number, network, ZodiacMF, ZodiacScore, C, H, N, O, P, S, NOSC, dG),
+            by = 'feature_number')%>%
+  left_join(venn_df%>%
+              select(Intersection, feature_number),
+            by = 'feature_number')
+
+write_csv(linda_depletolites, '~/Documents/GitHub/DORCIERR/data/analysis/lindaDepletolites.csv')
