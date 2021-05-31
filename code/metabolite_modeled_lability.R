@@ -103,6 +103,8 @@ canopus_anotations <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolomic
 chemont_anotations <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/categories.canopus.strings.nelsonMarch2019.CSV")%>%
   rename('canopus_annotation' = 'name')
 
+canopusSirius4 <- read_csv('~/Documents/SDSU_Scripps/EcoNet/investigations/canopus_summary.csv')
+
 # Sirius and Zodiac both try to assign molecular formulas to all the features
 sirius_zodiac_anotations <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/SIRIUS_Zodiac_converted.csv")%>%
   rename(feature_number = 1)%>%
@@ -129,6 +131,9 @@ nap_df <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/moorea2017
 
 inchikey_df <- read_csv("~/Documents/SDSU_Scripps/Moorea_2017/csi_inchikey.csv")%>%
   mutate(feature_number = as.character(feature_number))
+
+# EcoNet
+ecoNet <- read_csv('~/Documents/Github/EcoNet/src/EcoNetMoorea_dereplicated.csv')
 
 # Linda annotations
 # molnet_class <- read_csv("raw/metabolomics/Dorcierr_POC_TopDepletolites_Classified.csv")%>%
@@ -1602,8 +1607,14 @@ venn_df <- venn_features%>%
   rownames_to_column(var = 'Intersection')%>%
   mutate(Intersection = gsub('([0-9])', '', Intersection))%>%
   left_join(metadata%>% 
-              select(combined_ID, binary_ID, feature_number), 
-            by= 'feature_number')
+              select(combined_ID, binary_ID, feature_number, network), 
+            by= 'feature_number')%>%
+  left_join(ecoNet%>%
+              select(-scan)%>%
+              filter(network != '-1')%>%
+              unique(), by = 'network')
+  
+
 
 # VIZUALIZATIONS -- Nutrition/lability vs microbial community change -------
 lability_val <- log2_change_vals%>%
@@ -2412,7 +2423,12 @@ cyto_deplete <- dorc_wdf%>%
                              TRUE ~ network))%>%
   left_join(all_activity, by = c('net_act', 'DayNight'))%>%
   rename(net_activity = activity)%>%
-  filter(DayNight == 'Day')
+  filter(DayNight == 'Day')%>%
+  left_join(ecoNet%>%
+              select(-scan)%>%
+              filter(network != '-1')%>%
+              unique(), by = 'network')
+  
 
 write_csv(cyto_deplete, './analysis/cyto_depletes.csv')
 
