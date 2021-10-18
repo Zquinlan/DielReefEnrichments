@@ -1,0 +1,605 @@
+feature_number,Organism,combined_ID,binary_ID,SmilesLibrary_,SmilesAnalog_,network,ZodiacMF,ZodiacScore,C,H,N,O,P,S,NOSC,dG,Intersection
+1001,Dictyota,"2S-Amino-4E-pentadecene-1,3R-diol",2,NA,CCCCCCCCCCC=CC(C(CO)N)O,193,C18H35NO2,1,18,35,1,2,0,0,-1.5555555555555554,104.63333333333333,NA
+1001,Porites lobata,"2S-Amino-4E-pentadecene-1,3R-diol",2,NA,CCCCCCCCCCC=CC(C(CO)N)O,193,C18H35NO2,1,18,35,1,2,0,0,-1.5555555555555554,104.63333333333333,NA
+1001,Pocillopora verrucosa,"2S-Amino-4E-pentadecene-1,3R-diol",2,NA,CCCCCCCCCCC=CC(C(CO)N)O,193,C18H35NO2,1,18,35,1,2,0,0,-1.5555555555555554,104.63333333333333,NA
+1118,Porites lobata,O-Arachidonoylglycidol,2,NA,CCCCCC=CCC=CCC=CCC=CCCCC(=O)OCC1CO1,343,C25H44NO7P,1,25,44,1,7,1,0,-1.2800000000000002,96.78,coral
+1118,Pocillopora verrucosa,O-Arachidonoylglycidol,2,NA,CCCCCC=CCC=CCC=CCC=CCCCC(=O)OCC1CO1,343,C25H44NO7P,1,25,44,1,7,1,0,-1.2800000000000002,96.78,coral
+1395,Dictyota,pGlu-Glu-Pro-amide,2,NA,C1CC(N(C1)C(=O)C(CCC(=O)O)NC(=O)C2CCC(=O)N2)C(=O)N,980,C25H48N2O4,1,25,48,2,4,0,0,-1.3600000000000003,99.06,NA
+1395,Porites lobata,pGlu-Glu-Pro-amide,2,NA,C1CC(N(C1)C(=O)C(CCC(=O)O)NC(=O)C2CCC(=O)N2)C(=O)N,980,C25H48N2O4,1,25,48,2,4,0,0,-1.3600000000000003,99.06,NA
+1395,Pocillopora verrucosa,pGlu-Glu-Pro-amide,2,NA,C1CC(N(C1)C(=O)C(CCC(=O)O)NC(=O)C2CCC(=O)N2)C(=O)N,980,C25H48N2O4,1,25,48,2,4,0,0,-1.3600000000000003,99.06,NA
+1681,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C24H41NO13,1,24,41,1,13,0,0,-0.5,74.55,Poc
+1949,Pocillopora verrucosa,Eicosapentaenoic acid ethyl ester,2,NA,CCC=CCC=CCC=CCC=CCC=CCCCC(=O)OCC,343,C25H42NO7P,1,25,42,1,7,1,0,-1.2000000000000002,94.5,Poc
+2086,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C21H31N21O,1,21,31,21,1,0,0,1.619047619047619,14.157142857142851,coral
+2086,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C21H31N21O,1,21,31,21,1,0,0,1.619047619047619,14.157142857142851,coral
+2191,Pocillopora verrucosa,Trichothecine,2,NA,CC=CC(=O)OC1CC2C3(C1(C4(CC(=O)C(=CC4O2)C)C)C)CO3,550,C9H19N5O3P,0.998598599,9,19,5,3,1,0,-0.33333333333333304,69.79999999999998,Poc
+2371,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C21H37NO11,1,21,37,1,11,0,0,-0.5714285714285712,76.58571428571427,Poc
+2372,Pocillopora verrucosa,Creatinol,2,NA,CN(CCO)C(=N)N,155,C11H21N3O,1,11,21,3,1,0,0,-0.9090909090909092,86.2090909090909,Poc
+2378,Pocillopora verrucosa,Creatinol,2,NA,CN(CCO)C(=N)N,155,C11H21N3O,1,11,21,3,1,0,0,-0.9090909090909092,86.2090909090909,Poc
+2405,Dictyota,"1(6H)-Pyridazinebutanoic acid, 6-imino-3-(4-methoxyphenyl)-",2,NA,COC1=CC=C(C=C1)C2=NN(C(=N)C=C2)CCCC(=O)O,550,C7H16N2P2,1,7,16,2,0,2,0,-2.8571428571428568,141.7285714285714,Dictyota
+2445,Pocillopora verrucosa,ALBIZZIINE,2,NA,N/A,2261,C12H15NO3,1,12,15,1,3,0,0,-0.5,74.55,Poc
+2485,Turf,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Piperidinones,3,NA,NA,1583,C18H33NO4,1,18,33,1,4,0,0,-1.2222222222222223,95.13333333333333,Turf
+2496,Turf,1-Methyl-L-histidine,2,NA,CN1C=C(N=C1)CC(C(=O)[O-])[NH3+],918,C16H29N2O6,1,16,29,2,6,0,0,-0.6875,79.89375,Turf
+2517,Turf,1-Methyl-L-histidine,2,NA,CN1C=C(N=C1)CC(C(=O)[O-])[NH3+],918,C19H29N3O3,0.996796797,19,29,3,3,0,0,-0.7368421052631575,81.29999999999998,Turf
+2522,Dictyota,(3-hydroxyheptadecenoyl)lysine,2,NA,NA,980,C24H46N2O4,1,24,46,2,4,0,0,-1.333333333333333,98.29999999999998,NA
+2522,Porites lobata,(3-hydroxyheptadecenoyl)lysine,2,NA,NA,980,C24H46N2O4,1,24,46,2,4,0,0,-1.333333333333333,98.29999999999998,NA
+2522,Pocillopora verrucosa,(3-hydroxyheptadecenoyl)lysine,2,NA,NA,980,C24H46N2O4,1,24,46,2,4,0,0,-1.333333333333333,98.29999999999998,NA
+2529,Porites lobata,no matches;no matches;no matches;no matches,3,NA,NA,-1,C8H33N17O6,1,8,33,17,6,0,0,3.75,-46.575,coral
+2529,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C8H33N17O6,1,8,33,17,6,0,0,3.75,-46.575,coral
+2575,Pocillopora verrucosa,Met Tyr Leu,2,NA,N/A,550,C21H34O11,0.674774775,21,34,0,11,0,0,-0.5714285714285712,76.58571428571427,Poc
+2643,Turf,Spectral Match to Oleoyl L-carnitine from NIST14,2,NA,N/A,1730,C18H40N6O8,0.909409409,18,40,6,8,0,0,-0.33333333333333304,69.79999999999998,Turf
+2658,Porites lobata,Octanoylcarnitine,2,NA,CCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C16H31NO4,1,16,31,1,4,0,0,-1.25,95.925,coral
+2658,Pocillopora verrucosa,Octanoylcarnitine,2,NA,CCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C16H31NO4,1,16,31,1,4,0,0,-1.25,95.925,coral
+2734,Pocillopora verrucosa,Decanoyl-L-carnitine,1,CCCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,N/A,21,C17H33NO4,1,17,33,1,4,0,0,-1.2941176470588234,97.18235294117646,Poc
+2942,Porites lobata,no matches;no matches;no matches;no matches,3,NA,NA,-1,C20H39NO5,1,20,39,1,5,0,0,-1.2999999999999998,97.35,coral
+2942,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C20H39NO5,1,20,39,1,5,0,0,-1.2999999999999998,97.35,coral
+2978,Porites lobata,Adipoyl-L-carnitine,2,NA,C[N+](C)(C)CC(CC(=O)[O-])OC(=O)CCCCC(=O)O,-1,C20H39NO5,1,20,39,1,5,0,0,-1.2999999999999998,97.35,coral
+2978,Pocillopora verrucosa,Adipoyl-L-carnitine,2,NA,C[N+](C)(C)CC(CC(=O)[O-])OC(=O)CCCCC(=O)O,-1,C20H39NO5,1,20,39,1,5,0,0,-1.2999999999999998,97.35,coral
+2997,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,550,C19H28N6O9,0.929129129,19,28,6,9,0,0,0.42105263157894735,48.3,Poc
+3032,Dictyota,Palmitoyl 3-carbacyclic phosphatidic acid,2,NA,CCCCCCCCCCCCCCCC(=O)OCC1CCP(=O)(O1)O,17,C22H35NO5,1,22,35,1,5,0,0,-1,88.8,NA
+3032,Porites lobata,Palmitoyl 3-carbacyclic phosphatidic acid,2,NA,CCCCCCCCCCCCCCCC(=O)OCC1CCP(=O)(O1)O,17,C22H35NO5,1,22,35,1,5,0,0,-1,88.8,NA
+3078,Porites lobata,Oleoyl-L-carnitine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C19H37NO5,1,19,37,1,5,0,0,-1.2631578947368425,96.30000000000001,coral
+3078,Pocillopora verrucosa,Oleoyl-L-carnitine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C19H37NO5,1,19,37,1,5,0,0,-1.2631578947368425,96.30000000000001,coral
+3080,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C17H40N2O11P,0.99019019,17,40,2,11,1,0,-1,88.8,Poc
+3119,Turf,Cytidine 5'-diphosphocholine,2,NA,[H+].C[N+](C)(C)CCOP(=O)([O-])OP(=O)([O-])OCC1C(C(C(O1)N2C=CC(=NC2=O)N)O)O,1907,C11HNO10P4,0.993693694,NA,NA,NA,NA,NA,NA,NA,NA,Turf
+3185,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C22H30N4O7,1,22,30,4,7,0,0,-0.18181818181818166,65.48181818181817,Poc
+3206,Pocillopora verrucosa,L-Carvone,2,NA,CC1=CCC(CC1=O)C(=C)C,-1,C11H17O6,0.638738739,11,17,0,6,0,0,-0.45454545454545414,73.25454545454544,Poc
+3214,Turf,Morantel,2,NA,CC1=C(SC=C1)C=CC2=NCCCN2C,490,C9H31N10P2,1,9,31,10,0,2,0,-1.2222222222222223,95.13333333333333,Turf
+3236,CCA,2-Despiperidyl-2-(5-carboxypentylamine)repaglinide,1,CCOC1=C(C=CC(=C1)CC(=O)NC(CC(C)C)C2=CC=CC=C2NCCCCC(=O)O)C(=O)O,CC1=CC=C(C=C1)NC(C)(C)C(=O)O,-1,C16H23NO2,1,16,23,1,2,0,0,-1,88.8,NA
+3236,Turf,2-Despiperidyl-2-(5-carboxypentylamine)repaglinide,1,CCOC1=C(C=CC(=C1)CC(=O)NC(CC(C)C)C2=CC=CC=C2NCCCCC(=O)O)C(=O)O,CC1=CC=C(C=C1)NC(C)(C)C(=O)O,-1,C16H23NO2,1,16,23,1,2,0,0,-1,88.8,NA
+3273,Dictyota,Undecanedioic acid,2,NA,C(CCCCC(=O)O)CCCCC(=O)O,4779,C14H23NO4,1,14,23,1,4,0,0,-0.8571428571428568,84.72857142857141,Dictyota
+3279,CCA,Misoprostol,2,NA,CCCCC(C)(CC=CC1C(CC(=O)C1CCCCCCC(=O)OC)O)O,167,C18H28O4,1,18,28,0,4,0,0,-1.1111111111111107,91.96666666666665,NA
+3279,Porites lobata,Misoprostol,2,NA,CCCCC(C)(CC=CC1C(CC(=O)C1CCCCCCC(=O)OC)O)O,167,C18H28O4,1,18,28,0,4,0,0,-1.1111111111111107,91.96666666666665,NA
+3279,Pocillopora verrucosa,Misoprostol,2,NA,CCCCC(C)(CC=CC1C(CC(=O)C1CCCCCCC(=O)OC)O)O,167,C18H28O4,1,18,28,0,4,0,0,-1.1111111111111107,91.96666666666665,NA
+3373,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C29H49NO15,1,29,49,1,15,0,0,-0.5517241379310347,76.02413793103449,coral
+3373,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C29H49NO15,1,29,49,1,15,0,0,-0.5517241379310347,76.02413793103449,coral
+3374,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C22H39NO11,1,22,39,1,11,0,0,-0.6363636363636367,78.43636363636364,coral
+3374,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C22H39NO11,1,22,39,1,11,0,0,-0.6363636363636367,78.43636363636364,coral
+3408,Dictyota,pGlu-Glu-Pro-amide,2,NA,C1CC(N(C1)C(=O)C(CCC(=O)O)NC(=O)C2CCC(=O)N2)C(=O)N,980,C26H50N2O4,1,26,50,2,4,0,0,-1.384615384615385,99.76153846153846,NA
+3408,Porites lobata,pGlu-Glu-Pro-amide,2,NA,C1CC(N(C1)C(=O)C(CCC(=O)O)NC(=O)C2CCC(=O)N2)C(=O)N,980,C26H50N2O4,1,26,50,2,4,0,0,-1.384615384615385,99.76153846153846,NA
+3408,Pocillopora verrucosa,pGlu-Glu-Pro-amide,2,NA,C1CC(N(C1)C(=O)C(CCC(=O)O)NC(=O)C2CCC(=O)N2)C(=O)N,980,C26H50N2O4,1,26,50,2,4,0,0,-1.384615384615385,99.76153846153846,NA
+3419,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Diterpenoids,3,NA,NA,1095,C15H28N2O4,1,15,28,2,4,0,0,-0.9333333333333336,86.9,Dictyota
+3435,Porites lobata,Organic compounds;Benzenoids;Phenol ethers;nan,3,NA,NA,2393,C18H33NO5,1,18,33,1,5,0,0,-1.1111111111111107,91.96666666666665,NA
+3435,Pocillopora verrucosa,Organic compounds;Benzenoids;Phenol ethers;nan,3,NA,NA,2393,C18H33NO5,1,18,33,1,5,0,0,-1.1111111111111107,91.96666666666665,NA
+3435,Turf,Organic compounds;Benzenoids;Phenol ethers;nan,3,NA,NA,2393,C18H33NO5,1,18,33,1,5,0,0,-1.1111111111111107,91.96666666666665,NA
+3479,Turf,Organic compounds;Benzenoids;Benzene and substituted derivatives;Methoxybenzenes,3,NA,NA,1907,C7H3NO13P4,0.967967968,NA,NA,NA,NA,NA,NA,NA,NA,Turf
+3487,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C25H43NO13,1,25,43,1,13,0,0,-0.5599999999999996,76.25999999999999,coral
+3487,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C25H43NO13,1,25,43,1,13,0,0,-0.5599999999999996,76.25999999999999,coral
+3493,Dictyota,His-Ala-Lys,2,NA,N/A,490,C15H25N2P,1,15,25,2,0,1,0,-1.5999999999999996,105.89999999999998,fleshy algae
+3493,Turf,His-Ala-Lys,2,NA,N/A,490,C15H25N2P,1,15,25,2,0,1,0,-1.5999999999999996,105.89999999999998,fleshy algae
+3527,Porites lobata,Tyramine,2,NA,C1=CC(=CC=C1CCN)O,2261,C12H15NO4,1,12,15,1,4,0,0,-0.33333333333333304,69.79999999999998,NA
+3527,Turf,Tyramine,2,NA,C1=CC(=CC=C1CCN)O,2261,C12H15NO4,1,12,15,1,4,0,0,-0.33333333333333304,69.79999999999998,NA
+3584,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H37NO9,1,20,37,1,9,0,0,-0.7999999999999998,83.1,coral
+3584,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H37NO9,1,20,37,1,9,0,0,-0.7999999999999998,83.1,coral
+3610,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,550,C29H46O15,0.861361361,29,46,0,15,0,0,-0.5517241379310347,76.02413793103449,Poc
+3635,Porites lobata,Acetyl-DL-carnitine,2,NA,CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,1306,C6H27N10P2,1,6,27,10,0,2,0,-1.166666666666667,93.55000000000001,coral
+3635,Pocillopora verrucosa,Acetyl-DL-carnitine,2,NA,CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,1306,C6H27N10P2,1,6,27,10,0,2,0,-1.166666666666667,93.55000000000001,coral
+3639,Pocillopora verrucosa,Lupinine,2,NA,C1CCN2CCCC(C2C1)CO,155,C12H25N3O2,1,12,25,3,2,0,0,-1,88.8,Poc
+3716,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Diterpenoids,3,NA,NA,1095,C14H26N2O4,1,14,26,2,4,0,0,-0.8571428571428568,84.72857142857141,NA
+3716,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Diterpenoids,3,NA,NA,1095,C14H26N2O4,1,14,26,2,4,0,0,-0.8571428571428568,84.72857142857141,NA
+3751,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C23H55N3O6P4,0.9998999,NA,NA,NA,NA,NA,NA,NA,NA,Poc
+3780,Dictyota,trans-Traumatic acid,2,NA,C(CCCCC(=O)O)CCCC=CC(=O)O,-1,C14H25NO4,1,14,25,1,4,0,0,-1,88.8,Dictyota
+3836,Turf,Organic compounds;Organoheterocyclic compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates,3,NA,NA,918,C21H25N3O4P4,0.997397397,NA,NA,NA,NA,NA,NA,NA,NA,Turf
+3860,Porites lobata,L-Arachidonoylcarnitine,2,NA,N/A,21,C21H39NO5,1,21,39,1,5,0,0,-1.2380952380952381,95.58571428571429,coral
+3860,Pocillopora verrucosa,L-Arachidonoylcarnitine,2,NA,N/A,21,C21H39NO5,1,21,39,1,5,0,0,-1.2380952380952381,95.58571428571429,coral
+3900,Dictyota,"N-(1,1-Dimethyl-2-hydroxyethyl)-3-amino-2-hydroxypropanesulfonic acid",2,NA,CC(C)(CO)NCC(CS(=O)(=O)O)O,17,C22H35NO6,1,22,35,1,6,0,0,-0.9090909090909092,86.2090909090909,Dictyota
+3903,Turf,"2,5-Cyclohexadiene-1,4-dione, 3-hydroxy-2-[(1R,6R)-3-methyl-6-(1-methylethenyl)-2-cyclohexen-1-yl]-5-pentyl-",1,CCCCCC1=CC(=O)C(=C(C1=O)O)C2C=C(CCC2C(=C)C)C,CSC1=CC(=C(C=C1)O)C(=O)O,1827,C13H25N7OP,1,13,25,7,1,1,0,-0.5384615384615383,75.64615384615384,Turf
+3962,Porites lobata,Aconitic acid,2,NA,N/A,-1,C18H30O7,1,18,30,0,7,0,0,-0.8888888888888893,85.63333333333334,coral
+3962,Pocillopora verrucosa,Aconitic acid,2,NA,N/A,-1,C18H30O7,1,18,30,0,7,0,0,-0.8888888888888893,85.63333333333334,coral
+3992,Dictyota,2-Propylbenzimidazole,2,NA,CCCC1=NC2=CC=CC=C2N1,-1,C15H19N,1,15,19,1,0,0,0,-1.0666666666666664,90.69999999999999,NA
+3992,Pocillopora verrucosa,2-Propylbenzimidazole,2,NA,CCCC1=NC2=CC=CC=C2N1,-1,C15H19N,1,15,19,1,0,0,0,-1.0666666666666664,90.69999999999999,NA
+3992,Turf,2-Propylbenzimidazole,2,NA,CCCC1=NC2=CC=CC=C2N1,-1,C15H19N,1,15,19,1,0,0,0,-1.0666666666666664,90.69999999999999,NA
+4007,Porites lobata,2-Hexyl-4-pentynoic acid,2,NA,CCCCCCC(CC#C)C(=O)O,1306,C19H35NO5,1,19,35,1,5,0,0,-1.1578947368421053,93.3,coral
+4007,Pocillopora verrucosa,2-Hexyl-4-pentynoic acid,2,NA,CCCCCCC(CC#C)C(=O)O,1306,C19H35NO5,1,19,35,1,5,0,0,-1.1578947368421053,93.3,coral
+4128,Dictyota,Isovaleryl-L-carnitine,2,NA,CC(C)CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C13H25NO4,1,13,25,1,4,0,0,-1.0769230769230766,90.99230769230769,Dictyota
+4136,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,21,C20H39NO5,1,20,39,1,5,0,0,-1.2999999999999998,97.35,coral
+4136,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,21,C20H39NO5,1,20,39,1,5,0,0,-1.2999999999999998,97.35,coral
+4168,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C25H53N7O2P4,1,NA,NA,NA,NA,NA,NA,NA,NA,Poc
+4205,Pocillopora verrucosa,Oleoyl-L-carnitine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C21H41NO5,1,21,41,1,5,0,0,-1.333333333333333,98.29999999999998,Poc
+4277,Dictyota,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,21,C11H21NO4,1,11,21,1,4,0,0,-0.9090909090909092,86.2090909090909,NA
+4277,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,21,C11H21NO4,1,11,21,1,4,0,0,-0.9090909090909092,86.2090909090909,NA
+4315,CCA,3-Cyclohexyl-L-alaninamide,2,NA,C1CCC(CC1)CC(C(=O)N)N,3585,C16H35NO3,1,16,35,1,3,0,0,-1.625,106.6125,Primary producers
+4315,Dictyota,3-Cyclohexyl-L-alaninamide,2,NA,C1CCC(CC1)CC(C(=O)N)N,3585,C16H35NO3,1,16,35,1,3,0,0,-1.625,106.6125,Primary producers
+4315,Porites lobata,3-Cyclohexyl-L-alaninamide,2,NA,C1CCC(CC1)CC(C(=O)N)N,3585,C16H35NO3,1,16,35,1,3,0,0,-1.625,106.6125,Primary producers
+4315,Pocillopora verrucosa,3-Cyclohexyl-L-alaninamide,2,NA,C1CCC(CC1)CC(C(=O)N)N,3585,C16H35NO3,1,16,35,1,3,0,0,-1.625,106.6125,Primary producers
+4315,Turf,3-Cyclohexyl-L-alaninamide,2,NA,C1CCC(CC1)CC(C(=O)N)N,3585,C16H35NO3,1,16,35,1,3,0,0,-1.625,106.6125,Primary producers
+4348,Pocillopora verrucosa,Creatinol,2,NA,CN(CCO)C(=N)N,155,C11H21N3O,1,11,21,3,1,0,0,-0.9090909090909092,86.2090909090909,Poc
+4360,Dictyota,no matches;no matches;no matches;no matches,3,NA,NA,-1,C19H28O5,1,19,28,0,5,0,0,-0.9473684210526319,87.30000000000001,Dictyota
+4366,Pocillopora verrucosa,Prostaglandin A1 methyl ester,2,NA,CCCCCC(C=CC1C=CC(=O)C1CCCCCCC(=O)OC)O,167,C20H32O4,1,20,32,0,4,0,0,-1.2000000000000002,94.5,Poc
+4450,Pocillopora verrucosa,Picrotin,2,NA,CC12C3C4C(C(C1(CC5C2(O5)C(=O)O3)O)C(=O)O4)C(C)(C)O,490,C12H36N15O4P,0.943143143,12,36,15,4,1,0,1,31.799999999999997,Poc
+4534,Porites lobata,N-Acetyl-L-glutamic acid,2,NA,CC(=O)NC(CCC(=O)O)C(=O)O,5520,C16H16O2,1,16,16,0,2,0,0,-0.75,81.675,coral
+4534,Pocillopora verrucosa,N-Acetyl-L-glutamic acid,2,NA,CC(=O)NC(CCC(=O)O)C(=O)O,5520,C16H16O2,1,16,16,0,2,0,0,-0.75,81.675,coral
+4709,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,231,C36H38N4O7,0.75025025,36,38,4,7,0,0,-0.33333333333333304,69.79999999999998,Dictyota
+4719,Dictyota,"2,5-Cyclohexadiene-1,4-dione, 3-hydroxy-2-[(1R,6R)-3-methyl-6-(1-methylethenyl)-2-cyclohexen-1-yl]-5-pentyl-",1,CCCCCC1=CC(=O)C(=C(C1=O)O)C2C=C(CCC2C(=C)C)C,CSC1=CC(=C(C=C1)O)C(=O)O,1827,C16H26N2O5,1,16,26,2,5,0,0,-0.625,78.1125,Dictyota
+4771,CCA,Hydrocortisone 21-hemisuccinate,2,NA,CC12CCC(=O)C=C1CCC3C2C(CC4(C3CCC4(C(=O)COC(=O)CCC(=O)O)O)C)O,1827,C17H26N2O7,1,17,26,2,7,0,0,-0.35294117647058787,70.35882352941175,NA
+4771,Dictyota,Hydrocortisone 21-hemisuccinate,2,NA,CC12CCC(=O)C=C1CCC3C2C(CC4(C3CCC4(C(=O)COC(=O)CCC(=O)O)O)C)O,1827,C17H26N2O7,1,17,26,2,7,0,0,-0.35294117647058787,70.35882352941175,NA
+4771,Turf,Hydrocortisone 21-hemisuccinate,2,NA,CC12CCC(=O)C=C1CCC3C2C(CC4(C3CCC4(C(=O)COC(=O)CCC(=O)O)O)C)O,1827,C17H26N2O7,1,17,26,2,7,0,0,-0.35294117647058787,70.35882352941175,NA
+4908,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Phenols;nan,3,NA,NA,2035,C16H29NO6,1,16,29,1,6,0,0,-0.875,85.2375,Poc
+4977,Dictyota,Leu-Leu,1,CC(C)CC(C(=O)NC(CC(C)C)C(=O)O)N,CC(C)CC(C(=O)N1CCCC1C(=O)O)N,336,C12H22N2O3,1,12,22,2,3,0,0,-0.833333333333333,84.04999999999998,Dictyota
+5055,CCA,Sesamoside,2,NA,CC12C3C(OC=C(C3(C(C1O2)O)O)C(=O)OC)OC4C(C(C(C(O4)CO)O)O)O,1370,C7H19NO4P,1,7,19,1,4,1,0,-1.8571428571428568,113.22857142857141,Primary producers
+5055,Dictyota,Sesamoside,2,NA,CC12C3C(OC=C(C3(C(C1O2)O)O)C(=O)OC)OC4C(C(C(C(O4)CO)O)O)O,1370,C7H19NO4P,1,7,19,1,4,1,0,-1.8571428571428568,113.22857142857141,Primary producers
+5055,Porites lobata,Sesamoside,2,NA,CC12C3C(OC=C(C3(C(C1O2)O)O)C(=O)OC)OC4C(C(C(C(O4)CO)O)O)O,1370,C7H19NO4P,1,7,19,1,4,1,0,-1.8571428571428568,113.22857142857141,Primary producers
+5055,Pocillopora verrucosa,Sesamoside,2,NA,CC12C3C(OC=C(C3(C(C1O2)O)O)C(=O)OC)OC4C(C(C(C(O4)CO)O)O)O,1370,C7H19NO4P,1,7,19,1,4,1,0,-1.8571428571428568,113.22857142857141,Primary producers
+5055,Turf,Sesamoside,2,NA,CC12C3C(OC=C(C3(C(C1O2)O)O)C(=O)OC)OC4C(C(C(C(O4)CO)O)O)O,1370,C7H19NO4P,1,7,19,1,4,1,0,-1.8571428571428568,113.22857142857141,Primary producers
+5116,Pocillopora verrucosa,Creatinol,2,NA,CN(CCO)C(=N)N,155,C11H21N3O,1,11,21,3,1,0,0,-0.9090909090909092,86.2090909090909,Poc
+5233,CCA,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+5233,Dictyota,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+5233,Porites lobata,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+5233,Pocillopora verrucosa,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+5233,Turf,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+5374,Turf,Organic compounds;Phenylpropanoids and polyketides;Macrolactams;nan,3,NA,NA,1730,C18H38N12O6,0.634634635,18,38,12,6,0,0,0.5555555555555554,44.46666666666667,Turf
+5411,CCA,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+5411,Dictyota,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+5411,Porites lobata,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+5411,Pocillopora verrucosa,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+5411,Turf,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+5494,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O9,1,20,34,0,9,0,0,-0.7999999999999998,83.1,NA
+5494,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O9,1,20,34,0,9,0,0,-0.7999999999999998,83.1,NA
+5494,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O9,1,20,34,0,9,0,0,-0.7999999999999998,83.1,NA
+5494,Turf,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O9,1,20,34,0,9,0,0,-0.7999999999999998,83.1,NA
+5541,Turf,Oleoyl-L-carnitine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,1730,C17H36N12O6,0.993293293,17,36,12,6,0,0,0.7058823529411766,40.18235294117646,Turf
+5668,CCA,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+5668,Pocillopora verrucosa,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+5668,Turf,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+5696,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Diterpenoids,3,NA,NA,1332,C29H46N2O12,0.285085085,29,46,2,12,0,0,-0.5517241379310347,76.02413793103449,fleshy algae
+5696,Turf,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Diterpenoids,3,NA,NA,1332,C29H46N2O12,0.285085085,29,46,2,12,0,0,-0.5517241379310347,76.02413793103449,fleshy algae
+5751,CCA,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+5751,Dictyota,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+5751,Pocillopora verrucosa,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+5751,Turf,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+5779,CCA,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+5779,Dictyota,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+5939,CCA,no matches;no matches;no matches;no matches,3,NA,NA,-1,C14H33NO7P,1,14,33,1,7,1,0,-1.5,103.05,NA
+5939,Porites lobata,no matches;no matches;no matches;no matches,3,NA,NA,-1,C14H33NO7P,1,14,33,1,7,1,0,-1.5,103.05,NA
+6064,CCA,8-methyl Nonanoic acid,2,NA,N/A,7143,C15H18N10O2,1,15,18,10,2,0,0,1.0666666666666669,29.89999999999999,NA
+6064,Dictyota,8-methyl Nonanoic acid,2,NA,N/A,7143,C15H18N10O2,1,15,18,10,2,0,0,1.0666666666666669,29.89999999999999,NA
+6064,Turf,8-methyl Nonanoic acid,2,NA,N/A,7143,C15H18N10O2,1,15,18,10,2,0,0,1.0666666666666669,29.89999999999999,NA
+6107,Dictyota,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,336,C13H23NO5,1,13,23,1,5,0,0,-0.7692307692307692,82.22307692307692,Dictyota
+6142,Dictyota,"Monolinolenin (9c,12c,15c)",2,NA,CCC=CCC=CCC=CCCCCCCCC(=O)OCC(CO)O,1291,C19H37NO6,1,19,37,1,6,0,0,-1.1578947368421053,93.3,Dictyota
+6359,Dictyota,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,167,C20H35NO5,1,20,35,1,5,0,0,-1.0999999999999996,91.64999999999999,Dictyota
+6367,CCA,Lynestrenol,1,CC12CCC3C(C1CCC2(C#C)O)CCC4=CCCCC34,N/A,-1,C14H31NP,1,14,31,1,0,1,0,-2.3571428571428568,127.47857142857141,NA
+6367,Porites lobata,Lynestrenol,1,CC12CCC3C(C1CCC2(C#C)O)CCC4=CCCCC34,N/A,-1,C14H31NP,1,14,31,1,0,1,0,-2.3571428571428568,127.47857142857141,NA
+6367,Pocillopora verrucosa,Lynestrenol,1,CC12CCC3C(C1CCC2(C#C)O)CCC4=CCCCC34,N/A,-1,C14H31NP,1,14,31,1,0,1,0,-2.3571428571428568,127.47857142857141,NA
+6377,Dictyota,Spectral Match to Acetyl-L-carnitine from NIST14,2,NA,N/A,21,C13H23NO4,1,13,23,1,4,0,0,-0.9230769230769234,86.6076923076923,Dictyota
+6462,CCA,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+6462,Dictyota,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+6462,Porites lobata,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+6462,Pocillopora verrucosa,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+6462,Turf,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+6919,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C16H29NO9,1,16,29,1,9,0,0,-0.5,74.55,NA
+6919,Dictyota,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C16H29NO9,1,16,29,1,9,0,0,-0.5,74.55,NA
+6919,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C16H29NO9,1,16,29,1,9,0,0,-0.5,74.55,NA
+6919,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C16H29NO9,1,16,29,1,9,0,0,-0.5,74.55,NA
+6992,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C17H22N4O5,0.7,17,22,4,5,0,0,0,60.3,NA
+6992,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C17H22N4O5,0.7,17,22,4,5,0,0,0,60.3,NA
+6992,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C17H22N4O5,0.7,17,22,4,5,0,0,0,60.3,NA
+6992,Turf,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C17H22N4O5,0.7,17,22,4,5,0,0,0,60.3,NA
+7013,Pocillopora verrucosa,"Methyl 5(S),6(R)-7-trihydroxyheptanoate",2,NA,COC(=O)CCCC(C(CO)O)O,2035,C10H24N9OP,1,10,24,9,1,1,0,0,60.3,Poc
+7028,Dictyota,2-Arachidonoylglycerol,2,NA,CCCCCC=CCC=CCC=CCC=CCCCC(=O)OC(CO)CO,167,C20H32O6,1,20,32,0,6,0,0,-1,88.8,Dictyota
+7036,Pocillopora verrucosa,"Butanoic acid, 4-[(1,2-dioxohexadecyl)amino]-, ethyl ester",2,NA,CCCCCCCCCCCCCCC(=O)C(=O)NCCCC(=O)OCC,17,C17H34N2O5P,1,17,34,2,5,1,0,-1.3529411764705879,98.85882352941175,Poc
+7051,CCA,Tetradecylphosphonate,2,NA,CCCCCCCCCCCCCCP(=O)(O)O,-1,C21H35N,1,21,35,1,0,0,0,-1.5238095238095237,103.72857142857143,NA
+7051,Pocillopora verrucosa,Tetradecylphosphonate,2,NA,CCCCCCCCCCCCCCP(=O)(O)O,-1,C21H35N,1,21,35,1,0,0,0,-1.5238095238095237,103.72857142857143,NA
+7051,Turf,Tetradecylphosphonate,2,NA,CCCCCCCCCCCCCCP(=O)(O)O,-1,C21H35N,1,21,35,1,0,0,0,-1.5238095238095237,103.72857142857143,NA
+7065,CCA,"MassbankEU:SM806602 2,4,6-Trimethylpyridine|2,4,6-trimethylpyridin",2,NA,CC1=CC(C)=NC(C)=C1,-1,C19H33N,1,19,33,1,0,0,0,-1.5789473684210522,105.29999999999998,NA
+7065,Dictyota,"MassbankEU:SM806602 2,4,6-Trimethylpyridine|2,4,6-trimethylpyridin",2,NA,CC1=CC(C)=NC(C)=C1,-1,C19H33N,1,19,33,1,0,0,0,-1.5789473684210522,105.29999999999998,NA
+7065,Pocillopora verrucosa,"MassbankEU:SM806602 2,4,6-Trimethylpyridine|2,4,6-trimethylpyridin",2,NA,CC1=CC(C)=NC(C)=C1,-1,C19H33N,1,19,33,1,0,0,0,-1.5789473684210522,105.29999999999998,NA
+7065,Turf,"MassbankEU:SM806602 2,4,6-Trimethylpyridine|2,4,6-trimethylpyridin",2,NA,CC1=CC(C)=NC(C)=C1,-1,C19H33N,1,19,33,1,0,0,0,-1.5789473684210522,105.29999999999998,NA
+7071,Turf,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Oxosteroids,3,NA,NA,887,C17H30N2O4,1,17,30,2,4,0,0,-0.9411764705882355,87.12352941176471,Turf
+7087,Turf,1-Methyl-L-histidine,2,NA,CN1C=C(N=C1)CC(C(=O)[O-])[NH3+],918,C17H31N2O6,1,17,31,2,6,0,0,-0.7647058823529411,82.09411764705882,Turf
+7092,Turf,1-Methyl-L-histidine,2,NA,CN1C=C(N=C1)CC(C(=O)[O-])[NH3+],918,C20H31N3O3,1,20,31,3,3,0,0,-0.7999999999999998,83.1,Turf
+7094,Turf,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Oxosteroids,3,NA,NA,887,C19H30O2,1,19,30,0,2,0,0,-1.3684210526315788,99.29999999999998,Turf
+7115,Dictyota,"Spectral Match to 1H-Purin-6-amine, N,N-dimethyl- from NIST14",2,NA,N/A,-1,C10H15N3,1,10,15,3,0,0,0,-0.5999999999999996,77.39999999999999,fleshy algae
+7115,Turf,"Spectral Match to 1H-Purin-6-amine, N,N-dimethyl- from NIST14",2,NA,N/A,-1,C10H15N3,1,10,15,3,0,0,0,-0.5999999999999996,77.39999999999999,fleshy algae
+7138,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,550,C23H32N4O7,0.914914915,23,32,4,7,0,0,-0.2608695652173916,67.73478260869565,Poc
+7139,Dictyota,Gangaleoidin,2,NA,CC1=C2C(=C(C(=C1Cl)O)Cl)OC3=C(C(=C(C=C3OC2=O)OC)C(=O)OC)C,-1,C16H29O4P,1,16,29,0,4,1,0,-1.625,106.6125,fleshy algae
+7139,Turf,Gangaleoidin,2,NA,CC1=C2C(=C(C(=C1Cl)O)Cl)OC3=C(C(=C(C=C3OC2=O)OC)C(=O)OC)C,-1,C16H29O4P,1,16,29,0,4,1,0,-1.625,106.6125,fleshy algae
+7211,Porites lobata,"5-Hexenoic acid, 6-[(2R,3S)-3-[[[(4-chloro-2-methylphenyl)sulfonyl]amino]methyl]bicyclo[2.2.2]oct-2-yl]-, (5Z)-",2,NA,CC1=C(C=CC(=C1)Cl)S(=O)(=O)NCC2C3CCC(C2C=CCCCC(=O)O)CC3,167,C13H16O3,1,13,16,0,3,0,0,-0.7692307692307692,82.22307692307692,Por
+7214,CCA,no matches;no matches;no matches;no matches,3,NA,NA,-1,C22H51N11O4P2,1,22,51,11,4,2,0,-0.9090909090909092,86.2090909090909,NA
+7214,Dictyota,no matches;no matches;no matches;no matches,3,NA,NA,-1,C22H51N11O4P2,1,22,51,11,4,2,0,-0.9090909090909092,86.2090909090909,NA
+7214,Turf,no matches;no matches;no matches;no matches,3,NA,NA,-1,C22H51N11O4P2,1,22,51,11,4,2,0,-0.9090909090909092,86.2090909090909,NA
+7223,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,550,C26H42O13,0.838138138,26,42,0,13,0,0,-0.615384615384615,77.83846153846153,Por
+7262,Porites lobata,Octanoylcarnitine,1,CCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,N/A,21,C15H29NO4,1,15,29,1,4,0,0,-1.2000000000000002,94.5,NA
+7262,Turf,Octanoylcarnitine,1,CCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,N/A,21,C15H29NO4,1,15,29,1,4,0,0,-1.2000000000000002,94.5,NA
+7279,CCA,no matches;no matches;no matches;no matches,3,NA,NA,-1,C8H17N2O5P2,1,8,17,2,5,2,0,-1.375,99.4875,Primary producers
+7279,Dictyota,no matches;no matches;no matches;no matches,3,NA,NA,-1,C8H17N2O5P2,1,8,17,2,5,2,0,-1.375,99.4875,Primary producers
+7279,Porites lobata,no matches;no matches;no matches;no matches,3,NA,NA,-1,C8H17N2O5P2,1,8,17,2,5,2,0,-1.375,99.4875,Primary producers
+7279,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C8H17N2O5P2,1,8,17,2,5,2,0,-1.375,99.4875,Primary producers
+7279,Turf,no matches;no matches;no matches;no matches,3,NA,NA,-1,C8H17N2O5P2,1,8,17,2,5,2,0,-1.375,99.4875,Primary producers
+7292,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,Primary producers
+7292,Dictyota,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,Primary producers
+7292,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,Primary producers
+7292,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,Primary producers
+7292,Turf,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,Primary producers
+7352,Pocillopora verrucosa,"13,14-Dihydro-15-ketoprostaglandin D1",1,CCCCCC(=O)CCC1C(C(CC1=O)O)CCCCCCC(=O)O,CCC=CCC=CCC=CCC=CCC=CCCCC(=O)O,2292,C20H32O4,1,20,32,0,4,0,0,-1.2000000000000002,94.5,Poc
+7355,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,550,C20H22N23,1,20,22,23,0,0,0,2.35,-6.675000000000011,NA
+7355,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,550,C20H22N23,1,20,22,23,0,0,0,2.35,-6.675000000000011,NA
+7362,CCA,no matches;no matches;no matches;no matches,3,NA,NA,-1,C21H44O11,0.405705706,21,44,0,11,0,0,-1.0476190476190474,90.15714285714284,CCA
+7371,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,77,C20H40O14,0.964164164,20,40,0,14,0,0,-0.5999999999999996,77.39999999999999,fleshy algae
+7371,Turf,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,77,C20H40O14,0.964164164,20,40,0,14,0,0,-0.5999999999999996,77.39999999999999,fleshy algae
+7394,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C26H45NO13,1,26,45,1,13,0,0,-0.615384615384615,77.83846153846153,coral
+7394,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C26H45NO13,1,26,45,1,13,0,0,-0.615384615384615,77.83846153846153,coral
+7419,CCA,"[4,5-dihydroxy-3,4-bis(hydroxymethyl)-4a,8,8-trimethyl-5,6,7,8a-tetrahydro-1H-naphthalen-1-yl] hexanoate",2,NA,N/A,80,C20H37NO10,0.942042042,20,37,1,10,0,0,-0.7000000000000002,80.25,NA
+7419,Porites lobata,"[4,5-dihydroxy-3,4-bis(hydroxymethyl)-4a,8,8-trimethyl-5,6,7,8a-tetrahydro-1H-naphthalen-1-yl] hexanoate",2,NA,N/A,80,C20H37NO10,0.942042042,20,37,1,10,0,0,-0.7000000000000002,80.25,NA
+7419,Pocillopora verrucosa,"[4,5-dihydroxy-3,4-bis(hydroxymethyl)-4a,8,8-trimethyl-5,6,7,8a-tetrahydro-1H-naphthalen-1-yl] hexanoate",2,NA,N/A,80,C20H37NO10,0.942042042,20,37,1,10,0,0,-0.7000000000000002,80.25,NA
+7419,Turf,"[4,5-dihydroxy-3,4-bis(hydroxymethyl)-4a,8,8-trimethyl-5,6,7,8a-tetrahydro-1H-naphthalen-1-yl] hexanoate",2,NA,N/A,80,C20H37NO10,0.942042042,20,37,1,10,0,0,-0.7000000000000002,80.25,NA
+7462,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,490,C21H39NO5,1,21,39,1,5,0,0,-1.2380952380952381,95.58571428571429,Poc
+7463,Dictyota,"cis-7,10,13,16,19-Docosapentaenoic acid",2,NA,N/A,-1,C18H34N5O5,0.984884885,18,34,5,5,0,0,-0.5,74.55,Dictyota
+7505,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H33N4O8P,1,14,33,4,8,1,0,-0.7142857142857144,80.65714285714286,Primary producers
+7505,Dictyota,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H33N4O8P,1,14,33,4,8,1,0,-0.7142857142857144,80.65714285714286,Primary producers
+7505,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H33N4O8P,1,14,33,4,8,1,0,-0.7142857142857144,80.65714285714286,Primary producers
+7505,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H33N4O8P,1,14,33,4,8,1,0,-0.7142857142857144,80.65714285714286,Primary producers
+7505,Turf,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H33N4O8P,1,14,33,4,8,1,0,-0.7142857142857144,80.65714285714286,Primary producers
+7538,CCA,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Carbohydrates and carbohydrate conjugates,3,NA,NA,1291,C19H37NO6,1,19,37,1,6,0,0,-1.1578947368421053,93.3,NA
+7538,Dictyota,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Carbohydrates and carbohydrate conjugates,3,NA,NA,1291,C19H37NO6,1,19,37,1,6,0,0,-1.1578947368421053,93.3,NA
+7579,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Tetrahydroisoquinolines;nan,3,NA,NA,2261,C12H15NO4,1,12,15,1,4,0,0,-0.33333333333333304,69.79999999999998,Poc
+7580,Porites lobata,no matches;no matches;no matches;no matches,3,NA,NA,-1,C21H31N2O6,1,21,31,2,6,0,0,-0.6190476190476186,77.94285714285712,coral
+7580,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C21H31N2O6,1,21,31,2,6,0,0,-0.6190476190476186,77.94285714285712,coral
+7630,CCA,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,77,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+7630,Turf,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,77,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+7659,CCA,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+7659,Porites lobata,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+7659,Pocillopora verrucosa,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+7676,CCA,"[4,5-dihydroxy-3,4-bis(hydroxymethyl)-4a,8,8-trimethyl-5,6,7,8a-tetrahydro-1H-naphthalen-1-yl] hexanoate",2,NA,N/A,80,C20H37NO10,0.942042042,20,37,1,10,0,0,-0.7000000000000002,80.25,NA
+7676,Dictyota,"[4,5-dihydroxy-3,4-bis(hydroxymethyl)-4a,8,8-trimethyl-5,6,7,8a-tetrahydro-1H-naphthalen-1-yl] hexanoate",2,NA,N/A,80,C20H37NO10,0.942042042,20,37,1,10,0,0,-0.7000000000000002,80.25,NA
+7676,Porites lobata,"[4,5-dihydroxy-3,4-bis(hydroxymethyl)-4a,8,8-trimethyl-5,6,7,8a-tetrahydro-1H-naphthalen-1-yl] hexanoate",2,NA,N/A,80,C20H37NO10,0.942042042,20,37,1,10,0,0,-0.7000000000000002,80.25,NA
+7676,Pocillopora verrucosa,"[4,5-dihydroxy-3,4-bis(hydroxymethyl)-4a,8,8-trimethyl-5,6,7,8a-tetrahydro-1H-naphthalen-1-yl] hexanoate",2,NA,N/A,80,C20H37NO10,0.942042042,20,37,1,10,0,0,-0.7000000000000002,80.25,NA
+7683,Dictyota,no matches;no matches;no matches;no matches,3,NA,NA,-1,C16H31N4O3P,0.888088088,16,31,4,3,1,0,-1.125,92.3625,Dictyota
+7726,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,550,C25H40O13,0.831331331,25,40,0,13,0,0,-0.5599999999999996,76.25999999999999,Poc
+7737,Dictyota,"Acetic acid, 2-(2,4,5-trichlorophenoxy)-, methyl ester",2,NA,COC(=O)COC1=CC(=C(C=C1Cl)Cl)Cl,-1,C18H18O3,0.710710711,18,18,0,3,0,0,-0.666666666666667,79.30000000000001,Dictyota
+7781,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C21H29N18O2,0.999099099,21,29,18,2,0,0,1.380952380952381,20.942857142857143,Poc
+7782,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+7782,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+7782,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+7820,Dictyota,"1,4-Anhydroerythritol",2,NA,C1C(C(CO1)O)O,87,C15H19NO5,1,15,19,1,5,0,0,-0.40000000000000036,71.7,Dictyota
+7839,Porites lobata,Citric acid,2,NA,[H+].[H+].C(C(=O)O)C(CC(=O)[O-])(C(=O)[O-])O,-1,C18H30O7,1,18,30,0,7,0,0,-0.8888888888888893,85.63333333333334,coral
+7839,Pocillopora verrucosa,Citric acid,2,NA,[H+].[H+].C(C(=O)O)C(CC(=O)[O-])(C(=O)[O-])O,-1,C18H30O7,1,18,30,0,7,0,0,-0.8888888888888893,85.63333333333334,coral
+8155,CCA,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+8155,Porites lobata,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+8155,Pocillopora verrucosa,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+8155,Turf,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+8244,Dictyota,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,3,NA,NA,980,C21H43N4O7P3,0.468968969,NA,NA,NA,NA,NA,NA,NA,NA,Dictyota
+8290,Pocillopora verrucosa,Adipoyl-L-carnitine,2,NA,C[N+](C)(C)CC(CC(=O)[O-])OC(=O)CCCCC(=O)O,2035,C15H27NO6,1,15,27,1,6,0,0,-0.7999999999999998,83.1,Poc
+8388,Dictyota,no matches;no matches;no matches;no matches,3,NA,NA,-1,C17H24N2O4,1,17,24,2,4,0,0,-0.5882352941176467,77.06470588235292,Dictyota
+8394,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C19H33N17O5,0.807707708,19,33,17,5,0,0,1.473684210526316,18.29999999999999,coral
+8394,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C19H33N17O5,0.807707708,19,33,17,5,0,0,1.473684210526316,18.29999999999999,coral
+8411,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C20H45N17O5P2,0.9997998,20,45,17,5,2,0,0.2999999999999998,51.75,coral
+8411,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C20H45N17O5P2,0.9997998,20,45,17,5,2,0,0.2999999999999998,51.75,coral
+8743,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C16H29NO9,1,16,29,1,9,0,0,-0.5,74.55,NA
+8743,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C16H29NO9,1,16,29,1,9,0,0,-0.5,74.55,NA
+8743,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C16H29NO9,1,16,29,1,9,0,0,-0.5,74.55,NA
+9228,Porites lobata,"4-Pregnen-6.beta.,11.beta.,17,21-tetrol-3,20-dione",1,CC12CCC(=O)C=C1C(CC3C2C(CC4(C3CCC4(C(=O)CO)O)C)O)O,CC12CCC(CC1CCC3C2C(=O)CC4(C3CCC4(C(CO)O)O)C)O,772,C15H22N2O4,1,15,22,2,4,0,0,-0.5333333333333332,75.5,Por
+9435,Pocillopora verrucosa,Oleoyl-L-carnitine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C19H37NO5,1,19,37,1,5,0,0,-1.2631578947368425,96.30000000000001,Poc
+9481,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,550,C21H34N23P2,1,21,34,23,0,2,0,1.1904761904761907,26.37142857142856,coral
+9481,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,550,C21H34N23P2,1,21,34,23,0,2,0,1.1904761904761907,26.37142857142856,coral
+9494,Porites lobata,3-Hydroxyhexadecanoylcarnitine,1,CCCCCCCCCCCCCC(CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C)O,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C23H45NO5,1,23,45,1,5,0,0,-1.391304347826087,99.95217391304348,coral
+9494,Pocillopora verrucosa,3-Hydroxyhexadecanoylcarnitine,1,CCCCCCCCCCCCCC(CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C)O,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C23H45NO5,1,23,45,1,5,0,0,-1.391304347826087,99.95217391304348,coral
+9557,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C30H51NO15,0.9995996,30,51,1,15,0,0,-0.5999999999999996,77.39999999999999,coral
+9557,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C30H51NO15,0.9995996,30,51,1,15,0,0,-0.5999999999999996,77.39999999999999,coral
+9577,Dictyota,Leu Arg Thr,2,NA,N/A,-1,C19H38NO6P,0.79009009,19,38,1,6,1,0,-1.473684210526316,102.30000000000001,Dictyota
+9686,Porites lobata,Spectral Match to Lauroyl L-carnitine from NIST14,2,NA,N/A,21,C15H27NO4,1,15,27,1,4,0,0,-1.0666666666666664,90.69999999999999,Por
+9762,CCA,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+9762,Dictyota,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+9762,Pocillopora verrucosa,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+9815,Dictyota,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,167,C22H39NO5,1,22,39,1,5,0,0,-1.1818181818181817,93.98181818181817,Dictyota
+9953,Porites lobata,Adipoyl-L-carnitine,2,NA,C[N+](C)(C)CC(CC(=O)[O-])OC(=O)CCCCC(=O)O,2035,C16H29NO6,1,16,29,1,6,0,0,-0.875,85.2375,coral
+9953,Pocillopora verrucosa,Adipoyl-L-carnitine,2,NA,C[N+](C)(C)CC(CC(=O)[O-])OC(=O)CCCCC(=O)O,2035,C16H29NO6,1,16,29,1,6,0,0,-0.875,85.2375,coral
+10107,CCA,Organic compounds;Phenylpropanoids and polyketides;Macrolides and analogues;nan,3,NA,NA,4021,C22H35N5O7,0.761961962,22,35,5,7,0,0,-0.2727272727272725,68.07272727272726,NA
+10107,Porites lobata,Organic compounds;Phenylpropanoids and polyketides;Macrolides and analogues;nan,3,NA,NA,4021,C22H35N5O7,0.761961962,22,35,5,7,0,0,-0.2727272727272725,68.07272727272726,NA
+10107,Pocillopora verrucosa,Organic compounds;Phenylpropanoids and polyketides;Macrolides and analogues;nan,3,NA,NA,4021,C22H35N5O7,0.761961962,22,35,5,7,0,0,-0.2727272727272725,68.07272727272726,NA
+10107,Turf,Organic compounds;Phenylpropanoids and polyketides;Macrolides and analogues;nan,3,NA,NA,4021,C22H35N5O7,0.761961962,22,35,5,7,0,0,-0.2727272727272725,68.07272727272726,NA
+10155,Pocillopora verrucosa,N-Oleoyltaurine,1,CCCCCCCCC=CCCCCCCCC(=O)NCCS(=O)(=O)O,CCCCCCCCC=CCCCCCCCC(=O)NCCS(=O)(=O)O,17,C23H35NO4,1,23,35,1,4,0,0,-1.0434782608695654,90.0391304347826,Poc
+10205,Pocillopora verrucosa,Creatinol,2,NA,CN(CCO)C(=N)N,155,C11H21N3O2,1,11,21,3,2,0,0,-0.7272727272727275,81.02727272727273,Poc
+10312,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O9,1,20,34,0,9,0,0,-0.7999999999999998,83.1,coral
+10312,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O9,1,20,34,0,9,0,0,-0.7999999999999998,83.1,coral
+10317,Dictyota,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,3,NA,NA,980,C24H48N2O4,1,24,48,2,4,0,0,-1.416666666666667,100.67500000000001,Dictyota
+10384,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C20H48N9O8P,1,20,48,9,8,1,0,-0.5,74.55,Dictyota
+10396,Dictyota,O-Arachidonoylglycidol,2,NA,CCCCCC=CCC=CCC=CCC=CCCCC(=O)OCC1CO1,343,C20H37N11O3,0.399199199,20,37,11,3,0,0,0.10000000000000009,57.449999999999996,Dictyota
+10459,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C10H25NO7P,1,10,25,1,7,1,0,-1.2999999999999998,97.35,Poc
+10475,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,3,NA,NA,980,C23H47N4O7P3,0.418918919,NA,NA,NA,NA,NA,NA,NA,NA,coral
+10475,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,3,NA,NA,980,C23H47N4O7P3,0.418918919,NA,NA,NA,NA,NA,NA,NA,NA,coral
+10502,Dictyota,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Carbohydrates and carbohydrate conjugates,3,NA,NA,1291,C19H35NO5,1,19,35,1,5,0,0,-1.1578947368421053,93.3,Dictyota
+10509,Dictyota,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,3,NA,NA,980,C23H47N4O7P3,0.694294294,NA,NA,NA,NA,NA,NA,NA,NA,NA
+10509,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,3,NA,NA,980,C23H47N4O7P3,0.694294294,NA,NA,NA,NA,NA,NA,NA,NA,NA
+10509,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,3,NA,NA,980,C23H47N4O7P3,0.694294294,NA,NA,NA,NA,NA,NA,NA,NA,NA
+10572,Pocillopora verrucosa,Albizziin,2,NA,C(C(C(=O)O)N)NC(=O)N,2261,C11H13NO3,1,11,13,1,3,0,0,-0.3636363636363633,70.66363636363636,Poc
+10613,Dictyota,Lys-Lys,2,NA,C(CCN)CC(C(=O)NC(CCCCN)C(=O)O)N,980,C26H50N2O4,1,26,50,2,4,0,0,-1.384615384615385,99.76153846153846,NA
+10613,Porites lobata,Lys-Lys,2,NA,C(CCN)CC(C(=O)NC(CCCCN)C(=O)O)N,980,C26H50N2O4,1,26,50,2,4,0,0,-1.384615384615385,99.76153846153846,NA
+10613,Pocillopora verrucosa,Lys-Lys,2,NA,C(CCN)CC(C(=O)NC(CCCCN)C(=O)O)N,980,C26H50N2O4,1,26,50,2,4,0,0,-1.384615384615385,99.76153846153846,NA
+10622,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Triterpenoids,3,NA,NA,59,C19H47N8O5P,1,19,47,8,5,1,0,-0.9473684210526319,87.30000000000001,Dictyota
+10634,Dictyota,no matches;no matches;no matches;no matches,3,NA,NA,-1,C10H37N16O4,0.67957958,10,37,16,4,0,0,1.9,6.149999999999999,Dictyota
+10645,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,231,C36H40N4O9,0.296496496,36,40,4,9,0,0,-0.2777777777777777,68.21666666666667,Dictyota
+10647,Dictyota,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,336,C7H20N16O,1,NA,NA,NA,NA,NA,NA,NA,NA,Dictyota
+10660,Dictyota,Lys-Lys,2,NA,C(CCN)CC(C(=O)NC(CCCCN)C(=O)O)N,980,C27H52N2O4,1,27,52,2,4,0,0,-1.4074074074074074,100.41111111111111,NA
+10660,Porites lobata,Lys-Lys,2,NA,C(CCN)CC(C(=O)NC(CCCCN)C(=O)O)N,980,C27H52N2O4,1,27,52,2,4,0,0,-1.4074074074074074,100.41111111111111,NA
+10660,Pocillopora verrucosa,Lys-Lys,2,NA,C(CCN)CC(C(=O)NC(CCCCN)C(=O)O)N,980,C27H52N2O4,1,27,52,2,4,0,0,-1.4074074074074074,100.41111111111111,NA
+10671,Dictyota,"trans-2-Butene-1,4-dicarboxylic acid",2,NA,C(C=CCC(=O)O)C(=O)O,21,C14H27NO4,1,14,27,1,4,0,0,-1.1428571428571432,92.87142857142858,Dictyota
+10681,Dictyota,Spectral Match to N-Lauroylsarcosine from NIST14,2,NA,N/A,1291,C17H33NO5,1,17,33,1,5,0,0,-1.1764705882352944,93.8294117647059,Dictyota
+10691,Dictyota,Spectral Match to N-Lauroylsarcosine from NIST14,2,NA,N/A,1291,C17H33NO5,1,17,33,1,5,0,0,-1.1764705882352944,93.8294117647059,NA
+10691,Porites lobata,Spectral Match to N-Lauroylsarcosine from NIST14,2,NA,N/A,1291,C17H33NO5,1,17,33,1,5,0,0,-1.1764705882352944,93.8294117647059,NA
+10702,Dictyota,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,336,C25H36O4,1,25,36,0,4,0,0,-1.12,92.22,Dictyota
+10728,Dictyota,"Organic compounds;Alkaloids and derivatives;Lupin alkaloids;Amino acids, peptides, and analogues",3,NA,NA,1969,C23H43N2O3,0.862262262,23,43,2,3,0,0,-1.3478260869565215,98.71304347826086,NA
+10728,Pocillopora verrucosa,"Organic compounds;Alkaloids and derivatives;Lupin alkaloids;Amino acids, peptides, and analogues",3,NA,NA,1969,C23H43N2O3,0.862262262,23,43,2,3,0,0,-1.3478260869565215,98.71304347826086,NA
+10752,Dictyota,"Organic compounds;Lipids and lipid-like molecules;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,17,C10H29N4O3P2,1,10,29,4,3,2,0,-2.0999999999999996,120.14999999999998,Dictyota
+10755,Dictyota,"Organic compounds;Alkaloids and derivatives;Lupin alkaloids;Amino acids, peptides, and analogues",3,NA,NA,1969,C18H43N4O5,1,18,43,4,5,0,0,-1.166666666666667,93.55000000000001,NA
+10755,Pocillopora verrucosa,"Organic compounds;Alkaloids and derivatives;Lupin alkaloids;Amino acids, peptides, and analogues",3,NA,NA,1969,C18H43N4O5,1,18,43,4,5,0,0,-1.166666666666667,93.55000000000001,NA
+10760,Dictyota,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C24H36N4O12,1,24,36,4,12,0,0,0,60.3,NA
+10760,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C24H36N4O12,1,24,36,4,12,0,0,0,60.3,NA
+10760,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C24H36N4O12,1,24,36,4,12,0,0,0,60.3,NA
+10769,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,coral
+10769,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,coral
+10783,CCA,"3-[21-benzyl-3,24-bis(butan-2-yl)-6-(2-carboxyethyl)-7,10,28-trimethyl-2,5,8,11,14,20,23,26,29,32-decaoxo-9,30-bis(propan-2-yl)-25-oxa-1,4,7,10,13,19,22,28,31-nonaazatricyclo[31.4.0.0�?,�?]heptatriacontan-27-yl]propanoic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+10783,Dictyota,"3-[21-benzyl-3,24-bis(butan-2-yl)-6-(2-carboxyethyl)-7,10,28-trimethyl-2,5,8,11,14,20,23,26,29,32-decaoxo-9,30-bis(propan-2-yl)-25-oxa-1,4,7,10,13,19,22,28,31-nonaazatricyclo[31.4.0.0�?,�?]heptatriacontan-27-yl]propanoic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+10783,Pocillopora verrucosa,"3-[21-benzyl-3,24-bis(butan-2-yl)-6-(2-carboxyethyl)-7,10,28-trimethyl-2,5,8,11,14,20,23,26,29,32-decaoxo-9,30-bis(propan-2-yl)-25-oxa-1,4,7,10,13,19,22,28,31-nonaazatricyclo[31.4.0.0�?,�?]heptatriacontan-27-yl]propanoic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+10958,Dictyota,Organic compounds;Organoheterocyclic compounds;Piperidines;nan,3,NA,NA,2405,C15H29N2O5,1,15,29,2,5,0,0,-0.8666666666666663,84.99999999999999,Dictyota
+10989,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C23H47NO12,1,23,47,1,12,0,0,-0.8695652173913047,85.08260869565218,Dictyota
+10993,Pocillopora verrucosa,Tetranorprostaglandin J2,2,NA,C1=CC(=O)C(C1CCC(=O)O)CCC(=O)CCCCC(=O)O,-1,C16H35NO2,1,16,35,1,2,0,0,-1.75,110.175,Poc
+11008,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C22H37N2O7,0.852752753,22,37,2,7,0,0,-0.7727272727272725,82.32272727272726,Dictyota
+11073,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C6H28N13O7,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
+11073,Dictyota,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C6H28N13O7,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
+11073,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C6H28N13O7,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
+11073,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C6H28N13O7,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
+11078,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C21H43N11O5,0.9995996,21,43,11,5,0,0,0,60.3,NA
+11078,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C21H43N11O5,0.9995996,21,43,11,5,0,0,0,60.3,NA
+11078,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C21H43N11O5,0.9995996,21,43,11,5,0,0,0,60.3,NA
+11091,Pocillopora verrucosa,Fastigilin B,2,NA,N/A,21,C18H33NO6,1,18,33,1,6,0,0,-1,88.8,Poc
+11124,Pocillopora verrucosa,3-Hydroxyoleylcarnitine,2,NA,N/A,21,C20H37NO5,1,20,37,1,5,0,0,-1.2000000000000002,94.5,Poc
+11130,Pocillopora verrucosa,Spectral Match to Acetyl-L-carnitine from NIST14,2,NA,N/A,1704,C20H39NO6,1,20,39,1,6,0,0,-1.2000000000000002,94.5,Poc
+11148,Porites lobata,Fastigilin B,2,NA,N/A,21,C21H41NO5,1,21,41,1,5,0,0,-1.333333333333333,98.29999999999998,coral
+11148,Pocillopora verrucosa,Fastigilin B,2,NA,N/A,21,C21H41NO5,1,21,41,1,5,0,0,-1.333333333333333,98.29999999999998,coral
+11155,Pocillopora verrucosa,3-Hydroxyhexadecanoylcarnitine,1,CCCCCCCCCCCCCC(CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C)O,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C23H45NO5,1,23,45,1,5,0,0,-1.391304347826087,99.95217391304348,Poc
+11169,Pocillopora verrucosa,N-Oleoyltaurine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)NCCS(=O)(=O)O,17,C21H31NO4,1,21,31,1,4,0,0,-0.9523809523809526,87.44285714285715,Poc
+11197,Porites lobata,Linoleoylcarnitine,2,NA,CCCCCC=CCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C21H39NO5,1,21,39,1,5,0,0,-1.2380952380952381,95.58571428571429,coral
+11197,Pocillopora verrucosa,Linoleoylcarnitine,2,NA,CCCCCC=CCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C21H39NO5,1,21,39,1,5,0,0,-1.2380952380952381,95.58571428571429,coral
+11247,Pocillopora verrucosa,3-Hydroxyhexadecanoylcarnitine,1,CCCCCCCCCCCCCC(CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C)O,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C23H45NO5,1,23,45,1,5,0,0,-1.391304347826087,99.95217391304348,Poc
+11248,Porites lobata,Palmitoyl-L-carnitine,2,NA,CCCCCCCCCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C18H33N2O2,1,18,33,2,2,0,0,-1.2777777777777777,96.71666666666667,coral
+11248,Pocillopora verrucosa,Palmitoyl-L-carnitine,2,NA,CCCCCCCCCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C18H33N2O2,1,18,33,2,2,0,0,-1.2777777777777777,96.71666666666667,coral
+11263,Pocillopora verrucosa,N-Oleoyltaurine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)NCCS(=O)(=O)O,17,C21H31NO4,1,21,31,1,4,0,0,-0.9523809523809526,87.44285714285715,Poc
+11299,Pocillopora verrucosa,L-Arachidonoylcarnitine,2,NA,N/A,21,C21H39NO6,1,21,39,1,6,0,0,-1.1428571428571432,92.87142857142858,Poc
+11320,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C22H32N4O12,1,22,32,4,12,0,0,0.18181818181818166,55.11818181818182,coral
+11320,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C22H32N4O12,1,22,32,4,12,0,0,0.18181818181818166,55.11818181818182,coral
+11321,Pocillopora verrucosa,L-Arachidonoylcarnitine,2,NA,N/A,21,C19H35N4O4,1,19,35,4,4,0,0,-0.7894736842105265,82.80000000000001,Poc
+11329,Porites lobata,Oleoyl-L-carnitine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C18H40N6OP,1,18,40,6,1,1,0,-1.3888888888888893,99.88333333333334,coral
+11329,Pocillopora verrucosa,Oleoyl-L-carnitine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C18H40N6OP,1,18,40,6,1,1,0,-1.3888888888888893,99.88333333333334,coral
+11340,Porites lobata,Organic compounds;Organoheterocyclic compounds;Phenols;nan,3,NA,NA,2035,C8H31N10OP2,1,8,31,10,1,2,0,-1.125,92.3625,coral
+11340,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Phenols;nan,3,NA,NA,2035,C8H31N10OP2,1,8,31,10,1,2,0,-1.125,92.3625,coral
+11350,Pocillopora verrucosa,3-Hydroxyoleylcarnitine,2,NA,N/A,21,C9H35N14O3,1,9,35,14,3,0,0,1.4444444444444446,19.133333333333326,Poc
+11365,Pocillopora verrucosa,L-Arachidonoylcarnitine,2,NA,N/A,21,C21H37NO6,1,21,37,1,6,0,0,-1.0476190476190474,90.15714285714284,Poc
+11378,Dictyota,"Propanoic acid, 2-methyl-2-[4-[[[[4-methyl-2-[4-(trifluoromethyl)phenyl]-5- thiazolyl]carbonyl]amino]methyl]phenoxy]-",2,NA,CC1=C(SC(=N1)C2=CC=C(C=C2)C(F)(F)F)C(=O)NCC3=CC=C(C=C3)OC(C)(C)C(=O)O,550,C15H25N2O5P,0.9998999,15,25,2,5,1,0,-0.9333333333333336,86.9,Dictyota
+11389,Pocillopora verrucosa,Organic compounds;Benzenoids;Phenol ethers;nan,3,NA,NA,2393,C5H27N17O2,1,NA,NA,NA,NA,NA,NA,NA,NA,Poc
+11403,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C23H34N4O12,1,23,34,4,12,0,0,0.08695652173913038,57.82173913043478,coral
+11403,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C23H34N4O12,1,23,34,4,12,0,0,0.08695652173913038,57.82173913043478,coral
+11430,Turf,p-Fluoro-L-phenylalanine,2,NA,C1=CC(=CC=C1CC(C(=O)O)N)F,141,C7H6NO5P5,1,NA,NA,NA,NA,NA,NA,NA,NA,Turf
+11506,Pocillopora verrucosa,Methyl myristoleate,2,NA,CCCCC=CCCCCCCCC(=O)OC,21,C23H43NO6,1,23,43,1,6,0,0,-1.2173913043478262,94.99565217391304,Poc
+11528,Pocillopora verrucosa,L-Arachidonoylcarnitine,2,NA,N/A,21,C23H41NO5,1,23,41,1,5,0,0,-1.2173913043478262,94.99565217391304,Poc
+11535,Porites lobata,Fastigilin B,2,NA,N/A,21,C20H39NO5,1,20,39,1,5,0,0,-1.2999999999999998,97.35,coral
+11535,Pocillopora verrucosa,Fastigilin B,2,NA,N/A,21,C20H39NO5,1,20,39,1,5,0,0,-1.2999999999999998,97.35,coral
+11544,Pocillopora verrucosa,3-Hydroxyhexadecanoylcarnitine,1,CCCCCCCCCCCCCC(CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C)O,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C23H45NO5,1,23,45,1,5,0,0,-1.391304347826087,99.95217391304348,Poc
+11573,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C23H43NO5,1,23,43,1,5,0,0,-1.304347826086956,97.47391304347825,Poc
+11580,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C20H24N27P,1,20,24,27,0,1,0,2.6,-13.800000000000011,Por
+11599,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C22H41NO10,1,22,41,1,10,0,0,-0.8181818181818183,83.61818181818182,coral
+11599,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C22H41NO10,1,22,41,1,10,0,0,-0.8181818181818183,83.61818181818182,coral
+11606,Pocillopora verrucosa,Methyl palmitoleate,2,NA,CCCCCCC=CCCCCCCCC(=O)OC,2237,C18H44N9O3P,1,18,44,9,3,1,0,-0.8888888888888893,85.63333333333334,Poc
+11615,Pocillopora verrucosa,Fastigilin B,2,NA,N/A,21,C21H41NO6,1,21,41,1,6,0,0,-1.2380952380952381,95.58571428571429,Poc
+11622,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C28H41N5O15,1,28,41,5,15,0,0,0.1428571428571428,56.22857142857143,Por
+11666,Pocillopora verrucosa,3-Hydroxyhexadecanoylcarnitine,2,NA,CCCCCCCCCCCCCC(CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C)O,21,C24H47NO5,1,24,47,1,5,0,0,-1.416666666666667,100.67500000000001,Poc
+11709,Pocillopora verrucosa,N-Oleoylglycine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)NCC(=O)O,21,C23H43NO6,1,23,43,1,6,0,0,-1.2173913043478262,94.99565217391304,Poc
+11716,Porites lobata,"L-3,5-Diiodotyrosine",1,N/A,N/A,141,C7H6N2O10P5,0.936536537,NA,NA,NA,NA,NA,NA,NA,NA,coral
+11716,Pocillopora verrucosa,"L-3,5-Diiodotyrosine",1,N/A,N/A,141,C7H6N2O10P5,0.936536537,NA,NA,NA,NA,NA,NA,NA,NA,coral
+11749,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Poc
+11783,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,21,C22H41NO5,1,22,41,1,5,0,0,-1.2727272727272725,96.57272727272726,Poc
+11793,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,550,C20H42N16O5P2,0.961361361,20,42,16,5,2,0,0.2999999999999998,51.75,Poc
+11814,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C17H25N3O9,1,17,25,3,9,0,0,0.11764705882352944,56.94705882352941,Poc
+11874,Pocillopora verrucosa,Fastigilin B,2,NA,N/A,21,C21H41NO6,1,21,41,1,6,0,0,-1.2380952380952381,95.58571428571429,Poc
+11901,Pocillopora verrucosa,Fastigilin B,2,NA,N/A,21,C22H43NO5,1,22,43,1,5,0,0,-1.3636363636363633,99.16363636363636,Poc
+11937,Porites lobata,Octanoylcarnitine,2,NA,CCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C16H31NO4,1,16,31,1,4,0,0,-1.25,95.925,coral
+11937,Pocillopora verrucosa,Octanoylcarnitine,2,NA,CCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C16H31NO4,1,16,31,1,4,0,0,-1.25,95.925,coral
+11980,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Phenol ethers;nan,3,NA,NA,1306,C18H33NO5,1,18,33,1,5,0,0,-1.1111111111111107,91.96666666666665,Poc
+12038,Dictyota,Organic compounds;Lipids and lipid-like molecules;Glycerophospholipids;nan,3,NA,NA,200,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+12038,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Glycerophospholipids;nan,3,NA,NA,200,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+12177,Turf,Levetiracetam,2,NA,CCC(C(=O)N)N1CCCC1=O,336,C13H22N2O2,0.999199199,13,22,2,2,0,0,-0.9230769230769234,86.6076923076923,Turf
+12180,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,4013,C20H39NO6,1,20,39,1,6,0,0,-1.2000000000000002,94.5,Poc
+12387,Pocillopora verrucosa,cis-9-Hexadecenoic acid,2,NA,CCCCCCC=CCCCCCCCC(=O)O,17,C18H39NO3P2,0.9996997,18,39,1,3,2,0,-2.2222222222222223,123.63333333333333,Poc
+12422,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,21,C22H41NO5,1,22,41,1,5,0,0,-1.2727272727272725,96.57272727272726,Poc
+12519,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,3,NA,NA,980,C25H48N2O10P2,0.65005005,25,48,2,10,2,0,-1.2800000000000002,96.78,coral
+12519,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Steroids and steroid derivatives;Triterpenoids,3,NA,NA,980,C25H48N2O10P2,0.65005005,25,48,2,10,2,0,-1.2800000000000002,96.78,coral
+12660,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C19H52N15O6P3,0.998198198,NA,NA,NA,NA,NA,NA,NA,NA,Poc
+12677,Dictyota,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Carbohydrates and carbohydrate conjugates,3,NA,NA,1291,C19H37NO5,1,19,37,1,5,0,0,-1.2631578947368425,96.30000000000001,Dictyota
+12707,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+12738,CCA,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+12738,Dictyota,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+12738,Porites lobata,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+12738,Pocillopora verrucosa,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+12738,Turf,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+12869,Dictyota,Dutasteride,2,NA,CC12CCC3C(C1CCC2C(=O)NC4=C(C=CC(=C4)C(F)(F)F)C(F)(F)F)CCC5C3(C=CC(=O)N5)C,-1,C27H48N2O14,0.393793794,27,48,2,14,0,0,-0.5185185185185182,75.07777777777777,NA
+12869,Pocillopora verrucosa,Dutasteride,2,NA,CC12CCC3C(C1CCC2C(=O)NC4=C(C=CC(=C4)C(F)(F)F)C(F)(F)F)CCC5C3(C=CC(=O)N5)C,-1,C27H48N2O14,0.393793794,27,48,2,14,0,0,-0.5185185185185182,75.07777777777777,NA
+12869,Turf,Dutasteride,2,NA,CC12CCC3C(C1CCC2C(=O)NC4=C(C=CC(=C4)C(F)(F)F)C(F)(F)F)CCC5C3(C=CC(=O)N5)C,-1,C27H48N2O14,0.393793794,27,48,2,14,0,0,-0.5185185185185182,75.07777777777777,NA
+13040,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C20H28N24OP,1,20,28,24,1,1,0,2.05,1.875,Por
+13043,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C8H31N17O8,1,NA,NA,NA,NA,NA,NA,NA,NA,coral
+13043,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C8H31N17O8,1,NA,NA,NA,NA,NA,NA,NA,NA,coral
+13045,CCA,ALIZARIN,2,NA,N/A,2586,C12H8O3P2,1,12,8,0,3,2,0,-1,88.8,CCA
+13051,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+13060,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Glycerophosphoethanolamines,3,NA,NA,212,C24H55N4O8,0.976876877,24,55,4,8,0,0,-1.125,92.3625,NA
+13060,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Glycerophosphoethanolamines,3,NA,NA,212,C24H55N4O8,0.976876877,24,55,4,8,0,0,-1.125,92.3625,NA
+13060,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Glycerophosphoethanolamines,3,NA,NA,212,C24H55N4O8,0.976876877,24,55,4,8,0,0,-1.125,92.3625,NA
+13062,Dictyota,Spectral Match to Decaethylene glycol from NIST14,2,NA,N/A,212,C21H56N12O4P,0.924424424,21,56,12,4,1,0,-0.8095238095238093,83.37142857142857,NA
+13062,Porites lobata,Spectral Match to Decaethylene glycol from NIST14,2,NA,N/A,212,C21H56N12O4P,0.924424424,21,56,12,4,1,0,-0.8095238095238093,83.37142857142857,NA
+13062,Pocillopora verrucosa,Spectral Match to Decaethylene glycol from NIST14,2,NA,N/A,212,C21H56N12O4P,0.924424424,21,56,12,4,1,0,-0.8095238095238093,83.37142857142857,NA
+13087,Dictyota,N.epsilon.-Methyl-L-lysine,2,NA,C[NH2+]CCCCC(C(=O)[O-])N,336,C14H25NO4,1,14,25,1,4,0,0,-1,88.8,Dictyota
+13096,Pocillopora verrucosa,Fastigilin B,2,NA,N/A,21,C22H41NO5,1,22,41,1,5,0,0,-1.2727272727272725,96.57272727272726,Poc
+13097,CCA,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,21,C15H23N11O,1,15,23,11,1,0,0,0.7999999999999998,37.5,CCA
+13127,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,21,C21H39NO5,1,21,39,1,5,0,0,-1.2380952380952381,95.58571428571429,Poc
+13139,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Benzene and substituted derivatives;nan,3,NA,NA,6137,C20H34O11,1,20,34,0,11,0,0,-0.5999999999999996,77.39999999999999,Poc
+13158,Pocillopora verrucosa,Eicosapentaenoic acid ethyl ester,2,NA,CCC=CCC=CCC=CCC=CCC=CCCCC(=O)OCC,343,C25H42NO7P,1,25,42,1,7,1,0,-1.2000000000000002,94.5,Poc
+13174,Pocillopora verrucosa,3-Hydroxyhexadecanoylcarnitine,1,CCCCCCCCCCCCCC(CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C)O,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C23H45NO5,1,23,45,1,5,0,0,-1.391304347826087,99.95217391304348,Poc
+13201,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+13207,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C22H39N11O4P4,1,NA,NA,NA,NA,NA,NA,NA,NA,Por
+13209,Pocillopora verrucosa,Organic compounds;Benzenoids;Phenol ethers;nan,3,NA,NA,2393,C20H35N2O2,0.980980981,20,35,2,2,0,0,-1.25,95.925,Poc
+13233,Pocillopora verrucosa,3-Hydroxyhexadecanoylcarnitine,2,NA,CCCCCCCCCCCCCC(CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C)O,21,C24H47NO5,1,24,47,1,5,0,0,-1.416666666666667,100.67500000000001,Poc
+13242,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+13243,Porites lobata,Oleanolic acid methyl ester,2,NA,CC1(CCC2(CCC3(C(=CCC4C3(CCC5C4(CCC(C5(C)C)O)C)C)C2C1)C)C(=O)OC)C,695,C9H32N16O13,0.9998999,NA,NA,NA,NA,NA,NA,NA,NA,coral
+13243,Pocillopora verrucosa,Oleanolic acid methyl ester,2,NA,CC1(CCC2(CCC3(C(=CCC4C3(CCC5C4(CCC(C5(C)C)O)C)C)C2C1)C)C(=O)OC)C,695,C9H32N16O13,0.9998999,NA,NA,NA,NA,NA,NA,NA,NA,coral
+13254,Pocillopora verrucosa,Adipoyl-L-carnitine,2,NA,C[N+](C)(C)CC(CC(=O)[O-])OC(=O)CCCCC(=O)O,1841,C14H25NO6,1,14,25,1,6,0,0,-0.7142857142857144,80.65714285714286,Poc
+13315,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C18H27N3O9,1,18,27,3,9,0,0,0,60.3,Poc
+13318,Pocillopora verrucosa,Fastigilin B,2,NA,N/A,21,C22H43NO5,1,22,43,1,5,0,0,-1.3636363636363633,99.16363636363636,Poc
+13469,Dictyota,"Organic compounds;Lipids and lipid-like molecules;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,17,C13H31NO4P2,0.952952953,13,31,1,4,2,0,-2.3076923076923075,126.06923076923076,Dictyota
+13543,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+13543,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+13543,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+13740,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Triterpenoids,3,NA,NA,2021,C30H54O6,1,30,54,0,6,0,0,-1.4000000000000004,100.20000000000002,Dictyota
+14057,Porites lobata,"10-Formyl-7,8-dihydrofolic acid",2,NA,C1C(=NC2=C(N1)NC(=NC2=O)N)CN(C=O)C3=CC=C(C=C3)C(=O)NC(CCC(=O)O)C(=O)O,2938,C18H31N12O7P,0.950650651,18,31,12,7,1,0,0.7777777777777777,38.13333333333333,coral
+14057,Pocillopora verrucosa,"10-Formyl-7,8-dihydrofolic acid",2,NA,C1C(=NC2=C(N1)NC(=NC2=O)N)CN(C=O)C3=CC=C(C=C3)C(=O)NC(CCC(=O)O)C(=O)O,2938,C18H31N12O7P,0.950650651,18,31,12,7,1,0,0.7777777777777777,38.13333333333333,coral
+14114,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C20H45N4O9,0.903603604,20,45,4,9,0,0,-0.75,81.675,NA
+14114,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C20H45N4O9,0.903603604,20,45,4,9,0,0,-0.75,81.675,NA
+14114,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C20H45N4O9,0.903603604,20,45,4,9,0,0,-0.75,81.675,NA
+14220,Porites lobata,Fastigilin B,2,NA,N/A,21,C21H41NO5,1,21,41,1,5,0,0,-1.333333333333333,98.29999999999998,coral
+14220,Pocillopora verrucosa,Fastigilin B,2,NA,N/A,21,C21H41NO5,1,21,41,1,5,0,0,-1.333333333333333,98.29999999999998,coral
+14222,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,21,C21H39NO5,1,21,39,1,5,0,0,-1.2380952380952381,95.58571428571429,coral
+14222,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;nan,3,NA,NA,21,C21H39NO5,1,21,39,1,5,0,0,-1.2380952380952381,95.58571428571429,coral
+14365,Dictyota,Carbobenzyloxyglycylglycyl-L-norleucine,2,NA,CCCCC(C(=O)O)NC(=O)CNC(=O)CNC(=O)OCC1=CC=CC=C1,336,C12H22N2O3,1,12,22,2,3,0,0,-0.833333333333333,84.04999999999998,Dictyota
+14409,Porites lobata,"Dodeca-2(E),4(E)-dienoic acid",2,NA,CCCCCCCC=CC=CC(=O)O,6163,C21H39NO5,1,21,39,1,5,0,0,-1.2380952380952381,95.58571428571429,coral
+14409,Pocillopora verrucosa,"Dodeca-2(E),4(E)-dienoic acid",2,NA,CCCCCCCC=CC=CC(=O)O,6163,C21H39NO5,1,21,39,1,5,0,0,-1.2380952380952381,95.58571428571429,coral
+14416,Porites lobata,Vincristine,2,NA,N/A,695,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+14449,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C17H22N4O5,0.7,17,22,4,5,0,0,0,60.3,NA
+14449,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C17H22N4O5,0.7,17,22,4,5,0,0,0,60.3,NA
+14449,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C17H22N4O5,0.7,17,22,4,5,0,0,0,60.3,NA
+14578,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,87,C20H33N11O5,1,20,33,11,5,0,0,0.5,46.05,Poc
+14615,Pocillopora verrucosa,N-Oleoyltaurine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)NCCS(=O)(=O)O,17,C18H37NO2P2,1,18,37,1,2,2,0,-2.2222222222222223,123.63333333333333,Poc
+14621,Pocillopora verrucosa,N-Oleoyltaurine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)NCCS(=O)(=O)O,17,C18H37NO2P2,1,18,37,1,2,2,0,-2.2222222222222223,123.63333333333333,Poc
+14682,Pocillopora verrucosa,(-)-Secoisolariciresinol,1,COC1=C(C=CC(=C1)CC(CO)C(CC2=CC(=C(C=C2)O)OC)CO)O,COC1=C(C=CC(=C1)CC(CO)C(CC2=CC(=C(C=C2)O)OC)CO)O,-1,C19H20N4,1,19,20,4,0,0,0,-0.4210526315789478,72.30000000000001,Poc
+14682,Pocillopora verrucosa,(-)-Secoisolariciresinol,1,COC1=C(C=CC(=C1)CC(CO)C(CC2=CC(=C(C=C2)O)OC)CO)O,COC1=C(C=CC(=C1)CC(CO)C(CC2=CC(=C(C=C2)O)OC)CO)O,-1,C19H20N4,1,19,20,4,0,0,0,-0.4210526315789478,72.30000000000001,Poc
+14690,Dictyota,"N-(1,1-Dimethyl-2-hydroxyethyl)-3-amino-2-hydroxypropanesulfonic acid",2,NA,CC(C)(CO)NCC(CS(=O)(=O)O)O,17,C18H25NO6,0.684684685,18,25,1,6,0,0,-0.5555555555555554,76.13333333333333,Dictyota
+14847,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H34N12O4P,0.9995996,14,34,12,4,1,0,0.3571428571428572,50.12142857142857,Poc
+14856,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C17H22N4O5,0.7,17,22,4,5,0,0,0,60.3,Poc
+14888,Turf,Spectral Match to Oleoyl L-carnitine from NIST14,2,NA,N/A,1730,C7H34N21OP2,1,7,34,21,1,2,0,3,-25.200000000000003,Turf
+15087,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C24H36N4O12,1,24,36,4,12,0,0,0,60.3,Por
+15101,Porites lobata,"NCGC00384954-01_C28H37NO8_2-[(6'R,8a'S)-4,6'-Dihydroxy-2',5',5',8a'-tetramethyl-6-oxo-3',4',4a',5',6,6',7',8,8',8a'-decahydro-2'H-spiro[furo[2,3-e]isoindole-2,1'-naphthalen]-7(3H)-yl]pentanedioic acid",2,NA,CC1CCC2C(C)(C)[C@H](O)CC[C@]2(C)C13CC4=C(O3)C5=C(C=C4O)C(=O)N(C5)C(CCC(O)=O)C(O)=O,2938,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+15119,Porites lobata,no matches;no matches;no matches;no matches,3,NA,NA,-1,C19H37NO5,1,19,37,1,5,0,0,-1.2631578947368425,96.30000000000001,Por
+15198,Porites lobata,3-Iodo-L-tyrosine,1,C1=CC(=C(C=C1CC(C(=O)[O-])[NH3+])I)O,C1=CC(=C(C=C1CC(C(=O)[O-])[NH3+])I)O,141,C8H11N2O3P4,1,NA,NA,NA,NA,NA,NA,NA,NA,coral
+15198,Pocillopora verrucosa,3-Iodo-L-tyrosine,1,C1=CC(=C(C=C1CC(C(=O)[O-])[NH3+])I)O,C1=CC(=C(C=C1CC(C(=O)[O-])[NH3+])I)O,141,C8H11N2O3P4,1,NA,NA,NA,NA,NA,NA,NA,NA,coral
+15291,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C19H38N4O4,0.997497497,19,38,4,4,0,0,-0.9473684210526319,87.30000000000001,Poc
+15362,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C21H52N9O7P,0.945845846,21,52,9,7,1,0,-0.7619047619047619,82.0142857142857,Por
+15427,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C23H45NO6,0.9998999,23,45,1,6,0,0,-1.304347826086956,97.47391304347825,Poc
+15438,Porites lobata,3-Iodo-L-tyrosine,2,NA,C1=CC(=C(C=C1CC(C(=O)[O-])[NH3+])I)O,141,C9H8NO10P,0.837137137,9,8,1,10,1,0,1.1111111111111112,28.63333333333333,Por
+15466,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C23H34N4O12,1,23,34,4,12,0,0,0.08695652173913038,57.82173913043478,coral
+15466,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C23H34N4O12,1,23,34,4,12,0,0,0.08695652173913038,57.82173913043478,coral
+15525,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Phenol ethers;nan,3,NA,NA,2237,C18H46N12O2P,1,18,46,12,2,1,0,-0.6111111111111107,77.71666666666665,Poc
+15539,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C22H32N4O12,1,22,32,4,12,0,0,0.18181818181818166,55.11818181818182,coral
+15539,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C22H32N4O12,1,22,32,4,12,0,0,0.18181818181818166,55.11818181818182,coral
+15587,Pocillopora verrucosa,Ricinoleic Acid methyl ester,2,NA,N/A,-1,C24H52N3O6P,0.759059059,24,52,3,6,1,0,-1.5,103.05,Poc
+15601,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H37NO10,0.942042042,20,37,1,10,0,0,-0.7000000000000002,80.25,CCA
+15644,Dictyota,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Monoterpenoids,3,NA,NA,155,C29H47N17O3,0.185885886,29,47,17,3,0,0,0.34482758620689635,50.47241379310345,Dictyota
+15740,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C22H41NO10,1,22,41,1,10,0,0,-0.8181818181818183,83.61818181818182,coral
+15740,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C22H41NO10,1,22,41,1,10,0,0,-0.8181818181818183,83.61818181818182,coral
+15785,Porites lobata,Octanoylcarnitine,1,CCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,N/A,21,C15H29NO4,1,15,29,1,4,0,0,-1.2000000000000002,94.5,Por
+15972,Porites lobata,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+15989,Porites lobata,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+15993,Porites lobata,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,coral
+15993,Pocillopora verrucosa,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,coral
+16046,Pocillopora verrucosa,3-Hydroxyhexadecanoylcarnitine,1,CCCCCCCCCCCCCC(CC(=O)OC(CC(=O)[O-])C[N+](C)(C)C)O,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C23H45NO5,1,23,45,1,5,0,0,-1.391304347826087,99.95217391304348,Poc
+16084,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Eicosanoids,3,NA,NA,1063,C21H52N9O7P,1,21,52,9,7,1,0,-0.7619047619047619,82.0142857142857,Por
+16088,Porites lobata,"3-[21-benzyl-3,24-bis(butan-2-yl)-6-(2-carboxyethyl)-7,10,28-trimethyl-2,5,8,11,14,20,23,26,29,32-decaoxo-9,30-bis(propan-2-yl)-25-oxa-1,4,7,10,13,19,22,28,31-nonaazatricyclo[31.4.0.0�?,�?]heptatriacontan-27-yl]propanoic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+16123,Porites lobata,"N-Acetyl-L-phenylalanyl-3,5-diiodo-L-tyrosine",2,NA,CC(=O)NC(CC1=CC=CC=C1)C(=O)NC(CC2=CC(=C(C(=C2)I)O)I)C(=O)O,141,C8H8N2O10P5,0.9997998,NA,NA,NA,NA,NA,NA,NA,NA,Por
+16278,Porites lobata,O-Arachidonoylglycidol,2,NA,CCCCCC=CCC=CCC=CCC=CCCCC(=O)OCC1CO1,343,C25H44NO7P,1,25,44,1,7,1,0,-1.2800000000000002,96.78,coral
+16278,Pocillopora verrucosa,O-Arachidonoylglycidol,2,NA,CCCCCC=CCC=CCC=CCC=CCCCC(=O)OCC1CO1,343,C25H44NO7P,1,25,44,1,7,1,0,-1.2800000000000002,96.78,coral
+16286,Porites lobata,"5.alpha.-Pregnan-17-ol-3,20-dione",2,NA,CC(=O)C1(CCC2C1(CCC3C2CCC4C3(CCC(=O)C4)C)C)O,-1,C14H22O3,1,14,22,0,3,0,0,-1.1428571428571432,92.87142857142858,Por
+16377,Dictyota,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Carbohydrates and carbohydrate conjugates,3,NA,NA,1291,C19H37NO6,1,19,37,1,6,0,0,-1.1578947368421053,93.3,NA
+16377,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Fatty Acyls;Carbohydrates and carbohydrate conjugates,3,NA,NA,1291,C19H37NO6,1,19,37,1,6,0,0,-1.1578947368421053,93.3,NA
+16401,Dictyota,Ser Gly Thr,2,NA,N/A,2108,C24H40N6O2,1,24,40,6,2,0,0,-0.75,81.675,NA
+16401,Pocillopora verrucosa,Ser Gly Thr,2,NA,N/A,2108,C24H40N6O2,1,24,40,6,2,0,0,-0.75,81.675,NA
+16439,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C23H34N4O12,1,23,34,4,12,0,0,0.08695652173913038,57.82173913043478,coral
+16439,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C23H34N4O12,1,23,34,4,12,0,0,0.08695652173913038,57.82173913043478,coral
+16494,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C21H37NO8,0.993593594,21,37,1,8,0,0,-0.8571428571428568,84.72857142857141,Poc
+17057,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C23H35N2O7,1,23,35,2,7,0,0,-0.6521739130434785,78.88695652173914,Poc
+17064,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,77,C16H51N21O5,1,16,51,21,5,0,0,1.375,21.112499999999997,Por
+17069,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C21H39NO10,0.953453453,21,39,1,10,0,0,-0.7619047619047619,82.0142857142857,Poc
+17083,Porites lobata,3-Hydroxyoleylcarnitine,2,NA,N/A,21,C20H37NO5,1,20,37,1,5,0,0,-1.2000000000000002,94.5,coral
+17083,Pocillopora verrucosa,3-Hydroxyoleylcarnitine,2,NA,N/A,21,C20H37NO5,1,20,37,1,5,0,0,-1.2000000000000002,94.5,coral
+17086,CCA,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,77,C20H42O9,1,20,42,0,9,0,0,-1.2000000000000002,94.5,NA
+17086,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,77,C20H42O9,1,20,42,0,9,0,0,-1.2000000000000002,94.5,NA
+17086,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,77,C20H42O9,1,20,42,0,9,0,0,-1.2000000000000002,94.5,NA
+17171,Pocillopora verrucosa,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Sesquiterpenoids,3,NA,NA,434,C14H28O8,1,14,28,0,8,0,0,-0.8571428571428568,84.72857142857141,Poc
+17292,Porites lobata,(R)-(+)-Citronellic acid,2,NA,CC(CCC=C(C)C)CC(=O)O,5082,C14H31NO2,1,14,31,1,2,0,0,-1.7142857142857144,109.15714285714286,coral
+17292,Pocillopora verrucosa,(R)-(+)-Citronellic acid,2,NA,CC(CCC=C(C)C)CC(=O)O,5082,C14H31NO2,1,14,31,1,2,0,0,-1.7142857142857144,109.15714285714286,coral
+17318,Porites lobata,Matairesinol,2,NA,COC1=C(C=CC(=C1)CC2COC(=O)C2CC3=CC(=C(C=C3)O)OC)O,-1,C14H31NO2,1,14,31,1,2,0,0,-1.7142857142857144,109.15714285714286,coral
+17318,Pocillopora verrucosa,Matairesinol,2,NA,COC1=C(C=CC(=C1)CC2COC(=O)C2CC3=CC(=C(C=C3)O)OC)O,-1,C14H31NO2,1,14,31,1,2,0,0,-1.7142857142857144,109.15714285714286,coral
+17373,CCA,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+17373,Dictyota,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+17373,Porites lobata,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+17373,Pocillopora verrucosa,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+17373,Turf,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Primary producers
+17546,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,2248,C21H33N2O6,1,21,33,2,6,0,0,-0.7142857142857144,80.65714285714286,Poc
+17553,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C10H37N13O4P2,0.545845846,10,37,13,4,2,0,0,60.3,Poc
+17580,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,C18H27N3O9,1,18,27,3,9,0,0,0,60.3,Poc
+17645,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+17645,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+17645,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+17657,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+17657,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,1,20,34,0,10,0,0,-0.7000000000000002,80.25,NA
+17843,Porites lobata,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;nan,3,NA,NA,77,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+17906,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C26H45NO15,0.265365365,26,45,1,15,0,0,-0.4615384615384617,73.45384615384616,Poc
+17992,Dictyota,Organic compounds;Lipids and lipid-like molecules;Prenol lipids;Triterpenoids,3,NA,NA,59,C19H47N8O5P,1,19,47,8,5,1,0,-0.9473684210526319,87.30000000000001,Dictyota
+18001,Porites lobata,Vincristine,2,NA,N/A,695,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+18075,Pocillopora verrucosa,16-Hydroxyhexadecanoic acid,2,NA,C(CCCCCCCC(=O)O)CCCCCCCO,21,C21H39NO6,1,21,39,1,6,0,0,-1.1428571428571432,92.87142857142858,Poc
+18113,Pocillopora verrucosa,Fastigilin B,2,NA,N/A,21,C22H43NO5,1,22,43,1,5,0,0,-1.3636363636363633,99.16363636363636,Poc
+18201,Porites lobata,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,131,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+18312,Porites lobata,L-Arachidonoylcarnitine,2,NA,N/A,21,C18H33NO5,1,18,33,1,5,0,0,-1.1111111111111107,91.96666666666665,coral
+18312,Pocillopora verrucosa,L-Arachidonoylcarnitine,2,NA,N/A,21,C18H33NO5,1,18,33,1,5,0,0,-1.1111111111111107,91.96666666666665,coral
+18505,Porites lobata,no matches;no matches;no matches;no matches,3,NA,NA,-1,C24H37N,0.9997998,24,37,1,0,0,0,-1.416666666666667,100.67500000000001,coral
+18505,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C24H37N,0.9997998,24,37,1,0,0,0,-1.416666666666667,100.67500000000001,coral
+18574,Dictyota,Leu Arg Thr,2,NA,N/A,-1,C15H34N7O4P,1,15,34,7,4,1,0,-0.666666666666667,79.30000000000001,Dictyota
+18925,CCA,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+18925,Porites lobata,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+18925,Pocillopora verrucosa,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+18925,Turf,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+18926,Porites lobata,Baccatin III,2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Por
+18933,Dictyota,Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;nan,3,NA,NA,336,C20H36N2O6,0.994394394,20,36,2,6,0,0,-0.9000000000000004,85.95,Dictyota
+19179,CCA,Pro-Glu-Arg,1,C1CC(NC1)C(=O)NC(CCC(=O)O)C(=O)NC(CCCN=C(N)N)C(=O)O,CCCCCCCCC#CCC#CCC#CCCCC(=O)O,3352,C16H28N6O6,0.796096096,16,28,6,6,0,0,0.125,56.7375,NA
+19179,Dictyota,Pro-Glu-Arg,1,C1CC(NC1)C(=O)NC(CCC(=O)O)C(=O)NC(CCCN=C(N)N)C(=O)O,CCCCCCCCC#CCC#CCC#CCCCC(=O)O,3352,C16H28N6O6,0.796096096,16,28,6,6,0,0,0.125,56.7375,NA
+19179,Porites lobata,Pro-Glu-Arg,1,C1CC(NC1)C(=O)NC(CCC(=O)O)C(=O)NC(CCCN=C(N)N)C(=O)O,CCCCCCCCC#CCC#CCC#CCCCC(=O)O,3352,C16H28N6O6,0.796096096,16,28,6,6,0,0,0.125,56.7375,NA
+19179,Turf,Pro-Glu-Arg,1,C1CC(NC1)C(=O)NC(CCC(=O)O)C(=O)NC(CCCN=C(N)N)C(=O)O,CCCCCCCCC#CCC#CCC#CCCCC(=O)O,3352,C16H28N6O6,0.796096096,16,28,6,6,0,0,0.125,56.7375,NA
+19556,Pocillopora verrucosa,Spectral Match to Pinolenic acid from NIST14,2,NA,N/A,4896,C16H35NO3,1,16,35,1,3,0,0,-1.625,106.6125,Poc
+19575,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H35N4O9P,1,14,35,4,9,1,0,-0.7142857142857144,80.65714285714286,NA
+19575,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H35N4O9P,1,14,35,4,9,1,0,-0.7142857142857144,80.65714285714286,NA
+19575,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H35N4O9P,1,14,35,4,9,1,0,-0.7142857142857144,80.65714285714286,NA
+19575,Turf,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H35N4O9P,1,14,35,4,9,1,0,-0.7142857142857144,80.65714285714286,NA
+19581,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C11H32N9O6P2,0.996596597,11,32,9,6,2,0,-0.2727272727272725,68.07272727272726,NA
+19581,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C11H32N9O6P2,0.996596597,11,32,9,6,2,0,-0.2727272727272725,68.07272727272726,NA
+19581,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C11H32N9O6P2,0.996596597,11,32,9,6,2,0,-0.2727272727272725,68.07272727272726,NA
+19610,Porites lobata,no matches;no matches;no matches;no matches,3,NA,NA,-1,C28H35N,0.995495495,28,35,1,0,0,0,-1.1428571428571432,92.87142857142858,Por
+19657,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C7H31N17O7,1,NA,NA,NA,NA,NA,NA,NA,NA,Poc
+19801,CCA,"(3S,4R,6aR,6bS,8aS,11R,12R,14bR)-3,12-dihydroxy-4,6a,6b,11,12,14b-hexamethyl-8a-[3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,11,12a,14,14a-tetradecahydropicene-4-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+19801,Pocillopora verrucosa,"(3S,4R,6aR,6bS,8aS,11R,12R,14bR)-3,12-dihydroxy-4,6a,6b,11,12,14b-hexamethyl-8a-[3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,11,12a,14,14a-tetradecahydropicene-4-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+19845,Pocillopora verrucosa,no matches;no matches;no matches;no matches,3,NA,NA,-1,C16H43N7P,1,16,43,7,0,1,0,-1.6875,108.39375,Poc
+20156,CCA,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+20156,Dictyota,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+20156,Pocillopora verrucosa,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+20161,Pocillopora verrucosa,"3-[21-benzyl-3,24-bis(butan-2-yl)-6-(2-carboxyethyl)-7,10,28-trimethyl-2,5,8,11,14,20,23,26,29,32-decaoxo-9,30-bis(propan-2-yl)-25-oxa-1,4,7,10,13,19,22,28,31-nonaazatricyclo[31.4.0.0�?,�?]heptatriacontan-27-yl]propanoic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Poc
+20183,Dictyota,Spectral Match to Nonaethylene glycol from NIST14,2,NA,N/A,200,C28H63N4O8,1,28,63,4,8,0,0,-1.25,95.925,Dictyota
+20188,CCA,3-Cyclohexyl-L-alaninamide,2,NA,C1CCC(CC1)CC(C(=O)N)N,3585,C16H35NO3,1,16,35,1,3,0,0,-1.625,106.6125,NA
+20188,Pocillopora verrucosa,3-Cyclohexyl-L-alaninamide,2,NA,C1CCC(CC1)CC(C(=O)N)N,3585,C16H35NO3,1,16,35,1,3,0,0,-1.625,106.6125,NA
+20203,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H32O11,1,20,32,0,11,0,0,-0.5,74.55,Poc
+20204,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H32O11,1,20,32,0,11,0,0,-0.5,74.55,Poc
+20210,CCA,"(3S,4R)-7-hydroxy-3-[(3S,4R)-7-hydroxy-4-(4-hydroxyphenyl)-2-oxo-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-3-yl]-4-(4-hydroxyphenyl)-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy-3,4-dihydrochromen-2-one",2,NA,N/A,582,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,CCA
+20306,Porites lobata,"3-[21-benzyl-3,24-bis(butan-2-yl)-6-(2-carboxyethyl)-7,10,28-trimethyl-2,5,8,11,14,20,23,26,29,32-decaoxo-9,30-bis(propan-2-yl)-25-oxa-1,4,7,10,13,19,22,28,31-nonaazatricyclo[31.4.0.0�?,�?]heptatriacontan-27-yl]propanoic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,coral
+20306,Pocillopora verrucosa,"3-[21-benzyl-3,24-bis(butan-2-yl)-6-(2-carboxyethyl)-7,10,28-trimethyl-2,5,8,11,14,20,23,26,29,32-decaoxo-9,30-bis(propan-2-yl)-25-oxa-1,4,7,10,13,19,22,28,31-nonaazatricyclo[31.4.0.0�?,�?]heptatriacontan-27-yl]propanoic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,coral
+20313,Turf,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Turf
+20320,Porites lobata,Linoleoyl ethanolamide,2,NA,CCCCCC=CCC=CCCCCCCCC(=O)NCCO,17,C13H35N7O8,1,13,35,7,8,0,0,0.15384615384615374,55.91538461538462,coral
+20320,Pocillopora verrucosa,Linoleoyl ethanolamide,2,NA,CCCCCC=CCC=CCCCCCCCC(=O)NCCO,17,C13H35N7O8,1,13,35,7,8,0,0,0.15384615384615374,55.91538461538462,coral
+20328,CCA,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H26N16P,1,14,26,16,0,1,0,1.2142857142857144,25.692857142857136,NA
+20328,Porites lobata,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H26N16P,1,14,26,16,0,1,0,1.2142857142857144,25.692857142857136,NA
+20328,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H26N16P,1,14,26,16,0,1,0,1.2142857142857144,25.692857142857136,NA
+20336,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C11H34N9O5P2,1,11,34,9,5,2,0,-0.6363636363636367,78.43636363636364,Poc
+20337,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H34O10,0.998698699,20,34,0,10,0,0,-0.7000000000000002,80.25,Poc
+20349,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H32O11,1,20,32,0,11,0,0,-0.5,74.55,Poc
+20353,Pocillopora verrucosa,Organic compounds;Organoheterocyclic compounds;Benzene and substituted derivatives;nan,3,NA,NA,6137,C14H25N15OP,1,14,25,15,1,1,0,1.2142857142857144,25.692857142857136,Poc
+20362,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Poc
+20365,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C14H33N4O9P,0.988788789,14,33,4,9,1,0,-0.5714285714285712,76.58571428571427,Poc
+20371,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C20H29N4O6P,0.981181181,20,29,4,6,1,0,-0.5,74.55,Poc
+20657,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,2248,C12H30N13P,1,12,30,13,0,1,0,0.3333333333333335,50.8,Poc
+20660,CCA,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+20660,Porites lobata,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+20660,Pocillopora verrucosa,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+20711,CCA,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+20711,Pocillopora verrucosa,"(2S,3S,4S,5R,6R)-6-[[(3S,4R,6aR,6bS,8aS,14bR)-4-(hydroxymethyl)-4,6a,6b,11,11,14b-hexamethyl-8a-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxycarbonyl-1,2,3,4a,5,6,7,8,9,10,12,12a,14,14a-tetradecahydropicen-3-yl]oxy]-3,4,5-trihydroxyoxane-2-carboxylic acid",2,NA,N/A,37,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+20717,Pocillopora verrucosa,"Organic compounds;Organoheterocyclic compounds;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",3,NA,NA,80,C16H26O9,1,16,26,0,9,0,0,-0.5,74.55,Poc
+20722,Porites lobata,Oleoyl-L-carnitine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C20H39NO5,0.886386386,20,39,1,5,0,0,-1.2999999999999998,97.35,coral
+20722,Pocillopora verrucosa,Oleoyl-L-carnitine,2,NA,CCCCCCCCC=CCCCCCCCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C,21,C20H39NO5,0.886386386,20,39,1,5,0,0,-1.2999999999999998,97.35,coral

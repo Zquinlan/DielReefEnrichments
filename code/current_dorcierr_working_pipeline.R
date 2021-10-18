@@ -2228,14 +2228,19 @@ fcm_graphing <- fcm_wdf%>%
                            Timepoint == "T4" ~ 23,
                            Timepoint == "T5" ~ 28,
                            Timepoint == "T6" ~ 37,
-                           Timepoint == "TF" ~ 48))
+                           Timepoint == "TF" ~ 48))%>%
+  group_by(Organism, Timepoint)%>%
+  mutate(st_err = sd(`Cells µL-1`))%>%
+  summarize_if(is.numeric, mean)
 
 pdf("~/Documents/GitHub/DORCIERR/data/plots/FCM_day.pdf", width = 7, height = 5)
 fcm_graphing%>%
   ggplot(aes(x= Hours, y = `Cells µL-1`, color = Organism))+
-  geom_point(stat = "summary", fun.y = "mean") +
-  geom_line(aes(group = Organism), stat = "summary", fun.y = "mean") +
+  geom_point(stat = "identity") +
+  geom_errorbar(aes(ymin = `Cells µL-1` - st_err, ymax = `Cells µL-1` + st_err)) +
+  geom_line(aes(group = Organism)) +
   scale_color_manual(values = c(org_colors_no_water, "#3B9AB2")) +
+  labs(y = bquote(Cells ~µL^-1)) +
   # facet_wrap(~ DayNight) +
   # scale_color_manual(values = c("darkorchid3", "#50A45C", "#AF814B", "#5BBCD6")) +
   scale_y_continuous(limits = c(0,900), breaks= seq(0, 900, 100)) +
@@ -2265,7 +2270,6 @@ osm_dom_pco <- dom_stats_wdf%>%
   mutate(zscore = zscore + 78)%>%
   select(-c(TF, T0, mean_t0, change))%>%
   unite(sample, c(1:4), sep = "_")%>%
- 
   column_to_rownames(var = "sample")%>%
   vegdist(na.rm = TRUE)%>%
   pcoa()

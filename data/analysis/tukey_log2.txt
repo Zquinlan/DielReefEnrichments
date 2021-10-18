@@ -1,0 +1,84 @@
+[[1]]
+# A tibble: 2 x 6
+  term         df  sumsq meansq statistic   p.value
+  <chr>     <dbl>  <dbl>  <dbl>     <dbl>     <dbl>
+1 Organism      4   729. 182.        22.4  3.18e-18
+2 Residuals  2407 19534.   8.12      NA   NA       
+
+[[2]]
+# A tibble: 2 x 6
+  term         df  sumsq meansq statistic   p.value
+  <chr>     <dbl>  <dbl>  <dbl>     <dbl>     <dbl>
+1 Organism      4   729. 182.        22.4  3.18e-18
+2 Residuals  2407 19534.   8.12      NA   NA       
+
+[[3]]
+# A tibble: 2 x 6
+  term         df  sumsq meansq statistic   p.value
+  <chr>     <dbl>  <dbl>  <dbl>     <dbl>     <dbl>
+1 Organism      4   729. 182.        22.4  3.18e-18
+2 Residuals  2407 19534.   8.12      NA   NA       
+
+[[4]]
+# A tibble: 2 x 6
+  term         df  sumsq meansq statistic   p.value
+  <chr>     <dbl>  <dbl>  <dbl>     <dbl>     <dbl>
+1 Organism      4   729. 182.        22.4  3.18e-18
+2 Residuals  2407 19534.   8.12      NA   NA       
+
+[[5]]
+# A tibble: 2 x 6
+  term         df  sumsq meansq statistic   p.value
+  <chr>     <dbl>  <dbl>  <dbl>     <dbl>     <dbl>
+1 Organism      4   729. 182.        22.4  3.18e-18
+2 Residuals  2407 19534.   8.12      NA   NA       
+
+[[6]]
+# A tibble: 2 x 6
+  term         df  sumsq meansq statistic   p.value
+  <chr>     <dbl>  <dbl>  <dbl>     <dbl>     <dbl>
+1 Organism      4   729. 182.        22.4  3.18e-18
+2 Residuals  2407 19534.   8.12      NA   NA       
+
+[[7]]
+# A tibble: 2 x 6
+  term         df  sumsq meansq statistic   p.value
+  <chr>     <dbl>  <dbl>  <dbl>     <dbl>     <dbl>
+1 Organism      4   729. 182.        22.4  3.18e-18
+2 Residuals  2407 19534.   8.12      NA   NA       
+
+[[8]]
+# A tibble: 2 x 6
+  term         df  sumsq meansq statistic   p.value
+  <chr>     <dbl>  <dbl>  <dbl>     <dbl>     <dbl>
+1 Organism      4   729. 182.        22.4  3.18e-18
+2 Residuals  2407 19534.   8.12      NA   NA       
+
+[[9]]
+# A tibble: 2 x 6
+  term         df  sumsq meansq statistic   p.value
+  <chr>     <dbl>  <dbl>  <dbl>     <dbl>     <dbl>
+1 Organism      4   729. 182.        22.4  3.18e-18
+2 Residuals  2407 19534.   8.12      NA   NA       
+
+[[10]]
+# A tibble: 2 x 6
+  term         df  sumsq meansq statistic   p.value
+  <chr>     <dbl>  <dbl>  <dbl>     <dbl>     <dbl>
+1 Organism      4   729. 182.        22.4  3.18e-18
+2 Residuals  2407 19534.   8.12      NA   NA       
+
+# A tibble: 10 x 7
+# Groups:   activity [1]
+   activity    term     comparison                           estimate conf.low conf.high adj.p.value
+   <chr>       <chr>    <chr>                                   <dbl>    <dbl>     <dbl>       <dbl>
+ 1 depletolite Organism Dictyota-CCA                          -0.0947  -0.737      0.547    9.94e- 1
+ 2 depletolite Organism Pocillopora verrucosa-CCA             -1.16    -1.74      -0.591    3.24e- 7
+ 3 depletolite Organism Porites lobata-CCA                    -1.46    -2.07      -0.856    5.11e-10
+ 4 depletolite Organism Turf-CCA                              -0.565   -1.30       0.167    2.17e- 1
+ 5 depletolite Organism Pocillopora verrucosa-Dictyota        -1.07    -1.53      -0.611    2.12e- 9
+ 6 depletolite Organism Porites lobata-Dictyota               -1.37    -1.87      -0.868    0.      
+ 7 depletolite Organism Turf-Dictyota                         -0.470   -1.12       0.175    2.72e- 1
+ 8 depletolite Organism Porites lobata-Pocillopora verrucosa  -0.300   -0.707      0.108    2.64e- 1
+ 9 depletolite Organism Turf-Pocillopora verrucosa             0.599    0.0218     1.18     3.74e- 2
+10 depletolite Organism Turf-Porites lobata                    0.898    0.287      1.51     5.94e- 4

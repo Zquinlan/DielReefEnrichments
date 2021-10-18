@@ -25,6 +25,8 @@ library(classyfireR)
 library(randomForest)
 library(ggpubr)
 library(rsq)
+library(VennDiagram)
+
 
 #PCoA, PERMANOVA
 library(vegan)
@@ -36,6 +38,15 @@ library(RColorBrewer)
 library(gplots)
 library(gtable)
 library(ggnewscale)
+library(ggforce)
+library(emojifont)
+load.emojifont('OpenSansEmoji.ttf')
+
+#modeling
+library(yardstick)
+library(glmnet)
+library(recipes)
+library(foreach)
 
 #Defining functions and removing issues with overlapping function calls
 map <- purrr::map
@@ -48,23 +59,32 @@ zscore <- function(x) {
   (x-mean(x, na.rm = TRUE))/sd(x, na.rm = TRUE)
 }
 
+angular_transform <- function(x) {
+  asin(sqrt(x))
+}
+
+gen_theme <-  function(x){
+  theme(plot.margin = unit(c(1,1,1.5,1.2), 'cm'),
+        axis.title = element_text(size = 25),
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 25),
+        axis.text.y = element_text(size = 25),
+        plot.title = element_text(size = 25, face = "bold"),
+        legend.text = element_text(size = 25),
+        legend.title = element_text(size = 25),
+        panel.background = element_rect(fill = "transparent"), # bg of the panel
+        plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+        panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
+        panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"))
+}
 
 # LOADING -- Dataframes ---------------------------------------------------
-## FCM
-dorc_fcm_fdom <- read_xlsx("~/Documents/GitHub/DORCIERR/data/raw/DOC_fDOM_FCM/DORCIERR_fDOM_FCM.xlsx")%>%
-  rename(sample_name =`Sample Name of DORCIERR_FCM_Final`)%>%
-  rename('DayNight' = 'Experiment')%>%
-  rename(Organism = 'Organsim')%>%
-  mutate(Organism = case_when(Organism == "Water" ~ "Water control",
-                              TRUE ~ as.character(Organism)))
-
 # 16s rRNA sequences
 microbe_abundance_raw <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/microbes/MCR2017.16S.Nelson.Pipeline.October2019/abundance_table_100.shared.tsv")
 microbe_taxonomy <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/microbes/MCR2017.16S.Nelson.Pipeline.October2019/annotations_100.taxonomy.tsv")
 
 # PRE-STATS CLEANING -- Microbes and pre-filtering OTUs for abundance-----------------------------------------------
 microbe_combined <- microbe_abundance_raw%>%
-  dplyr::select(-1)%>%
+  select(-1)%>%
   mutate(Group = case_when(Group == "Dorcierr_D_DT_1_TFD" ~ "D_DT_1_TFD",
                            Group == "DORCIERR_D_WA_2_TFN" ~ "D_WA_2_TFN",
                            Group == "D_PV_2_TFN_SA504_SC704" ~ "D_PV_2_TFN",
@@ -76,14 +96,14 @@ microbe_combined <- microbe_abundance_raw%>%
   rename(sample_code = Group)%>%
   gather(OTU, reads, 3:ncol(.))%>%
   # left_join(., microbe_taxonomy, by = "OTU")%>%
-  # dplyr::select(-Size)%>%
+  # select(-Size)%>%
   # separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "OTU_id"), sep = ";", remove = FALSE)%>%
   separate(sample_code, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_", remove = FALSE)%>%
-  dplyr::mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
                                        Experiment == "M" ~ "mordor",
                                        Experiment == "R" ~ "RR3",
                                        TRUE ~ as.character(Experiment)))%>%
-  dplyr::mutate(Organism = case_when(Organism == "CC" ~ "CCA",
+  mutate(Organism = case_when(Organism == "CC" ~ "CCA",
                                      Organism == "DT" ~ "Dictyota",
                                      Organism == "PL" ~ "Porites lobata",
                                      Organism == "PV" ~ "Pocillopora verrucosa",
@@ -99,13 +119,8 @@ microbe_combined <- microbe_abundance_raw%>%
          Organism != "Influent")%>%
   mutate(reads = case_when(reads == 0 ~ 1/numOtus,
                            TRUE ~ as.numeric(reads)))%>%
-  # left_join(fcm_wdf%>%
-  #             rename(sample_code = sample_name)%>%
-  #             select(c(`Cells µL-1`, sample_code)), by = "sample_code")%>%
   group_by(sample_code)%>%
   mutate(ra = reads/sum(reads))%>%
-  # cell_abun = ra*`Cells µL-1`,
-  # log10 = log10(cell_abun + 0.001))%>%
   ungroup()%>%
   group_by(OTU)%>%
   mutate(abundant = case_when(max(ra) > 0.01 | sum(ra > 0.001) >= 3 ~ "abundant",
@@ -140,44 +155,6 @@ average_ra <- microbe_no_rare%>%
   summarize_if(is.numeric, mean, na.rm = TRUE)%>%
   ungroup()
 
-# PRE-STATS CLEAINING -- FCM Stats prep---------------------------------------------------------------------
-## This should calculate mean cells per hour per µL for each organism
-## Just looks at log10(TF) - mean(log10(T0))
-## Will result in log10(cells*µL-1)*hr^-1
-fcm_wdf <- dorc_fcm_fdom%>%
-  dplyr::select(c(1:8,34:ncol(.)))
-
-fcm_th_t0_prep <-fcm_wdf%>%
-  filter(Timepoint %like any% c('T0', 'T4'),
-         !Organism == 'Influent',
-         !Organism == 'Offshore')%>%
-  mutate(log_10_cellsµL = log10(`Cells µL-1`))%>%
-  dplyr::select(c(5:8, 15))%>%
-  spread(Timepoint, log_10_cellsµL)
-
-fcm_t0 <- fcm_th_t0_prep%>%
-  dplyr::select(-c(T4, Replicate))%>%
-  group_by(Organism, DayNight)%>%
-  summarize_if(is.numeric, mean, na.rm = TRUE)
-
-fcm_rate_th_t0 <- fcm_th_t0_prep%>%
-  dplyr::select(-T0)%>%
-  left_join(., fcm_t0, by = c("Organism", "DayNight"))%>%
-  add_column(change_per_hour = (.$T4 - .$T0)/24)
-
-fcm_t7 <- fcm_wdf%>%
-  mutate(log_10_cellsµL = log10(`Cells µL-1`))%>%
-  dplyr::select(c(5:8, 15))%>%
-  filter(Timepoint == c('TF'),
-         !Organism == 'Influent')%>%
-  spread(Timepoint, log_10_cellsµL)
-
-## This is the actual dataframe to use for running FCM stats
-fcm_stats_df <- left_join(fcm_t7, fcm_rate_th_t0, by = c("Organism", "Replicate", "DayNight"))%>%
-  dplyr::select(-c(5,6))%>%
-  gather(test, log_value, 4:5)
-
-
 # SET SEED ----------------------------------------------------------------
 set.seed(2005)
 
@@ -188,8 +165,8 @@ aov_microbe <- microbe_no_rare%>%
   mutate(anova = map(data, ~ aov(asin ~ Organism*DayNight, .x)%>%
                        tidy()%>%
                        filter(!term == "Residuals")%>%
-                       dplyr::select(term, p.value)))%>%
-  dplyr::select(-data)%>%
+                       select(term, p.value)))%>%
+  select(-data)%>%
   unnest(anova)
 
 anova_microbe_pvalues <- aov_microbe%>%
@@ -198,28 +175,24 @@ anova_microbe_pvalues <- aov_microbe%>%
   add_column(FDR = p.adjust(.$p.value, method = "BH"))%>%
   filter(FDR < 0.05)
 
-organism_significant_microbes <- as.vector(anova_microbe_pvalues%>%
-                                             filter(term == "Organism"))$OTU
+organism_significant_microbes <- (anova_microbe_pvalues%>%
+  filter(term == "Organism"))$OTU%>%
+  as.vector()
 
-DayNight_significant_microbes <- as.vector(anova_microbe_pvalues%>%
-                                             filter(term != "Organism"))$OTU
+DayNight_significant_microbes <- (anova_microbe_pvalues%>%
+  filter(term != "Organism"))$OTU%>%
+  as.vector()
+
+different_microbes <- anova_microbe_pvalues$OTU%>%
+  unique()%>%
+  as.vector()
+  
 # PRE-POST-HOC CLEANING -- Microbe Dunnetts and DayNight anova -------------------------------
 mic_organism_post_hoc <- microbe_no_rare%>%
   filter(OTU %in% organism_significant_microbes)
 
 daynight_microbe_post_hoc <- microbe_no_rare%>%
   filter(OTU %in% DayNight_significant_microbes)
-
-# STATS POST-HOC -- FCM Tukeys ----------------------------------------------------------
-# Tukey growth rates for the first half of the expierment
-tukey_model_fcm <-fcm_stats_df%>%
-  group_by(test, DayNight)%>%
-  nest()%>%
-  mutate(data = map(data, ~aov(log_value ~ Organism, .x)%>%
-                      TukeyHSD(p.adjust.methods = "BH")%>%
-                      tidy()))%>%
-  unnest(data)%>%
-  filter(adj.p.value < 0.05)
 
 # STATS POST-HOC -- MICROBES Dunnetts -----------------------------
 organism_order_micro <- as.factor(mic_organism_post_hoc$Organism)%>%
@@ -231,7 +204,7 @@ dunnett_microbe_pvals <- mic_organism_post_hoc%>%
   group_by(DayNight, OTU)%>%
   mutate(sum = sum(asin))%>%
   filter(sum != 0)%>%
-  dplyr::select(-sum)%>%
+  select(-sum)%>%
   mutate(Organism = factor(Organism))%>%
   mutate(Organism = fct_relevel(Organism, organism_order_micro))%>%
   nest()%>%
@@ -239,9 +212,9 @@ dunnett_microbe_pvals <- mic_organism_post_hoc%>%
                          glht(linfct = mcp(Organism = "Dunnett"))),
          dunnett_summary = map(dunnett, ~summary(.x)%>%
                                  tidy()))%>%
-  dplyr::select(-c(data,dunnett))%>%
+  select(-c(data,dunnett))%>%
   unnest(dunnett_summary)%>%
-  dplyr::select(-c(4:7))%>%
+  select(-c(4:7))%>%
   mutate(lhs = gsub(" - Water control", "", lhs))%>%
   rename("Organism" = "lhs")%>%
   ungroup()%>%   
@@ -253,12 +226,12 @@ daynight_microbe_pvals <- mic_organism_post_hoc%>%
   group_by(Organism, OTU)%>%
   mutate(sum = sum(asin))%>%
   filter(sum != 0)%>%
-  dplyr::select(-sum)%>%
+  select(-sum)%>%
   nest()%>%
   mutate(data = map(data, ~ aov(asin ~ DayNight, .x)%>%
                       tidy()))%>%
   unnest(data)%>%
-  dplyr::select(-c(4:7))%>%
+  select(-c(4:7))%>%
   filter(term != "Residuals")%>%
   ungroup()%>%   
   add_column(FDR = p.adjust(.$p.value, method = "BH"))%>%
@@ -267,7 +240,7 @@ daynight_microbe_pvals <- mic_organism_post_hoc%>%
 
 # META-STATS -- microbes --------------------------------------------------
 dunnett_micro_analysis <- dunnett_microbe_pvals%>%
-  dplyr::select(-p.value)%>%
+  select(-p.value)%>%
   spread(Organism, FDR)%>%
   add_column(number_exudate_organisms = rowSums(.[3:ncol(.)] >= 0, na.rm = TRUE))%>%
   mutate(microbe_organism = case_when(is.na(CCA) == FALSE & 
@@ -332,15 +305,17 @@ dunnett_micro_analysis <- dunnett_microbe_pvals%>%
 
 micro_sigs_vector <- as.vector(dunnett_micro_analysis$OTU)
 
+# VIZUALIZATIONS -- RGB hex codes for orgs --------------------------------
+org_colors_no_water <- c("#A30029","#669900", "#FF850A", "#9900FF", "#33CC33")
 
 # META-STATS -- Hierarchical cluster matrix----------------------------------------
 hc_microbe <- mic_organism_post_hoc%>%
-  # filter(OTU %in% rf_microbe_sigs)%>%
+  filter(OTU %in% different_microbes)%>%
   ungroup()%>%
   group_by(OTU)%>%
-  mutate(zscore = zscore(log10))%>%
+  mutate(zscore = zscore(asin))%>%
   ungroup()%>%
-  dplyr::select(c(Organism, DayNight, Replicate, OTU, zscore))%>%
+  select(c(Organism, DayNight, Replicate, OTU, zscore))%>%
   unite(sample, c("Organism", "DayNight", "Replicate"), sep = "_")%>%
   left_join(microbe_taxonomy, by = "OTU")%>%
   separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "OTU_id"), sep = ";")%>%
@@ -349,7 +324,48 @@ hc_microbe <- mic_organism_post_hoc%>%
   spread(OFGO, zscore)
 
 write_csv(hc_microbe%>%
-            select(everything(), sample), "~/Documents/GitHub/DORCIERR/data/plots/microbe_hc_df.csv")
+            select(sample, everything()), "analysis/microbe_hc_df.csv")
+
+# VIZUALIZATIONS -- PCOA --------------------------------------------------
+pcoaMicrobe <- mic_organism_post_hoc%>%
+  # inner_join(dunnett_microbe_pvals%>%
+  #              select(DayNight, OTU, Organism), by = c('DayNight', 'OTU', 'Organism'))%>%
+  filter(OTU %in% different_microbes)%>%
+  filter(Organism != 'Water control')%>%
+  select(c(Organism, DayNight, Replicate, OTU, asin))%>%
+  unite(sample, c("Organism", "DayNight", "Replicate"), sep = "_")%>%
+  left_join(microbe_taxonomy, by = "OTU")%>%
+  separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "OTU_id"), sep = ";")%>%
+  unite(OFGO, c("Order", "Family", "Genus", "OTU"), sep = ";")%>%
+  select(-c(Size, OTU_id, Kingdom, Phylum, Class))%>%
+  spread(OFGO, asin)%>%
+  column_to_rownames(var = "sample")%>%
+  vegdist(na.rm = TRUE)%>%
+  pcoa()
+
+pdf('plots/pcoaMicrobes.pdf', width = 15, height = 12)
+pcoaMicrobe$vectors%>%
+  as.data.frame()%>%
+  rownames_to_column(var = "sample")%>%
+  separate(sample, c('Organism', 'DayNight', 'Replicate'), sep = '_')%>%
+  mutate(shape = case_when(DayNight == 'Day' ~ emoji('sunny'),
+                           TRUE ~ emoji('crescent_moon')))%>%
+  ggplot(., aes(x = Axis.1, y = Axis.2, color = Organism)) +
+  geom_text(aes(label = shape), cex = 13, family= 'OpenSansEmoji') +
+  scale_color_manual(values = org_colors_no_water) +
+  theme(
+    panel.background = element_rect(fill = "transparent"), # bg of the panel
+    plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+    panel.grid.major.y = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of major grid
+    panel.grid.major.x = element_line(size = 0.2, linetype = 'solid',colour = "gray"), # get rid of minor grid
+    legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+    legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
+    legend.text = element_text(face = "italic"),
+    axis.text = element_text(size = 25),
+    axis.title = element_text(size = 25)) +
+  xlab(str_c("Axis 1", " (", round(pcoaMicrobe$values$Relative_eig[1], digits = 4)*100, "%)", sep = "")) +
+  ylab(str_c("Axis 2", " (", round(pcoaMicrobe$values$Relative_eig[2], digits = 4)*100, "%)", sep = ""))
+dev.off()
 
 # META-STATS -- RA significant dunnetts -----------------------------------
 ra_dunnetts <- dunnett_microbe_pvals%>%

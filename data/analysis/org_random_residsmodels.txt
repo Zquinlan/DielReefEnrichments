@@ -1,0 +1,54 @@
+Linear mixed model fit by REML ['lmerMod']
+Formula: log2_change ~ log_nc + log_oc + log_hc + logxic + NOSC + (1 |      Organism)
+   Data: n_mulreg
+
+REML criterion at convergence: 7827.4
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.9174 -0.6739  0.1277  0.7248  3.5888 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Organism (Intercept) 0.1727   0.4155  
+ Residual             5.3172   2.3059  
+Number of obs: 1733, groups:  Organism, 5
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)  8.51629    0.74603  11.415
+log_nc       1.14473    0.24807   4.614
+log_oc       1.79978    0.32256   5.580
+log_hc      -5.89181    1.04178  -5.656
+logxic      -1.03925    0.08379 -12.403
+NOSC        -0.51200    0.21989  -2.328
+
+Correlation of Fixed Effects:
+       (Intr) log_nc log_oc log_hc logxic
+log_nc  0.541                            
+log_oc  0.482  0.550                     
+log_hc -0.531 -0.653 -0.636              
+logxic -0.759 -0.031 -0.025  0.027       
+NOSC   -0.439 -0.655 -0.708  0.797  0.047
+
+Call:
+lm(formula = residuals ~ log_nc + log_oc + log_hc + logxic + 
+    NOSC, data = resids)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-11.0438  -1.5147   0.3192   1.7104   7.8735 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)
+(Intercept) -2.083e-15  7.250e-01       0        1
+log_nc      -1.304e-15  2.501e-01       0        1
+log_oc      -7.993e-16  3.262e-01       0        1
+log_hc      -2.161e-15  1.048e+00       0        1
+logxic       1.816e-17  8.385e-02       0        1
+NOSC        -1.267e-16  2.219e-01       0        1
+
+Residual standard error: 2.333 on 1727 degrees of freedom
+Multiple R-squared:  1.706e-31,	Adjusted R-squared:  -0.002895 
+F-statistic: 5.891e-29 on 5 and 1727 DF,  p-value: 1
+
