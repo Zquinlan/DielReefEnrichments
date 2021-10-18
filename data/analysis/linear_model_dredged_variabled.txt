@@ -1,8 +1,0 @@
-# A tibble: 5 x 9
-  Organism                     p adj.r2 `(Intercept)` log_hc log_nc log_oc logxic  NOSC
-  <chr>                    <dbl>  <dbl>         <dbl>  <dbl>  <dbl>  <dbl>  <dbl> <dbl>
-1 CCA                   3.06e-11 0.215          10.3    NA    NA     NA    -1.47  NA   
-2 Dictyota              1.36e- 9 0.0633          4.59   NA    NA     NA    -0.841 NA   
-3 Pocillopora verrucosa 4.70e-20 0.216          12.6   -11.0   2.70   4.23 -1.05  NA   
-4 Porites lobata        2.22e-11 0.204          11.0   -14.0   2.85   4.56 -0.789 -1.31
-5 Turf                  5.21e- 7 0.168           9.37   NA    NA     NA    -1.62  NA   

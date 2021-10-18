@@ -1,3 +1,0 @@
-Start:  AIC=2944.19
-log2_change ~ `row m/z` + NOSC + log_nc + log_oc + log_hc + logxic
-
