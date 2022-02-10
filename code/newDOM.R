@@ -20,6 +20,8 @@ library(wesanderson)
 library(RColorBrewer)
 library(gplots)
 library(ggnewscale)
+library(ggbreak)
+library(patchwork)
 
 #Defining functions and removing issues with overlapping function calls
 map <- purrr::map
@@ -826,6 +828,12 @@ net_test <- dom_stats_wdf%>%
   left_join(networking%>%
               select(feature_number, network), by = "feature_number")%>%
   filter(network != '-1')%>%
+  # select(feature_number:DayNight, network, log10)%>%
+  # spread(Timepoint, log10)%>%
+  # group_by(network, feature_number, Organism, DayNight)%>%
+  # mutate(T0 = mean(T0, na.rm = TRUE),
+  #        log10 = TF-T0)%>%
+  # ungroup()%>%
   group_by(network, DayNight)%>%
   nest()%>%
   mutate(greater = map(data, ~ t.test(log10 ~ Timepoint, .x, alternative = "greater")),
@@ -881,225 +889,32 @@ production_ttest <- feature_stats_wdf%>%
   ungroup()%>%
   filter(activity == 'depletolite')
 
-# NEWLY PRODUCED DOM -- Subtrcting Water --------------------------------------------------------
-all_features <- feature_stats_wdf%>%
-  ungroup()%>%
-  select(feature_number, DayNight)%>%
-  unique()
-
-water_features <- dorc_wdf%>%
-  filter(!Organism == "Influent",
-         !Organism == "Offshore",
-         Timepoint == "T0" | Timepoint == "TF")%>%
-  select(feature_number, Organism:ncol(.))%>%
-  inner_join(log2_features%>%
-               select(feature_number, DayNight), by = c('DayNight', 'feature_number'))%>%
-  filter(Organism == 'Water control')%>%
-  right_join(all_features, by = c('feature_number', 'DayNight'))%>%
-  select(-Organism)%>%
-  mutate(xic = log10(xic + 1))%>%
-  rename(water = xic)%>%
-  mutate(water = case_when(is.infinite(water) ~ 0,
-                           TRUE ~ water))
-
-new_production <- feature_stats_wdf%>%
-  select(-c(xic, ra:ncol(.)))%>%
-  left_join(water_features, by = c('feature_number', 'Timepoint', 'DayNight', 'Replicate'))%>%
-  mutate(netProduction = log10 - water,
-         netProduction = case_when(netProduction < 0 ~ 0,
-                                   TRUE ~ netProduction))
-
-
 # VIZUALIZATIONS -- RGB hex codes for orgs --------------------------------
 org_colors_no_water <- c("#A30029","#669900", "#FF850A", "#9900FF", "#33CC33")
 
 
-# VIZUALIZATIONS --  Net Production pie charts -----------------------------------------------
-new_prod_pie_df <- new_production%>%
-  left_join(networking%>%
-              select(feature_number, network), by = 'feature_number')%>%
-  mutate(net_act = case_when(network == -1 ~ -as.numeric(feature_number),
-                             TRUE ~ network))%>%
-  left_join(all_activity, by = c('net_act', 'DayNight'))%>%
-  filter(Timepoint == 'T0')%>%
-  group_by(activity, Organism, Replicate, DayNight)%>%
-  summarize_if(is.numeric, sum)%>%
-  ungroup()%>%
-  group_by(activity, Organism, DayNight)%>%
-  summarize_if(is.numeric, mean)%>%
-  ungroup()%>%
-  group_by(Organism, DayNight)%>%
-  mutate(ra = netProduction/sum(netProduction))
-
-new_prod_pies <- new_prod_pie_df%>%
-  # ungroup()%>%
-  # group_by(Organism, Replicate, activity)%>%
-  # summarize_if(is.numeric, sum)%>%
-  # ungroup()%>%
-  # group_by(Organism, Replicate)%>%
-  # mutate(ra = netProduction/sum(netProduction))%>%
-  # ungroup()%>%
-  # group_by(Organism, activity)%>%
-  # mutate(err = sd(ra))%>%
-  # summarize_if(is.numeric, mean)%>%
-  # ungroup()%>%
-  # group_by(Organism)%>%
-  mutate(end = 2 * pi * cumsum(ra)/sum(ra),
-         start = lag(end, default = 0),
-         middle = 0.5 * (start + end),
-         hjust = ifelse(middle > pi, 1, 0),
-         vjust = ifelse(middle < pi/2 | middle > 3 * pi/2, 0, 1),
-         explosive = case_when(activity == 'depletolite' ~ 0.2,
-                               TRUE ~ 0),
-         texty = case_when(activity == 'depletolite' & Organism == 'Turf' ~ 0.8*cos(middle),
-                           activity == 'depletolite' & Organism == 'Porites lobata' ~ 0.95*cos(middle),
-                           activity == 'depletolite' & Organism == 'CCA' ~ 0.95*cos(middle),
-                           activity == 'recalcitrant' & Organism == 'Pocillopora verrucosa' ~ 0.5*cos(middle),
-                           activity == 'recalcitrant' & Organism == 'Dictyota' ~ 1.05*cos(middle),
-                           activity == 'recalcitrant' & Organism == 'Turf' ~ 0.5*cos(middle),
-                           activity == 'depletolite' & Organism == 'Dictyota' ~ 0.95*cos(middle),
-                           activity == 'depletolite' ~ 1.2*cos(middle),
-                           activity == 'accumolite' ~ 1.2*cos(middle),
-                           TRUE ~ 1.2*cos(middle)),
-         textx = case_when(activity == 'accumolite' & Organism == 'Pocillopora verrucosa' ~ -20*sin(middle),
-                           activity == 'recalcitrant' & Organism == 'Pocillopora verrucosa' ~ 1*sin(middle),  # Without Error
-                           activity == 'accumolite' & Organism == 'CCA' ~ -5*sin(middle),
-                           activity == 'depletolite' & Organism == 'CCA' ~ 1.6*sin(middle),
-                           activity == 'recalcitrant' & Organism == 'CCA' ~ 1*sin(middle),
-                           # activity == 'accumolite' & Organism == 'Dictyota' ~ -200*sin(middle),   #with Error
-                           activity == 'accumolite' & Organism == 'Dictyota' ~ -5*sin(middle),    #Without error
-                           activity == 'depletolite' & Organism == 'Dictyota' ~ 2*sin(middle),
-                           activity == 'accumolite' & Organism == 'Porites lobata' ~ sin(middle),
-                           activity == 'depletolite' & Organism == 'Porites lobata' ~ 1.6*sin(middle),
-                           activity == 'recalcitrant' & Organism == 'Porites lobata' ~ 1.6*sin(middle), # Without error
-                           # activity == 'accumolite' & Organism == 'Turf' ~ -60*sin(middle),  #with error
-                           activity == 'accumolite' & Organism == 'Turf' ~ -10*sin(middle),   #without error
-                           activity == 'depletolite' & Organism == 'Turf' ~ 1.8*sin(middle),
-                           activity == 'recalcitrant' & Organism == 'Turf' ~ 1*sin(middle),
-                           activity == 'depletolite' ~ 1.4*sin(middle),
-                           activity == 'recalcitrant' ~ -3*sin(middle),
-                           TRUE ~ 1.05*sin(middle)))%>%
-  ungroup()
-
-new_prod_noerr <- new_prod_pies%>%
-  filter(DayNight == 'Day')%>%
-  group_by(Organism)%>%
-  nest()%>%
-  mutate(data = map(data, ~ggplot(.x) +
-                      geom_arc_bar(aes(x0 = 0, y0 = 0, r0 = 0, r = 1,
-                                       start = start, end = end, 
-                                       fill = activity, explode = explosive, linetype = NA)) +
-                      geom_text(aes(x = textx, y = texty, 
-                                    label =  paste0(round(ra, digits = 4)*100, "%"),
-                                    color = activity,
-                                    hjust = hjust, vjust = vjust), size = 20, show.legend = FALSE) +
-                      coord_fixed() +
-                      scale_x_continuous(limits = c(-3, 4),  # Adjust so labels are not cut off
-                                         name = "", breaks = NULL, labels = NULL) +
-                      scale_y_continuous(limits = c(-1.2, 1.5),      # Adjust so labels are not cut off
-                                         name = "", breaks = NULL, labels = NULL) +
-                      theme_classic() +
-                      ggtitle(Organism) + 
-                      # facet_wrap(~ Organism) +
-                      scale_fill_manual(values = c('#78B7C5', '#EBCC2A', "#006658")) +
-                      scale_color_manual(values = c('#78B7C5', '#EBCC2A', "#006658")) + 
-                      labs(fill = 'Network activity', color = 'Network activity') +
-                      theme(axis.line = element_blank(),
-                            axis.text = element_text(size = 20),
-                            axis.ticks = element_blank(),
-                            legend.background = element_rect(fill = "transparent"), # get rid of legend bg
-                            legend.box.background = element_blank(),
-                            panel.background = element_rect(fill = "transparent"), # bg of the panel
-                            plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
-                            strip.text = element_text(size=20),
-                            legend.text = element_text(size = 20),
-                            legend.title = element_text(size = 20),
-                            legend.position = 'none',
-                            title = element_text(size = 40, hjust = 0.5),
-                            plot.title = element_text(hjust = 0.5, vjust = 3),
-                            strip.background = element_blank())))
-
-pdf("plots/org_pie_newlyProduced.pdf", width = 17, height = 12)
-new_prod_noerr$data
-dev.off()
-
-newLabilityStack <- new_production%>%
-  left_join(networking%>%
-              select(feature_number, network), by = 'feature_number')%>%
-  mutate(net_act = case_when(network == -1 ~ -as.numeric(feature_number),
-                             TRUE ~ network))%>%
-  left_join(all_activity, by = c('net_act', 'DayNight'))%>%
-  filter(Timepoint == 'T0')%>%
-  group_by(activity, Organism, Replicate, DayNight)%>%
-  summarize_if(is.numeric, sum)%>%
-  ungroup()%>%
-  select(-c(log10, network, net_act))%>%
-  gather(source, value, water:netProduction)%>%
-  mutate(activity = case_when(source == 'water' ~ 'background',
-                              TRUE ~ activity),
-         activity = as.factor(activity),
-         activity = fct_relevel(activity, 'accumolite', 'depletolite', 'recalcitrant', 'background'))
-  # group_by(Replicate, DayNight)%>%
-  # mutate(ra = netProduction/sum(netProduction))%>%
-  # ungroup()%>%
-  # group_by(activity, DayNight)%>%
-  # mutate(std = sd(ra))%>%
-  # summarize_if(is.numeric, mean)
-
-average_newLability <- new_production%>%
-  left_join(networking%>%
-              select(feature_number, network), by = 'feature_number')%>%
-  mutate(net_act = case_when(network == -1 ~ -as.numeric(feature_number),
-                             TRUE ~ network))%>%
-  left_join(all_activity, by = c('net_act', 'DayNight'))%>%
-  filter(Timepoint == 'T0')%>%
-  group_by(activity, Replicate, DayNight)%>%
-  summarize_if(is.numeric, sum)%>%
-  ungroup()%>%
-  group_by(Replicate, DayNight)%>%
-  mutate(ra = netProduction/sum(netProduction))%>%
-  ungroup()%>%
-  group_by(activity, DayNight)%>%
-  mutate(std = sd(ra))%>%
-  summarize_if(is.numeric, mean)
-
-pdf('plots/stackedLabilityBackground.pdf', width = 15, height = 10)
-newLabilityStack%>%
-  ggplot(aes(Organism, value, fill = activity)) +
-  geom_bar(position = 'stack', stat = 'identity') +
-  scale_fill_manual(values = c('#78B7C5','#EBCC2A', '#006658', 'grey')) +
-  labs(y = bquote(Sum ~Intensity(log[10] ~XIC)), fill = 'Metabolite pool') +
-  gen_theme()
-dev.off()  
-
 # Vizualizations -- Lability classifications of DOM -----------------------
-lability_classes <- new_production%>%
+lability_classes <- feature_stats_wdf%>%
+  select(-c(log10:asin))%>%
   left_join(networking%>%
               select(feature_number, network), by = 'feature_number')%>%
   mutate(net_act = case_when(network == -1 ~ -as.numeric(feature_number),
                              TRUE ~ network))%>%
   left_join(all_activity, by = c('net_act', 'DayNight'))%>%
-  # filter(DayNight == 'Day')%>%
   left_join(ecoNet%>%
               rename(feature_number = scan)%>%
               mutate(feature_number = as.character(feature_number)), by = c('feature_number', 'network'))%>%
   separate(ecoNetConsensus, c('superclass_consensus', 'class_consensus', 'subclass_consensus'), remove = FALSE, sep = ';')%>%
-  spread(Timepoint, netProduction)%>%
+  spread(Timepoint, xic)%>%
   mutate(val = case_when(activity == 'recalcitrant' ~ T0,
                          activity == 'depletolite' ~ T0,
                          activity == 'accumolite' ~ T0))%>%
   group_by(activity, DayNight)%>%
   nest()%>%
   mutate(data = map(data, ~filter(.x, !is.na(val))%>%
-                      # group_by(ecoNetConsensus, superclass_consensus, class_consensus, subclass_consensus, Replicate)%>%
                       group_by(superclass_consensus, Replicate)%>%
                       summarize_if(is.numeric, sum, na.rm = TRUE)%>%
                       ungroup()
-                    # group_by(ecoNetConsensus, superclass_consensus, class_consensus, subclass_consensus)%>%
-                    # mutate(total_production = mean(val, na.rm = TRUE),
-                    #        std = sd(val, na.rm = TRUE))%>%
-                    # select(-c(Replicate:net_act, numberOfNodes:val, ecoNetConsensusScore))%>%
-                    # unique()
   ))%>%
   unnest(data)
 
@@ -1135,21 +950,12 @@ lability_classes%>%
   group_by(DayNight, superclass_consensus, activity)%>%
   filter(sum(T0) != 0)%>%
   ungroup()%>%
-  # filter(superclass_consensus != 'NA')%>%
-  # unite(superclass_class, c(superclass_consensus, class_consensus), sep = '_')%>%
-  # filter(ecoNetConsensus != 'NA')%>%
-  # mutate(superclass_consensus = case_when(is.na(superclass_consensus) ~ 'No Consensus',
-  #                                         TRUE ~ superclass_consensus))%>%
   ggplot(aes(superclass_consensus, relativeT0Prod*100, color = activity)) +
   geom_point(stat = 'identity', size = 4) +
   coord_flip() +
   scale_color_manual(labels = c('Accumolite', 'Depletolite', 'Recalcitrant'), values = c('#78B7C5', '#EBCC2A', "#006658")) +
-  # geom_bar(stat = 'identity') +
-  # geom_errorbar(aes(ymax = total_production + std, ymin = total_production - std)) +
-  # facet_wrap(~activity, labeller = labeller(activity = label_wrap_gen()), scales = 'free_y', nrow = 3) +
-  labs(y = 'Percent production (%)', x = 'Putative Superclass Annotation', color = 'Activity') +
+  labs(y = 'Percent production (%)', x = 'Putative Superclass Annotation', color = 'Network Reactivity') +
   facet_wrap(~DayNight) +
-  # scale_y_log10() +
   gen_theme() +
   theme(strip.background = element_rect(fill = "transparent"),
         strip.text = element_text(size = 13),
@@ -1157,15 +963,14 @@ lability_classes%>%
 
 dev.off()
 
-org_new_prod <- new_production%>%
-  select(-c(log10, water))%>%
+org_new_prod <- feature_stats_wdf%>%
+  select(-c(log10:asin))%>%
   left_join(networking%>%
               select(feature_number, network), by = 'feature_number')%>%
   mutate(net_act = case_when(network == -1 ~ -as.numeric(feature_number),
                              TRUE ~ network))%>%
   left_join(all_activity, by = c('net_act', 'DayNight'))%>%
-  filter(Timepoint == 'T0',
-         activity == 'depletolite')%>%
+  filter(Timepoint == 'T0')%>%
   left_join(ecoNet%>%
               rename(feature_number = scan)%>%
               mutate(feature_number = as.character(feature_number)), by = 'feature_number')%>%
@@ -1175,7 +980,7 @@ org_new_prod <- new_production%>%
   ungroup()%>%
   # filter(DayNight == 'Day')%>%
   group_by(superclass_consensus)%>%
-  mutate(val = zscore(netProduction))%>%
+  mutate(val = zscore(xic))%>%
   unite(sample, c('DayNight', 'Organism', 'Replicate'), sep = '_')
 
 pdf('plots/organismDepletoliteSuperclassHeatmapDay.pdf', width = 15, height = 10)
@@ -1193,13 +998,13 @@ org_new_prod%>%
 
 org_new_prod%>%
   separate(sample, c('DayNight', 'Organism', 'Replicate'), sep = '_')%>%
+  filter(!is.na(superclass_consensus))%>%
   group_by(DayNight, superclass_consensus)%>%
-  filter(sum(netProduction) != 0)%>%
-  mutate(std = sd(netProduction))%>%
+  mutate(std = sd(xic))%>%
   summarize_if(is.numeric, mean)%>%
   ungroup()%>%
-  ggplot(aes(superclass_consensus, netProduction)) +
-  geom_errorbar(aes(ymax = netProduction + std, ymin = netProduction-1)) +
+  ggplot(aes(superclass_consensus, xic)) +
+  geom_errorbar(aes(ymax = xic + std, ymin = xic-1)) +
   geom_bar(stat = 'identity') +
   coord_flip() + 
   labs(y = bquote(Sum ~Intensity ~(log[10] ~XIC)), x = 'Putative Superclass Annotation') +
@@ -1208,10 +1013,41 @@ org_new_prod%>%
 
 org_new_prod%>%
   separate(sample, c('DayNight', 'Organism', 'Replicate'), sep = '_')%>%
-  group_by(DayNight, superclass_consensus, Organism)%>%
-  filter(sum(netProduction) != 0)%>%
+  group_by(DayNight, superclass_consensus)%>%
+  mutate(std = sd(xic))%>%
+  summarize_if(is.numeric, mean)%>%
   ungroup()%>%
-  ggplot(aes(superclass_consensus, netProduction, color = Organism)) +
+  ggplot(aes(superclass_consensus, xic)) +
+  geom_errorbar(aes(ymax = xic + std, ymin = xic-1)) +
+  geom_col() +
+  coord_flip() + 
+  labs(y = bquote(Sum ~Intensity ~(log[10] ~XIC)), x = 'Putative Superclass Annotation') +
+  facet_wrap(~DayNight, nrow = 1) +
+  gen_theme()
+
+org_new_prod%>%
+  # filter(!is.na(superclass_consensus))%>%
+  separate(sample, c('DayNight', 'Organism', 'Replicate'), sep = '_')%>%
+  group_by(DayNight, superclass_consensus, Organism)%>%
+  filter(sum(xic) != 0)%>%
+  ungroup()%>%
+  ggplot(aes(superclass_consensus, xic, color = Organism)) +
+  # geom_errorbar(aes(ymax = netProduction + std, ymin = netProduction-1)) +
+  geom_point(stat = 'identity', size = 4) +
+  coord_flip() + 
+  labs(y = bquote(Sum ~Intensity ~(log[10] ~XIC)), x = 'Putative Superclass Annotation') +
+  facet_wrap(~DayNight, nrow = 1) +
+  scale_color_manual(values = org_colors_no_water) +
+  gen_theme() +
+  theme(axis.text.y = element_text(size = 4))
+
+org_new_prod%>%
+  filter(!is.na(superclass_consensus))%>%
+  separate(sample, c('DayNight', 'Organism', 'Replicate'), sep = '_')%>%
+  group_by(DayNight, superclass_consensus, Organism)%>%
+  filter(sum(xic) != 0)%>%
+  ungroup()%>%
+  ggplot(aes(superclass_consensus, xic, color = Organism)) +
   # geom_errorbar(aes(ymax = netProduction + std, ymin = netProduction-1)) +
   geom_point(stat = 'identity', size = 4) +
   coord_flip() + 
@@ -1224,7 +1060,7 @@ org_new_prod%>%
 org_new_prod%>%
   filter(superclass_consensus == 'Organic nitrogen compounds')%>%
   separate(sample, c('DayNight', 'Organism', 'Replicate'), sep = '_')%>%
-  ggplot(aes(DayNight, netProduction)) +
+  ggplot(aes(DayNight, xic)) +
   geom_boxplot() +
   labs(y = bquote(Sum ~nitrogen ~Intensity ~(log[10] ~XIC)), x = 'Diel production cycle') +
   gen_theme()
@@ -1233,7 +1069,7 @@ dev.off()
 
 
 # VIZUALIZATIONS --  Lability Classes elemental ratios --------------------
-elemental_classifications <- new_production%>%
+elemental_classifications <- feature_stats_wdf%>%
   ungroup()%>%
   select(feature_number, Organism, DayNight)%>%
   unique()%>%
@@ -1296,7 +1132,7 @@ elemental_classifications%>%
 #   gen_theme()
 dev.off()
 
-elementProduction_classifications <- new_production%>%
+elementProduction_classifications <- feature_stats_wdf%>%
   ungroup()%>%
   left_join(networking%>%
               select(feature_number, network), by = 'feature_number')%>%
@@ -1309,9 +1145,9 @@ elementProduction_classifications <- new_production%>%
   mutate(oc = O/C,
          pc = P/C,
          nc = N/C,
-         ocProd = netProduction*oc,
-         pcProd = netProduction*pc,
-         ncProd = netProduction*nc)%>%
+         ocProd = xic*oc,
+         pcProd = xic*pc,
+         ncProd = xic*nc)%>%
   filter(nc < 1)%>%
   select(-c(C:nc))%>%
   gather(element, ratio, ocProd:ncProd)%>%
@@ -1381,7 +1217,7 @@ metabolitePool_xic_change <- feature_stats_wdf%>%
   mutate(ra = xic/sum(xic, na.rm = TRUE))%>%
   ungroup()
 
-metabolitePool_meanChange <- metabolitePool_xic_change%>%
+metabolitePool_meanChangeNight <- metabolitePool_xic_change%>%
   select(-c(err:ra))%>%
   group_by(org_activity, Organism, activity, DayNight)%>%
   mutate(x_val = max(xic, na.rm = TRUE))%>%
@@ -1396,9 +1232,61 @@ metabolitePool_meanChange <- metabolitePool_xic_change%>%
   filter(activity == 'depletolite',
          DayNight == 'Night')
 
+metabolitePool_meanChangeDay <- metabolitePool_xic_change%>%
+  select(-c(err:ra))%>%
+  group_by(org_activity, Organism, activity, DayNight)%>%
+  mutate(x_val = max(xic, na.rm = TRUE))%>%
+  ungroup()%>%
+  group_by(org_activity, Organism, activity, Timepoint, DayNight)%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  ungroup()%>%
+  spread(Timepoint, xic)%>%
+  mutate(difference = TF-T0,
+         x_val = case_when(Organism == 'Pocillopora verrucosa' ~ x_val - 0.05e10,
+                           TRUE ~ x_val))%>%
+  filter(activity == 'depletolite',
+         DayNight == 'Day')
 
-png("plots/change_xic_activityNight.png", width = 2000, height = 1200)
+
+png("plots/change_xic_activityDayNight.png", width = 2000, height = 1200)
 # cairo_pdf("plots/change_xic_activityDay.pdf", width = 20, height = 12)
+metabolitePool_xic_change%>%
+  filter(activity == 'depletolite',
+         DayNight == 'Day')%>%
+  mutate(log10 = log10(xic))%>%
+  ggplot(aes(xic, Organism, color = Organism, shape = shape)) +
+  geom_point(stat = 'identity', size = 18, alpha = 0.45) +
+  # geom_errorbarh(aes(xmin = xic - err, xmax = xic + err)) +
+  geom_line(aes(group = Organism)) +
+  geom_text(data = metabolitePool_meanChangeDay, aes(x = x_val, y = Organism, 
+                                                  label = formatC(difference, format = 'e', digits = 2), 
+                                                  shape = NULL), vjust = -1, size = 20) +
+  # facet_wrap(~activity, nrow = 2) +
+  scale_color_manual(values = org_colors_no_water) +
+  scale_shape_manual(values = c("\u25A0", "\u25C4")) +
+  labs(x = 'Sum Intensity (xic)', y = 'Organism', color = 'Organism: ', shape = 'Sample:') +
+  # xlim(0,0.3) +
+  # scale_x_log10() +
+  # facet_wrap(~activity, nrow = 3) +
+  theme(axis.line = element_blank(),
+        axis.text = element_text(size = 30),
+        axis.ticks = element_blank(),
+        axis.text.x = element_text(angle = 30, hjust = 1),
+        legend.background = element_rect(fill = "transparent"), # get rid of legend bg
+        legend.box.background = element_blank(),
+        panel.background = element_rect(fill = "transparent"), # bg of the panel
+        plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
+        strip.text = element_text(size= 25),
+        legend.text = element_text(size = 25),
+        legend.title = element_text(size = 25),
+        legend.position = 'top',
+        title = element_text(size = 40, hjust = 0.5),
+        plot.title = element_text(hjust = 0.5, vjust = 3),
+        strip.background = element_blank()) +
+  guides(color = guide_legend(nrow=2, byrow=TRUE),
+         shape = guide_legend(nrow=2, byrow=TRUE)) +
+  xlim(0, 2.1e10)
+
 metabolitePool_xic_change%>%
   filter(activity == 'depletolite',
          DayNight == 'Night')%>%
@@ -1407,9 +1295,9 @@ metabolitePool_xic_change%>%
   geom_point(stat = 'identity', size = 18, alpha = 0.45) +
   # geom_errorbarh(aes(xmin = xic - err, xmax = xic + err)) +
   geom_line(aes(group = Organism)) +
-  geom_text(data = metabolitePool_meanChange, aes(x = x_val, y = Organism, 
+  geom_text(data = metabolitePool_meanChangeNight, aes(x = x_val, y = Organism, 
                                         label = formatC(difference, format = 'e', digits = 2), 
-                                        shape = NULL), vjust = -1, size = 12) +
+                                        shape = NULL), vjust = -1, size = 20) +
   # facet_wrap(~activity, nrow = 2) +
   scale_color_manual(values = org_colors_no_water) +
   scale_shape_manual(values = c("\u25A0", "\u25C4")) +
@@ -1581,7 +1469,7 @@ fcm_T0_5%>%
   )
 dev.off()
 
-# VIZUALIZATIONS -- Sum depletion growth rate first 24 hours --------------
+# VIZUALIZATIONS -- Linear model: Sum depletion growth rate first 24 hours --------------
 metabolitePool_depletoliteChange <- metabolitePool_xic_change%>%
   filter(activity == 'depletolite')%>%
   select(-c(err, ra))%>%
@@ -1603,7 +1491,10 @@ fcm_23 <- dorc_fcm_fdom%>%
          cells_ul = (log(final_cells) - log(T0))/(hour))%>%
   select(-c(T0:TF, hour))%>%
   left_join(metabolitePool_depletoliteChange,  by = c('Organism', 'DayNight', 'Replicate'))%>%
-  mutate(log10 = log10(abs(difference)))
+  mutate(log10 = log10(abs(difference)))%>%
+  filter(Organism != 'Influent',
+         Organism != 'Water control',
+         Organism != 'Offshore')
 
 # Day lm
 fcm_depletolite_lm <- fcm_23%>%
@@ -1851,8 +1742,8 @@ depletion_hc <- feature_stats_wdf%>%
   ungroup()%>%
   unite(sample, c(DayNight, Organism, Replicate), sep = '  ')%>%
   spread(sample, log10)%>%
-  # mutate_all(~replace(., is.na(.), 0))%>%
-  gather(Organism, T0, 3:ncol(.))%>%
+  mutate_all(~replace(., is.na(.), 0))%>%
+  gather(Organism, T0, 2:ncol(.))%>%
   group_by(ecoNetConsensus)%>%
   mutate(T0 = zscore(T0))
 
@@ -2465,7 +2356,7 @@ pcoa <- feature_stats_wdf%>%
   gather(sample, log10, 2:ncol(.))%>%
   spread(ecoNetConsensus, log10)%>%
   column_to_rownames(var = "sample")%>%
-  vegdist(na.rm = TRUE)%>%
+  vegdist(method = 'manhattan', na.rm = TRUE)%>%
   pcoa()
 
 ## Plot Eigenvalues
@@ -2530,6 +2421,36 @@ permanova_organism <- permanova_df%>%
 permanova_DayNight <- permanova_df%>%
   adonis(.[4:ncol(.)] ~ DayNight, ., perm = 1000, method = "bray", na.rm = TRUE)
 
+# VIZUALIZATIONS -- lability classes with emoji shapes --------------------
+pdf('plots/emojiSuperclassPercentProductionDayNight.pdf', width = 15, height = 10)
+lability_classes%>%
+  group_by(DayNight, superclass_consensus, Replicate)%>%
+  mutate(relativeT0Prod = T0/sum(T0, na.rm = TRUE),
+         relativeT0Prod = case_when(is.na(relativeT0Prod) ~ 0,
+                                    TRUE ~ relativeT0Prod))%>%
+  ungroup()%>%
+  group_by(DayNight, superclass_consensus, activity)%>%
+  filter(sum(T0) != 0)%>%
+  ungroup()%>%
+  mutate(shape = case_when(DayNight == 'Day' ~ '\u2600',
+                           TRUE ~ emoji('crescent_moon')))%>%
+  ggplot(aes(superclass_consensus, relativeT0Prod*100, color = activity, shape = shape)) +
+  geom_text(aes(label = shape), cex = 13, family= 'OpenSansEmoji') +
+  coord_flip() +
+  scale_color_manual(labels = c('Accumolite', 'Depletolite', 'Recalcitrant'), values = c('#78B7C5', '#EBCC2A', "#006658")) +
+# geom_bar(stat = 'identity') +
+# geom_errorbar(aes(ymax = total_production + std, ymin = total_production - std)) +
+# facet_wrap(~activity, labeller = labeller(activity = label_wrap_gen()), scales = 'free_y', nrow = 3) +
+labs(y = 'Percent production (%)', x = 'Putative Superclass Annotation', color = 'Network Reactivity') +
+  facet_wrap(~DayNight) +
+  # scale_y_log10() +
+  gen_theme() +
+  theme(strip.background = element_rect(fill = "transparent"),
+        strip.text = element_text(size = 13),
+        axis.text.y = element_text(size = 14))
+
+dev.off()
+
 # VIZUALIZATIONS -- Cytoscape file ----------------------------------------
 night_activity <- all_activity%>%
   filter(DayNight == 'Night')
@@ -2564,3 +2485,130 @@ cyto_export <- feature_stats_wdf%>%
 
 
 write_csv(cyto_export, 'analysis/cytoDiel.csv')
+
+
+# EXPORT -- Sunburst df ---------------------------------------------------
+depletion_sunburst <- feature_stats_wdf%>%
+  filter(Timepoint == "T0")%>%
+  left_join(networking%>%
+              select(feature_number, network),
+            by = 'feature_number')%>%
+  mutate(net_act = case_when(network == -1 ~ -as.numeric(feature_number),
+                             TRUE ~ network))%>%
+  left_join(all_activity, by = c('net_act', 'DayNight'))%>%
+  ungroup()%>%
+  filter(activity == 'depletolite')%>%
+  left_join(ecoNet%>%
+              select(-network)%>%
+              mutate(scan = as.character(scan))%>%
+              rename('feature_number' = 'scan'), by = 'feature_number')%>%
+  group_by(ecoNetConsensus, DayNight, Replicate, Organism)%>%
+  select(-c(log10, ra:activity, ecoNetConsensusScore:matchSource))%>%
+  summarize_if(is.numeric, sum, na.rm  = TRUE)%>%
+  ungroup()%>%
+  group_by(ecoNetConsensus, DayNight, Organism)%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  ungroup()%>%
+  separate(ecoNetConsensus, c('superclass', 'class', 'subclass'), sep = ';')
+
+
+
+sunbursts <- depletion_sunburst%>%
+  # group_by(Organism)%>%
+  # nest()%>%
+  # mutate(data = map(data, ~ 
+  mutate(superclass = gsub('-', ' ', superclass),
+         class = gsub('-', ' ', class),
+         subclass = gsub('-', ' ', subclass))%>%
+  unite(path, c('Organism', 'DayNight', 'superclass':'subclass'), sep = '-', na.rm = TRUE)%>%
+  sunburst(count = TRUE,
+           percent = TRUE,
+           legend = list(w=250)
+           )
+
+htmlwidgets::onRender(
+  sunbursts,
+  "function(el,x) {
+  // force show the legend
+  //   check legend
+  d3.select(el).select('.sunburst-togglelegend').property('checked',True);
+  //   simulate click
+  d3.select(el).select('.sunburst-togglelegend').on('click')();
+
+  // change the text in the legend to add count
+  d3.select(el).selectAll('.sunburst-legend text').text(function(d) {return d.name + ' ' + d.value})
+  d3.select(el).select('.sunburst-togglelegend').remove()}"
+)
+
+depletion_sunburst[is.na(depletion_sunburst)] <- 'No Consensus Reached'
+write_csv(depletion_sunburst, '~/Documents/GitHub/DORCIERR/data/analysis/depletionSunburst.csv')
+
+
+# VIZUALIZATIONS -- SUPPLEMENT lability classes variables -----------------
+lability_classes_supplements <- feature_stats_wdf%>%
+  select(-c(log10, asin))%>%
+  gather(responseVariable, val, xic:ra)%>%
+  left_join(networking%>%
+              select(feature_number, network), by = 'feature_number')%>%
+  mutate(net_act = case_when(network == -1 ~ -as.numeric(feature_number),
+                             TRUE ~ network))%>%
+  left_join(all_activity, by = c('net_act', 'DayNight'))%>%
+  # filter(DayNight == 'Day')%>%
+  left_join(ecoNet%>%
+              rename(feature_number = scan)%>%
+              mutate(feature_number = as.character(feature_number)), by = c('feature_number', 'network'))%>%
+  separate(ecoNetConsensus, c('superclass_consensus', 'class_consensus', 'subclass_consensus'), remove = FALSE, sep = ';')%>%
+  group_by(activity, DayNight, responseVariable)%>%
+  nest()%>%
+  mutate(data = map(data, ~ spread(.x, Timepoint, val)%>%
+                      group_by(superclass_consensus, Replicate)%>%
+                      summarize_if(is.numeric, sum, na.rm = TRUE)%>%
+                      ungroup()))%>%
+  unnest(data)%>%
+  ungroup()%>%
+  group_by(DayNight, superclass_consensus, Replicate, responseVariable)%>%
+  mutate(relativeT0Prod = T0/sum(T0, na.rm = TRUE),
+         relativeT0Prod = case_when(is.na(relativeT0Prod) ~ 0,
+                                    TRUE ~ relativeT0Prod))%>%
+  ungroup()%>%
+  group_by(responseVariable)%>%
+  nest()%>%
+  mutate(plot = map(data, ~ 
+                      ggplot(.x, aes(superclass_consensus, relativeT0Prod*100, color = activity)) +
+                      geom_point(stat = 'identity', size = 4) +
+                      coord_flip() +
+                      ggtitle(responseVariable) +
+                      scale_color_manual(labels = c('Accumolite', 'Depletolite', 'Recalcitrant'), values = c('#78B7C5', '#EBCC2A', "#006658")) +
+                      # geom_bar(stat = 'identity') +
+                      # geom_errorbar(aes(ymax = total_production + std, ymin = total_production - std)) +
+                      # facet_wrap(~activity, labeller = labeller(activity = label_wrap_gen()), scales = 'free_y', nrow = 3) +
+                      labs(y = 'Percent production (%)', x = 'Putative Superclass Annotation', color = 'Network Reactivity') +
+                      facet_wrap(~DayNight) +
+                      # scale_y_log10() +
+                      gen_theme() +
+                      theme(strip.background = element_rect(fill = "transparent"),
+                            strip.text = element_text(size = 13),
+                            axis.text.y = element_text(size = 14))),
+         plotRaw = map(data, ~
+                         ggplot(.x, aes(superclass_consensus, T0, color = activity)) +
+                         geom_point(stat = 'identity', size = 4) +
+                         coord_flip() +
+                         ggtitle(responseVariable) +
+                         scale_color_manual(labels = c('Accumolite', 'Depletolite', 'Recalcitrant'), values = c('#78B7C5', '#EBCC2A', "#006658")) +
+                         # geom_bar(stat = 'identity') +
+                         # geom_errorbar(aes(ymax = total_production + std, ymin = total_production - std)) +
+                         # facet_wrap(~activity, labeller = labeller(activity = label_wrap_gen()), scales = 'free_y', nrow = 3) +
+                         labs(y = 'raw value', x = 'Putative Superclass Annotation', color = 'Network Reactivity') +
+                         facet_wrap(~DayNight) +
+                         # scale_y_log10() +
+                         gen_theme() +
+                         theme(strip.background = element_rect(fill = "transparent"),
+                               strip.text = element_text(size = 13),
+                               axis.text.y = element_text(size = 14))))
+  # unnest(data)
+
+
+pdf('plots/supplementalSuperclassPercentProductionDayNight.pdf', width = 15, height = 10)
+lability_classes_supplements$plot
+lability_classes_supplements$plotRaw
+dev.off()

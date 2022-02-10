@@ -1432,7 +1432,7 @@ org_pie <- org_log2_ra%>%
 org_pie_noerr <-org_pie%>%
   group_by(Organism, n)%>%
   nest()%>%
-  mutate(data = map(data, ~ggplot(.x) +
+  mutate(data = map(data, ~ ggplot(.x) +
                       geom_arc_bar(aes(x0 = 0, y0 = 0, r0 = 0, r = 1,
                                        start = start, end = end, 
                                        fill = activity, explode = explosive, linetype = NA)) +

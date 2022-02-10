@@ -19,11 +19,6 @@ library(readxl)
 library(multcomp)
 library(CHNOSZ)
 library(furrr)
-library(future)
-library(biclustermd)
-library(webchem)
-library(classyfireR)
-library(randomForest)
 library(ggpubr)
 library(rsq)
 
@@ -49,6 +44,7 @@ select <- dplyr::select
 tidy <- broom::tidy
 rename <- dplyr::rename
 mutate <- dplyr::mutate
+
 
 zscore <- function(x) {
   (x-mean(x, na.rm = TRUE))/sd(x, na.rm = TRUE)
@@ -384,6 +380,38 @@ microbe_combined%>%
   ylim(0.0,0.7) +
   gen_theme()
 
+microbe_combined%>%
+  select(-c(sample_code, reads, numOtus))%>%
+  ungroup()%>%
+  filter(Timepoint == "TF")%>%
+  group_by(OTU, DayNight, Organism)%>%
+  filter(OTU == 'Otu0004')%>%
+  ggplot(aes(DayNight, ra, fill = Organism)) + 
+  geom_boxplot() +
+  geom_point() +
+  scale_fill_manual(values = c(org_colors_no_water, 'blue')) +
+  scale_color_manual(values = c('grey', 'grey', 'grey', 'grey', 'grey', 'grey')) +
+  facet_wrap(~Organism, nrow = 1) +
+  labs(y = 'Relative Abundance', x = 'Diel cycle', title = 'Flavobacter cryomorphaceae') +
+  ylim(0.0,0.7) +
+  gen_theme()
+
+microbe_combined%>%
+  select(-c(sample_code, reads, numOtus))%>%
+  ungroup()%>%
+  filter(Timepoint == "TF")%>%
+  group_by(OTU, DayNight, Organism)%>%
+  filter(OTU == 'Otu0010')%>%
+  ggplot(aes(DayNight, ra, fill = Organism)) + 
+  geom_boxplot() +
+  geom_point() +
+  scale_fill_manual(values = c(org_colors_no_water, 'blue')) +
+  scale_color_manual(values = c('grey', 'grey', 'grey', 'grey', 'grey', 'grey')) +
+  facet_wrap(~Organism, nrow = 1) +
+  labs(y = 'Relative Abundance', x = 'Diel cycle', title = 'Thalassobious sp.') +
+  ylim(0.0,0.7) +
+  gen_theme()
+
 dev.off()
 
 # VIZUALIZATIONS -- Hierarchical cluster matrix----------------------------------------
@@ -456,7 +484,7 @@ pcoaMicrobe <- microbe_combined%>%
   vegdist(na.rm = TRUE)%>%
   pcoa()
 
-pdf('plots/pcoaMicrobes.pdf', width = 15, height = 12)
+pdf('plots/pcoaMicrobesDay.pdf', width = 15, height = 12)
 pcoaMicrobe$vectors%>%
   as.data.frame()%>%
   rownames_to_column(var = "sample")%>%
