@@ -414,7 +414,7 @@ microbe_combined%>%
 
 dev.off()
 
-# VIZUALIZATIONS -- Hierarchical cluster matrix----------------------------------------
+# VIZUALIZATIONS -- Hierarchical cluster matrix ----------------------------------------
 hc_microbe <- microbe_combined%>%
   select(-c(sample_code, reads, numOtus))%>%
   ungroup()%>%
@@ -507,3 +507,66 @@ pcoaMicrobe$vectors%>%
   xlab(str_c("Axis 1", " (", round(pcoaMicrobe$values$Relative_eig[1], digits = 4)*100, "%)", sep = "")) +
   ylab(str_c("Axis 2", " (", round(pcoaMicrobe$values$Relative_eig[2], digits = 4)*100, "%)", sep = ""))
 dev.off()
+
+
+# STATS --Bray-Curtis distances ------------------------------------------------------------
+ylab <- bquote(atop(Bray-curtis ~dissimilarity, ~(T[0] ~Water ~control:T[F] ~Organism)))
+
+brayCurtis <- microbe_combined%>%
+  select(-c(sample_code, reads, numOtus))%>%
+  ungroup()%>%
+  filter(Timepoint == "TF" | Timepoint == 'T0' & Organism == 'Water control')%>%
+  group_by(OTU, DayNight, Organism, Timepoint)%>%
+  filter(abundant == "abundant")%>%
+  mutate(asin = asin(sqrt(ra)))%>%
+  select(-c(ra, abundant))%>%
+  # filter(OTU %in% different_microbes)%>%
+  select(c(Organism, DayNight, Replicate, OTU, Timepoint, asin))%>%
+  unite(sample, c("Organism", "Replicate", "Timepoint"), sep = "_")%>%
+  left_join(microbe_taxonomy, by = "OTU")%>%
+  separate(Taxonomy, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "OTU_id"), sep = ";")%>%
+  unite(OFGO, c("Order", "Family", "Genus", "OTU"), sep = ";")%>%
+  select(-c(Size, OTU_id, Kingdom, Phylum, Class))%>%
+  # mutate(asin = asin - min(asin))%>% 
+  spread(OFGO, asin)%>%
+  group_by(DayNight)%>%
+  nest()%>%
+  mutate(data = map(data, ~ column_to_rownames(.x, var = "sample")%>% 
+                      vegdist(na.rm = TRUE)%>%
+                      as.matrix()%>%
+                      as.data.frame()%>%
+                      rownames_to_column(var = 'waterStart')%>%
+                      filter(waterStart %like% 'Water control%',
+                             waterStart %like% '%T0')%>%
+                      gather(sample, brayDissimilarity, 2:ncol(.))%>%
+                      separate(sample, c("Organism", "Replicate", "Timepoint"), sep = "_")%>%
+                      filter(Timepoint == 'TF')),
+         mannWhitneyCCA = map(data, ~ (wilcox.test(brayDissimilarity ~ Organism, 
+                                                  subset = Organism %in% c('Water control', 'CCA'), 
+                                                  data = .x))$p.value),
+         mannWhitneyDictyota = map(data, ~ (wilcox.test(brayDissimilarity ~ Organism, 
+                                                   subset = Organism %in% c('Water control', 'Dictyota'), 
+                                                   data = .x))$p.value),
+         mannWhitneyPoc = map(data, ~ (wilcox.test(brayDissimilarity ~ Organism, 
+                                                   subset = Organism %in% c('Water control', 'Pocillopora verrucosa'), 
+                                                   data = .x))$p.value),
+         mannWhitneyPor = map(data, ~ (wilcox.test(brayDissimilarity ~ Organism, 
+                                                   subset = Organism %in% c('Water control', 'Porites lobata'), 
+                                                   data = .x))$p.value),
+         mannWhitneyTurf = map(data, ~ (wilcox.test(brayDissimilarity ~ Organism, 
+                                                   subset = Organism %in% c('Water control', 'Turf'), 
+                                                   data = .x))$p.value),
+         plot = map(data, ~ ggplot(.x, aes(Organism, brayDissimilarity))+
+                      geom_boxplot()+
+                      gen_theme()+
+                      labs(y = ylab)))
+
+pdf('microbeBrayCurtis.pdf', width = 15, height = 10)
+brayCurtis$plot
+dev.off()
+
+
+
+
+
+
