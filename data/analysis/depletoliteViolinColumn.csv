@@ -1,13 +1,18 @@
 netEcoNet,Superclass,Class,Subclass,net_act
 Lipids and lipid-like molecules_393,Lipids and lipid-like molecules,NA,NA,393
+Alkaloids and derivatives;Amaryllidaceae alkaloids;Galanthamine-type amaryllidaceae alkaloids_4466,Alkaloids and derivatives,Amaryllidaceae alkaloids,Galanthamine-type amaryllidaceae alkaloids,4466
 Lipids and lipid-like molecules;Fatty Acyls_324,Lipids and lipid-like molecules,Fatty Acyls,NA,324
+Organic acids and derivatives_27,Organic acids and derivatives,NA,NA,27
 Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines_343,Lipids and lipid-like molecules,Glycerophospholipids,Glycerophosphoethanolamines,343
 Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphocholines_2796,Lipids and lipid-like molecules,Glycerophospholipids,Glycerophosphocholines,2796
+Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters_2562,Lipids and lipid-like molecules,Fatty Acyls,Fatty acid esters,2562
 Lipids and lipid-like molecules;Fatty Acyls;Fatty amides_2263,Lipids and lipid-like molecules,Fatty Acyls,Fatty amides,2263
+Organic acids and derivatives;Carboxylic acids and derivatives;Tricarboxylic acids and derivatives_3765,Organic acids and derivatives,Carboxylic acids and derivatives,Tricarboxylic acids and derivatives,3765
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_4997",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",4997
 Lipids and lipid-like molecules_550,Lipids and lipid-like molecules,NA,NA,550
 Lipids and lipid-like molecules_363,Lipids and lipid-like molecules,NA,NA,363
 Benzenoids;Benzene and substituted derivatives;Phenylpropanes_3032,Benzenoids,Benzene and substituted derivatives,Phenylpropanes,3032
+Organoheterocyclic compounds;Lactones;Gamma butyrolactones_-2267,Organoheterocyclic compounds,Lactones,Gamma butyrolactones,-2267
 Organoheterocyclic compounds;Azoles;Tetrazoles_164,Organoheterocyclic compounds,Azoles,Tetrazoles,164
 Organic acids and derivatives_155,Organic acids and derivatives,NA,NA,155
 Lipids and lipid-like molecules_659,Lipids and lipid-like molecules,NA,NA,659
@@ -18,8 +23,11 @@ Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters_1583,Lipids and li
 "Lipids and lipid-like molecules;Steroids and steroid derivatives;Bile acids, alcohols and derivatives_513",Lipids and lipid-like molecules,Steroids and steroid derivatives,"Bile acids, alcohols and derivatives",513
 Lipids and lipid-like molecules_1026,Lipids and lipid-like molecules,NA,NA,1026
 Organic nitrogen compounds_1758,Organic nitrogen compounds,NA,NA,1758
+Lipids and lipid-like molecules_269,Lipids and lipid-like molecules,NA,NA,269
 Lipids and lipid-like molecules_1730,Lipids and lipid-like molecules,NA,NA,1730
 Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters_21,Lipids and lipid-like molecules,Fatty Acyls,Fatty acid esters,21
+Lipids and lipid-like molecules;Steroids and steroid derivatives;Androstane steroids_-2666,Lipids and lipid-like molecules,Steroids and steroid derivatives,Androstane steroids,-2666
+Lipids and lipid-like molecules_5173,Lipids and lipid-like molecules,NA,NA,5173
 "Lipids and lipid-like molecules;Steroids and steroid derivatives;Bile acids, alcohols and derivatives_88",Lipids and lipid-like molecules,Steroids and steroid derivatives,"Bile acids, alcohols and derivatives",88
 Organic nitrogen compounds;Organonitrogen compounds;Amines_2023,Organic nitrogen compounds,Organonitrogen compounds,Amines,2023
 Organic acids and derivatives_199,Organic acids and derivatives,NA,NA,199
@@ -29,73 +37,143 @@ Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives_198,L
 Benzenoids_1907,Benzenoids,NA,NA,1907
 Lipids and lipid-like molecules_813,Lipids and lipid-like molecules,NA,NA,813
 Lipids and lipid-like molecules_490,Lipids and lipid-like molecules,NA,NA,490
+Lipids and lipid-like molecules_1295,Lipids and lipid-like molecules,NA,NA,1295
+Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids_-3224,Lipids and lipid-like molecules,Fatty Acyls,Eicosanoids,-3224
 Lipids and lipid-like molecules;Fatty Acyls_4779,Lipids and lipid-like molecules,Fatty Acyls,NA,4779
 Lipids and lipid-like molecules_167,Lipids and lipid-like molecules,NA,NA,167
 Lipids and lipid-like molecules_1206,Lipids and lipid-like molecules,NA,NA,1206
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_1095",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",1095
 Lipids and lipid-like molecules_2393,Lipids and lipid-like molecules,NA,NA,2393
 Organic acids and derivatives_5520,Organic acids and derivatives,NA,NA,5520
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_1968",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",1968
+Organoheterocyclic compounds;Azolidines;Imidazolidines_374,Organoheterocyclic compounds,Azolidines,Imidazolidines,374
 Lipids and lipid-like molecules_1306,Lipids and lipid-like molecules,NA,NA,1306
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_3143",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",3143
+Organic acids and derivatives;Carboxylic acids and derivatives_5039,Organic acids and derivatives,Carboxylic acids and derivatives,NA,5039
+Lipids and lipid-like molecules_710,Lipids and lipid-like molecules,NA,NA,710
 Lipids and lipid-like molecules_1827,Lipids and lipid-like molecules,NA,NA,1827
 Lipids and lipid-like molecules_403,Lipids and lipid-like molecules,NA,NA,403
 Lipids and lipid-like molecules;Fatty Acyls_1783,Lipids and lipid-like molecules,Fatty Acyls,NA,1783
+Lipids and lipid-like molecules;Prenol lipids;Diterpenoids_91,Lipids and lipid-like molecules,Prenol lipids,Diterpenoids,91
 Lipids and lipid-like molecules_427,Lipids and lipid-like molecules,NA,NA,427
+Organic acids and derivatives_35,Organic acids and derivatives,NA,NA,35
 Organic nitrogen compounds_3585,Organic nitrogen compounds,NA,NA,3585
 Lipids and lipid-like molecules;Fatty Acyls;Lineolic acids and derivatives_480,Lipids and lipid-like molecules,Fatty Acyls,Lineolic acids and derivatives,480
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_-4549",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",-4549
 Lipids and lipid-like molecules;Sphingolipids;Ceramides_1876,Lipids and lipid-like molecules,Sphingolipids,Ceramides,1876
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_5425",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",5425
+Organoheterocyclic compounds;Indoles and derivatives;N-alkylindoles_280,Organoheterocyclic compounds,Indoles and derivatives,N-alkylindoles,280
+Lipids and lipid-like molecules_2152,Lipids and lipid-like molecules,NA,NA,2152
+Organic oxygen compounds;Organooxygen compounds_2159,Organic oxygen compounds,Organooxygen compounds,NA,2159
+Benzenoids;Benzene and substituted derivatives;Benzoic acids and derivatives_2933,Benzenoids,Benzene and substituted derivatives,Benzoic acids and derivatives,2933
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_4953",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",4953
 Lipids and lipid-like molecules_1514,Lipids and lipid-like molecules,NA,NA,1514
 Lipids and lipid-like molecules;Fatty Acyls_2035,Lipids and lipid-like molecules,Fatty Acyls,NA,2035
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_1075",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",1075
+Lipids and lipid-like molecules;Fatty Acyls;Eicosanoids_533,Lipids and lipid-like molecules,Fatty Acyls,Eicosanoids,533
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_336",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",336
 Lipids and lipid-like molecules_107,Lipids and lipid-like molecules,NA,NA,107
-Lipids and lipid-like molecules_1295,Lipids and lipid-like molecules,NA,NA,1295
 Organic oxygen compounds;Organooxygen compounds;Alcohols and polyols_5393,Organic oxygen compounds,Organooxygen compounds,Alcohols and polyols,5393
 Organic nitrogen compounds;Organonitrogen compounds;Amines_-5247,Organic nitrogen compounds,Organonitrogen compounds,Amines,-5247
+Organic acids and derivatives;Carboxylic acids and derivatives_4032,Organic acids and derivatives,Carboxylic acids and derivatives,NA,4032
+Benzenoids_2181,Benzenoids,NA,NA,2181
+Organic oxygen compounds_485,Organic oxygen compounds,NA,NA,485
 Lipids and lipid-like molecules_774,Lipids and lipid-like molecules,NA,NA,774
+Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates_1266,Organic oxygen compounds,Organooxygen compounds,Carbohydrates and carbohydrate conjugates,1266
+Lipids and lipid-like molecules;Fatty Acyls;Fatty acids and conjugates_5736,Lipids and lipid-like molecules,Fatty Acyls,Fatty acids and conjugates,5736
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_-5650",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",-5650
 Organic acids and derivatives_437,Organic acids and derivatives,NA,NA,437
+Lipids and lipid-like molecules_3292,Lipids and lipid-like molecules,NA,NA,3292
+Lipids and lipid-like molecules_636,Lipids and lipid-like molecules,NA,NA,636
+Organic acids and derivatives_992,Organic acids and derivatives,NA,NA,992
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_1291",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",1291
+Organic acids and derivatives;Carboxylic acids and derivatives_1304,Organic acids and derivatives,Carboxylic acids and derivatives,NA,1304
+Lipids and lipid-like molecules_3813,Lipids and lipid-like molecules,NA,NA,3813
 "Organoheterocyclic compounds;Triazines;1,3,5-triazines_-6269",Organoheterocyclic compounds,Triazines,"1,3,5-triazines",-6269
+Lipids and lipid-like molecules;Steroids and steroid derivatives;Estrane steroids_-6367,Lipids and lipid-like molecules,Steroids and steroid derivatives,Estrane steroids,-6367
+Phenylpropanoids and polyketides;Flavonoids;Flavones_1961,Phenylpropanoids and polyketides,Flavonoids,Flavones,1961
 Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates_1072,Organic oxygen compounds,Organooxygen compounds,Carbohydrates and carbohydrate conjugates,1072
 Benzenoids;Benzene and substituted derivatives;Phenylmethylamines_952,Benzenoids,Benzene and substituted derivatives,Phenylmethylamines,952
 "Organoheterocyclic compounds;Triazines;1,3,5-triazines_-6536",Organoheterocyclic compounds,Triazines,"1,3,5-triazines",-6536
 Organic acids and derivatives;Carboxylic acids and derivatives_2406,Organic acids and derivatives,Carboxylic acids and derivatives,NA,2406
+Benzenoids;Benzene and substituted derivatives_2386,Benzenoids,Benzene and substituted derivatives,NA,2386
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_887",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",887
 Organic nitrogen compounds;Organonitrogen compounds;Amines_-7076,Organic nitrogen compounds,Organonitrogen compounds,Amines,-7076
+Lipids and lipid-like molecules;Prenol lipids_2429,Lipids and lipid-like molecules,Prenol lipids,NA,2429
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_1170",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",1170
 Lipids and lipid-like molecules;Fatty Acyls_2292,Lipids and lipid-like molecules,Fatty Acyls,NA,2292
+Organic acids and derivatives;Carboxylic acids and derivatives_3708,Organic acids and derivatives,Carboxylic acids and derivatives,NA,3708
+Lipids and lipid-like molecules;Prenol lipids_2447,Lipids and lipid-like molecules,Prenol lipids,NA,2447
+Organic acids and derivatives_1157,Organic acids and derivatives,NA,NA,1157
 Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters_1045,Lipids and lipid-like molecules,Fatty Acyls,Fatty acid esters,1045
+Lipids and lipid-like molecules_74,Lipids and lipid-like molecules,NA,NA,74
+Organoheterocyclic compounds_966,Organoheterocyclic compounds,NA,NA,966
 Lipids and lipid-like molecules_1202,Lipids and lipid-like molecules,NA,NA,1202
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_3824",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",3824
+Lipids and lipid-like molecules;Fatty Acyls;Fatty acids and conjugates_-8355,Lipids and lipid-like molecules,Fatty Acyls,Fatty acids and conjugates,-8355
+Organic acids and derivatives;Carboxylic acids and derivatives;Carboxylic acid derivatives_2992,Organic acids and derivatives,Carboxylic acids and derivatives,Carboxylic acid derivatives,2992
 Lipids and lipid-like molecules;Fatty Acyls;Fatty acids and conjugates_1670,Lipids and lipid-like molecules,Fatty Acyls,Fatty acids and conjugates,1670
 Lipids and lipid-like molecules_434,Lipids and lipid-like molecules,NA,NA,434
 Organoheterocyclic compounds;Imidazopyrimidines;Purines and purine derivatives_174,Organoheterocyclic compounds,Imidazopyrimidines,Purines and purine derivatives,174
 Lipids and lipid-like molecules_212,Lipids and lipid-like molecules,NA,NA,212
+Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates_3762,Organic oxygen compounds,Organooxygen compounds,Carbohydrates and carbohydrate conjugates,3762
+Organic acids and derivatives;Carboxylic acids and derivatives_2248,Organic acids and derivatives,Carboxylic acids and derivatives,NA,2248
+Organic acids and derivatives_1556,Organic acids and derivatives,NA,NA,1556
 Lipids and lipid-like molecules_1200,Lipids and lipid-like molecules,NA,NA,1200
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_1983",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",1983
 Lipids and lipid-like molecules;Fatty Acyls_3009,Lipids and lipid-like molecules,Fatty Acyls,NA,3009
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_-10165",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",-10165
 Organic oxygen compounds_1969,Organic oxygen compounds,NA,NA,1969
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_131",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",131
 Benzenoids_1018,Benzenoids,NA,NA,1018
+Lipids and lipid-like molecules_2768,Lipids and lipid-like molecules,NA,NA,2768
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_1914",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",1914
+Organic nitrogen compounds;Organonitrogen compounds;Amines_225,Organic nitrogen compounds,Organonitrogen compounds,Amines,225
+Lipids and lipid-like molecules;Fatty Acyls_1499,Lipids and lipid-like molecules,Fatty Acyls,NA,1499
+Organic oxygen compounds_90,Organic oxygen compounds,NA,NA,90
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_933",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",933
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_1100",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",1100
+Lipids and lipid-like molecules;Fatty Acyls_103,Lipids and lipid-like molecules,Fatty Acyls,NA,103
 Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates_2610,Organic oxygen compounds,Organooxygen compounds,Carbohydrates and carbohydrate conjugates,2610
+Organic acids and derivatives;Carboxylic acids and derivatives_2117,Organic acids and derivatives,Carboxylic acids and derivatives,NA,2117
+Lipids and lipid-like molecules_1362,Lipids and lipid-like molecules,NA,NA,1362
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_141",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",141
+"Lipids and lipid-like molecules;Steroids and steroid derivatives;Bile acids, alcohols and derivatives_5257",Lipids and lipid-like molecules,Steroids and steroid derivatives,"Bile acids, alcohols and derivatives",5257
 Benzenoids;Phenols;Methoxyphenols_457,Benzenoids,Phenols,Methoxyphenols,457
+Organic nitrogen compounds;Organonitrogen compounds;Amines_1284,Organic nitrogen compounds,Organonitrogen compounds,Amines,1284
 Lipids and lipid-like molecules_200,Lipids and lipid-like molecules,NA,NA,200
+Lipids and lipid-like molecules_113,Lipids and lipid-like molecules,NA,NA,113
 Lipids and lipid-like molecules_1664,Lipids and lipid-like molecules,NA,NA,1664
+Lipids and lipid-like molecules;Steroids and steroid derivatives;Hydroxysteroids_-12361,Lipids and lipid-like molecules,Steroids and steroid derivatives,Hydroxysteroids,-12361
+Organic acids and derivatives;Carboxylic acids and derivatives;Dicarboxylic acids and derivatives_-12452,Organic acids and derivatives,Carboxylic acids and derivatives,Dicarboxylic acids and derivatives,-12452
+Organoheterocyclic compounds;Benzazepines;Dibenzazepines_5149,Organoheterocyclic compounds,Benzazepines,Dibenzazepines,5149
+Organoheterocyclic compounds_1099,Organoheterocyclic compounds,NA,NA,1099
 Organoheterocyclic compounds;Quinolines and derivatives;Haloquinolines_2586,Organoheterocyclic compounds,Quinolines and derivatives,Haloquinolines,2586
 Benzenoids_1728,Benzenoids,NA,NA,1728
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_695",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",695
+Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters_1841,Lipids and lipid-like molecules,Fatty Acyls,Fatty acid esters,1841
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_857",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",857
 Lipids and lipid-like molecules;Prenol lipids_2021,Lipids and lipid-like molecules,Prenol lipids,NA,2021
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_2938",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",2938
+Benzenoids_4933,Benzenoids,NA,NA,4933
+Benzenoids;Benzene and substituted derivatives;Phenylacetamides_-14269,Benzenoids,Benzene and substituted derivatives,Phenylacetamides,-14269
+Lipids and lipid-like molecules;Prenol lipids;Diterpenoids_-14276,Lipids and lipid-like molecules,Prenol lipids,Diterpenoids,-14276
 Organic oxygen compounds_6644,Organic oxygen compounds,NA,NA,6644
 Lipids and lipid-like molecules;Fatty Acyls_6163,Lipids and lipid-like molecules,Fatty Acyls,NA,6163
 Organic oxygen compounds_891,Organic oxygen compounds,NA,NA,891
-"Lignans, neolignans and related compounds;Dibenzylbutane lignans;Dibenzylbutanediol lignans_-14682","Lignans, neolignans and related compounds",Dibenzylbutane lignans,Dibenzylbutanediol lignans,-14682
+"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_-14869",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",-14869
 Lipids and lipid-like molecules_1599,Lipids and lipid-like molecules,NA,NA,1599
+Lipids and lipid-like molecules_1710,Lipids and lipid-like molecules,NA,NA,1710
+Lipids and lipid-like molecules;Prenol lipids;Terpene lactones_-15334,Lipids and lipid-like molecules,Prenol lipids,Terpene lactones,-15334
+Organic oxygen compounds;Organooxygen compounds;Carbonyl compounds_2303,Organic oxygen compounds,Organooxygen compounds,Carbonyl compounds,2303
 Lipids and lipid-like molecules;Prenol lipids_1720,Lipids and lipid-like molecules,Prenol lipids,NA,1720
+Organic acids and derivatives_1354,Organic acids and derivatives,NA,NA,1354
+Organic oxygen compounds_2354,Organic oxygen compounds,NA,NA,2354
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_5082",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",5082
-Organic acids and derivatives;Carboxylic acids and derivatives_2248,Organic acids and derivatives,Carboxylic acids and derivatives,NA,2248
+Lipids and lipid-like molecules_222,Lipids and lipid-like molecules,NA,NA,222
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_3352",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",3352
+Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates_4039,Organic oxygen compounds,Organooxygen compounds,Carbohydrates and carbohydrate conjugates,4039
 Organic nitrogen compounds_4896,Organic nitrogen compounds,NA,NA,4896
 "Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues_-19728",Organic acids and derivatives,Carboxylic acids and derivatives,"Amino acids, peptides, and analogues",-19728
 Organic acids and derivatives_5828,Organic acids and derivatives,NA,NA,5828
+Lipids and lipid-like molecules;Fatty Acyls;Fatty acid esters_76,Lipids and lipid-like molecules,Fatty Acyls,Fatty acid esters,76

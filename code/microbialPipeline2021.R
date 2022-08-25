@@ -377,6 +377,7 @@ asvSummaryPlot <- microbe_combined%>%
                             TRUE ~ maxOrg),
          shape = case_when(is.na(DayNight) & is.na(`Organism:DayNight`) ~ '\u2022',
                            TRUE ~ shape))
+         # label = case_when(label %like% '%Rhodobacter'))
 
 asvSummarySigs <- asvSummaryPlot%>%
   filter(shape != '\u2022')

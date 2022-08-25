@@ -1,0 +1,59 @@
+feature_number,ecoNetConsensus,net_act,CCA,Dictyota,Pocillopora verrucosa,Porites lobata,Turf,sum,DayNight_night,activity_night,DayNight_day,activity_day
+10396,Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines,343,NA,NA,NA,NA,NA,0,Night,labile,Day,labile
+10569,Organic acids and derivatives,199,NA,9532940.547496065,NA,NA,NA,9532940.547496065,Night,labile,Day,labile
+10599,Organic acids and derivatives,199,NA,47277762.59085959,NA,NA,NA,47277762.59085959,Night,labile,Day,labile
+10616,Organic acids and derivatives,199,NA,45533208.052999824,NA,NA,NA,45533208.052999824,Night,labile,Day,labile
+10619,Organic acids and derivatives,199,NA,9422098.761843713,NA,NA,NA,9422098.761843713,Night,labile,Day,labile
+10620,Organic acids and derivatives,199,NA,11230275.53104294,NA,NA,NA,11230275.53104294,Night,labile,Day,labile
+10629,Organic acids and derivatives,199,NA,3621785.7687890595,NA,NA,NA,3621785.7687890595,Night,labile,Day,labile
+10639,Organic acids and derivatives,199,NA,43411983.04576545,NA,NA,NA,43411983.04576545,Night,labile,Day,labile
+10644,Organic acids and derivatives,199,NA,3314736.150156196,NA,NA,NA,3314736.150156196,Night,labile,Day,labile
+10676,Organic acids and derivatives,199,NA,3872178.3412968833,NA,NA,NA,3872178.3412968833,Night,labile,Day,labile
+10678,Organic acids and derivatives,199,NA,636864.8068691418,NA,NA,NA,636864.8068691418,Night,labile,Day,labile
+10687,Organic acids and derivatives,199,NA,6292196.161406262,NA,NA,NA,6292196.161406262,Night,labile,Day,labile
+10716,Organic acids and derivatives,199,NA,4468197.677972632,NA,NA,NA,4468197.677972632,Night,labile,Day,labile
+10728,Organic oxygen compounds,1969,NA,1990552.5794999667,5602894.07985938,NA,NA,7593446.659359346,Night,labile,Day,labile
+10755,Organic oxygen compounds,1969,NA,1414883.122898448,3200251.050101579,NA,NA,4615134.173000027,Night,labile,Day,labile
+10787,Organic acids and derivatives,199,NA,1070027.4539297412,NA,NA,NA,1070027.4539297412,Night,labile,Day,labile
+10849,Organic oxygen compounds,1969,NA,NA,NA,NA,NA,0,Night,labile,Day,labile
+10866,Organic acids and derivatives,199,NA,1550853.3129374997,NA,NA,NA,1550853.3129374997,Night,labile,Day,labile
+10889,Organic acids and derivatives,199,NA,1190497.036791008,NA,NA,NA,1190497.036791008,Night,labile,Day,labile
+1118,Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines,343,NA,NA,72127711.05794895,2935571.4971719068,NA,75063282.55512086,Night,labile,Day,labile
+11430,"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",141,1597993.4355039066,NA,NA,NA,NA,1597993.4355039066,Night,labile,Day,labile
+11716,"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",141,NA,NA,6267235.627007818,11499247.876292937,NA,17766483.503300756,Night,labile,Day,labile
+11908,Organic acids and derivatives,199,NA,1532098.8269530998,NA,NA,NA,1532098.8269530998,Night,labile,Day,labile
+12620,Organic acids and derivatives,199,NA,56095186.089187466,231176.6008964827,NA,NA,56326362.69008395,Night,labile,Day,labile
+13098,Organic acids and derivatives,199,NA,754572.7003437482,4242849.128179671,NA,NA,4997421.82852342,Night,labile,Day,labile
+13158,Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines,343,NA,NA,11851444.777968679,NA,NA,11851444.777968679,Night,labile,Day,labile
+13551,Organic acids and derivatives,199,NA,1354413.9604062368,178531.55784178618,NA,NA,1532945.518248023,Night,labile,Day,labile
+15198,"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",141,NA,NA,2870179.0903339884,2221671.2873515645,NA,5091850.377685552,Night,labile,Day,labile
+15438,"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",141,NA,NA,NA,NA,NA,0,Night,labile,Day,labile
+15500,Organoheterocyclic compounds;Indoles and derivatives;N-alkylindoles,280,NA,NA,18234621.479437422,NA,12579902.361937428,30814523.84137485,Night,recalcitrant,Day,labile
+15543,Organic acids and derivatives,199,NA,124139512.61590478,NA,NA,NA,124139512.61590478,Night,labile,Day,labile
+15965,Organic acids and derivatives,199,NA,2892986.8477187185,NA,NA,NA,2892986.8477187185,Night,labile,Day,labile
+15994,Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines,343,NA,1251227.1953281225,NA,NA,NA,1251227.1953281225,Night,labile,Day,labile
+16123,"Organic acids and derivatives;Carboxylic acids and derivatives;Amino acids, peptides, and analogues",141,NA,NA,NA,1534933.6724531073,NA,1534933.6724531073,Night,labile,Day,labile
+16278,Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines,343,NA,NA,34350604.149088964,3058040.980093777,NA,37408645.12918274,Night,labile,Day,labile
+17039,Organic acids and derivatives,199,NA,285484339.0394825,NA,NA,NA,285484339.0394825,Night,labile,Day,labile
+17198,Organic acids and derivatives,199,NA,25430172.918871306,NA,NA,NA,25430172.918871306,Night,labile,Day,labile
+17471,Organic acids and derivatives,199,NA,11814679.114124931,NA,NA,NA,11814679.114124931,Night,labile,Day,labile
+18601,Organic acids and derivatives,199,NA,4334383.275179666,NA,NA,NA,4334383.275179666,Night,labile,Day,labile
+19230,Organic acids and derivatives,199,6142513.833271509,125352983.09467143,9276893.558984382,5433723.4044921985,0,146206113.89141953,Night,labile,Day,labile
+1949,Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines,343,NA,NA,16234654.211270198,NA,NA,16234654.211270198,Night,labile,Day,labile
+19548,Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates,3762,NA,NA,11276971.399148472,NA,NA,11276971.399148472,Night,labile,Day,recalcitrant
+20188,Organic nitrogen compounds,3585,3401062.6791523993,4938451.318187457,9515117.6705899,2033192.7119140627,3826681.346242197,23714505.726086017,Night,labile,Day,labile
+2069,Organic acids and derivatives;Carboxylic acids and derivatives;Tricarboxylic acids and derivatives,3765,NA,NA,333222692.7835127,168185007.6071559,NA,501407700.39066863,Night,labile,Day,labile
+3017,Organic acids and derivatives,199,NA,285602789.582014,NA,NA,NA,285602789.582014,Night,labile,Day,labile
+3197,Organic acids and derivatives,199,NA,125267914.59862393,NA,NA,NA,125267914.59862393,Night,labile,Day,labile
+3529,Organic acids and derivatives,199,NA,18752598.022421625,NA,NA,1168051.032697267,19920649.055118892,Night,labile,Day,labile
+4315,Organic nitrogen compounds,3585,5072926.445542972,7888457.889203107,18450026.25114069,6871476.053767579,6692211.879488283,44975098.51914263,Night,labile,Day,labile
+4626,Organoheterocyclic compounds;Indoles and derivatives;N-alkylindoles,280,NA,656940338.7470529,480307711.42006046,NA,706474233.2669492,1843722283.4340625,Night,recalcitrant,Day,labile
+5910,Organic nitrogen compounds,3585,1507171.1508222825,4456275.002453091,3258395.1548573934,NA,1701102.438132807,10922943.746265573,Night,labile,Day,labile
+6100,Organoheterocyclic compounds;Indoles and derivatives;N-alkylindoles,280,92916128.5946406,141204259.53245512,NA,114674763.94312508,91819639.47629306,440614791.54651386,Night,recalcitrant,Day,labile
+6210,Organic acids and derivatives,199,NA,1044552819.1961218,39178538.269664064,NA,NA,1083731357.465786,Night,labile,Day,labile
+7206,Organic acids and derivatives,199,NA,13351169.177093841,NA,NA,NA,13351169.177093841,Night,labile,Day,labile
+7513,Organic acids and derivatives,199,NA,18627297.224257722,NA,NA,758684.108726569,19385981.33298429,Night,labile,Day,labile
+7546,Organic acids and derivatives,199,NA,10928418.788734335,NA,NA,NA,10928418.788734335,Night,labile,Day,labile
+7695,Organic acids and derivatives,199,NA,1835313.2062031268,NA,NA,NA,1835313.2062031268,Night,labile,Day,labile
+8200,Lipids and lipid-like molecules;Glycerophospholipids;Glycerophosphoethanolamines,343,NA,648642.4798906039,NA,NA,NA,648642.4798906039,Night,labile,Day,labile
+8573,Organic oxygen compounds;Organooxygen compounds;Carbohydrates and carbohydrate conjugates,3762,837506.28500977,1695457.94281836,11898100.79860156,2863329.447675773,NA,17294394.474105462,Night,labile,Day,recalcitrant
