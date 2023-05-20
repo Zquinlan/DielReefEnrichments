@@ -19,6 +19,7 @@ library(ape)
 library(wesanderson)
 library(RColorBrewer)
 library(ggnewscale)
+library(ggpattern)
 
 #Defining functions and removing issues with overlapping function calls
 map <- purrr::map
@@ -88,7 +89,7 @@ csi_finger_id <- read_tsv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/sum
   rename(feature_number = experimentName)
 
 # Canopus 2021
-canopusSirius4 <- read_csv('~/Documents/SDSU_Scripps/EcoNet/investigations/canopus_summary.csv')
+canopusSirius4 <- read_csv('~/Documents/SDSU_Scripps/ConCISE/investigations/canopus_summary.csv')
 
 # Sirius and Zodiac both try to assign molecular formulas to all the features
 sirius_zodiac_anotations <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/SIRIUS_Zodiac_converted.csv")%>%
@@ -125,6 +126,26 @@ extraction_efficiency <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolo
 #   
 # 
 # write_csv(compare, "~/Downloads/dorcierr_annotation_comparison.csv")
+
+# canopusRaw <- read_csv('~/Documents/GitHub/conCISE/verification/dataset1_unmodified/canopus_summary.csv')
+# # 
+# net199 <- networking%>%
+#   select(feature_number, network, ZodiacMF:NOSC)%>%
+#   filter(network == '199')%>%
+#   left_join(feature_table_raw%>%
+#               select(feature_number, `row m/z`)%>%
+#               mutate(feature_number = as.character(feature_number)), by = 'feature_number')%>%
+#   left_join(ecoNet%>%
+#               mutate(scan = as.character(scan)), by = c('feature_number' = 'scan', 'network' = 'network'))%>%
+#   left_join(canopusRaw%>%
+#               select(-c(molecularFormula:adduct))%>%
+#               mutate(scan = as.character(scan)), by = c('feature_number' = 'scan'))
+# 
+
+# net199Features <- net199$feature_number
+# write_lines(net199Features, '~/Downloads/Net199FeatureList.txt')
+
+# write_csv(net199, '~/Downloads/net199DeeperLook.csv')
 
 # CLEANING -- SIRIUS_Zodiac elemental composition of molecular formulas -------------------------------------------
 networking_elements <- sirius_zodiac_anotations%>%
@@ -233,18 +254,20 @@ fcm_T0_5 <- dorc_fcm_fdom%>%
   select(-c(1:4, 9:36, 38, 39))%>%
   # filter(Timepoint == 'T0' | Timepoint == 'T4')%>%
   spread(Timepoint, `Cells µL-1`)%>%
-  mutate(hour = case_when(Organism == 'Turf' ~ 23,
-                          Organism == 'Dictyota'  ~ 23,
-                          Organism == 'CCA'  ~ 23,
-                          Organism == 'Porites lobata' ~ 48,
-                          Organism == 'Pocillopora verrucosa' ~ 37,
-                          Organism == 'Water control' ~ 37),
-         final_cells = case_when(Organism == 'Turf' ~ T4,
-                                 Organism == 'Dictyota'  ~ T4,
-                                 Organism == 'CCA'  ~ T4,
-                                 Organism == 'Porites lobata' ~ TF,
-                                 Organism == 'Pocillopora verrucosa' ~ T6,
-                                 Organism == 'Water control' ~ T6))%>%
+  mutate(hour = case_when(Organism == 'Turf' & DayNight == 'Day' ~ 23,
+                          Organism == 'Dictyota'& DayNight == 'Day'  ~ 23,
+                          Organism == 'CCA' & DayNight == 'Day' ~ 23,
+                          Organism == 'Porites lobata'& DayNight == 'Day' ~ 48,
+                          Organism == 'Pocillopora verrucosa'& DayNight == 'Day' ~ 37,
+                          Organism == 'Water control'& DayNight == 'Day' ~ 37,
+                          TRUE ~ 24),
+         final_cells = case_when(Organism == 'Turf'& DayNight == 'Day' ~ T4,
+                                 Organism == 'Dictyota'  & DayNight == 'Day'~ T4,
+                                 Organism == 'CCA' & DayNight == 'Day' ~ T4,
+                                 Organism == 'Porites lobata'& DayNight == 'Day' ~ TF,
+                                 Organism == 'Pocillopora verrucosa' & DayNight == 'Day'~ T6,
+                                 Organism == 'Water control' & DayNight == 'Day'~ T6,
+                                 TRUE ~ T5))%>%
   group_by(Organism, DayNight)%>%
   mutate(T0 = mean(T0, na.rm = TRUE),
          cells_ul = (log(final_cells) - log(T0))/(hour))%>%
@@ -315,6 +338,7 @@ feature_table_no_back_trans <- feature_table_dirty%>%
   gather(feature_number, val, 2:ncol(.))%>%
   spread(sample, val)
 
+# fwrite(list(dorcierr_real_features), file = '~/Documents/SDSU_Scripps/DORCIERR/Datasets/SIRIUS4/shortFeatures.txt')
 
 # FILTERING -- LOG2 change vals --------------------------------------------
 log2_change_vals <- feature_table_no_back_trans%>%
@@ -741,6 +765,20 @@ affinity%>%
   geom_smooth(method = 'lm')
   # scale_color_manual(values = c("#FF850A", "lightBlue"))
 
+
+# STATS -- Microbial load -------------------------------------------------
+loadAnova <- fcm_T0_5%>%
+  filter(Organism != 'Offshore',
+         Organism != 'Influent')%>%
+  group_by(DayNight)%>%
+  nest()%>%
+  mutate(anova = map(data, ~aov(final_cells~Organism, data = .x)%>%
+                      tidy()),
+         tukey = map(data, ~ aov(final_cells~ Organism, data = .x)%>%
+                       TukeyHSD()%>%
+                       tidy()))
+  
+
 # STATS -- glm stoichiometry ----------------------------------------------
 mul_reg <- affinity%>%
   inner_join(dom_stats_wdf%>%
@@ -774,6 +812,13 @@ mul_reg <- affinity%>%
   filter(activity != 'accumolite')%>%
   mutate(activity = as.factor(activity),
          network = as.factor(network))
+
+craig <- mul_reg%>%
+  left_join(ecoNet%>% 
+              rename(feature_number = 1)%>%
+              mutate(feature_number = as.character(feature_number),
+                     network = as.factor(network)), 
+            by = c('feature_number', 'network'))
 
 lm_test_mulreg <- lm(betterAffinity ~ `row m/z`+ T0 + NOSC + log_oc + log_nc+ log_hc, data = mul_reg)
 
@@ -1199,7 +1244,9 @@ org_lability <- feature_stats_wdf%>%
   spread(DayNight,xic)%>%
   gather(DayNight,xic, Day:Night)%>%
   group_by(Organism, DayNight, superclass_consensus)%>%
-  mutate(std = sd(xic))%>%
+  mutate(n = 1,
+         n = sum(n),
+         std = sd(xic)/sqrt(n))%>%
   summarize_if(is.numeric, mean)
 
 
@@ -1232,18 +1279,31 @@ org_tic <- feature_stats_wdf%>%
   mutate(std = sd(xic))%>%
   summarize_if(is.numeric, mean)
 
+
 pdf('plots/organismSuperclassLability.pdf', width = 15, height = 10)
 org_lability%>%
   filter(!superclass_consensus %like any% c('Lignan%', 'Alkaloid%', 'Phenyl%'))%>%
-  ggplot(aes(Organism, xic, fill = DayNight)) + 
-  geom_bar(stat = 'identity', position = 'dodge2') + 
-  geom_errorbar(aes(ymax = xic + std, ymin = xic - std), position = 'dodge2') +
+  ggplot(aes(Organism, xic, color = Organism, pattern = DayNight)) + 
+  geom_bar_pattern(stat = 'identity', position = position_dodge(preserve = 'single')) + 
+  # geom_errorbar(aes(ymax = xic + std, ymin = xic - std), position = 'dodge2') +
   facet_wrap(~superclass_consensus, scales = 'free_y') +
-  scale_fill_manual(values = c('#F09837', 'grey')) +
-  labs(y = 'Ion intensity (XIC)', fill = 'Diel Cycle') +
+  scale_fill_manual(values = org_colors_no_water) +
+  labs(y = 'Ion intensity (XIC)', color = 'Organism', lineType = 'Diel Cycle') +
   gen_theme()
 
+# org_lability%>%
+#   filter(!superclass_consensus %like any% c('Lignan%', 'Alkaloid%', 'Phenyl%'))%>%
+#   ggplot(aes(Organism, xic, color = Organism, shape = DayNight)) + 
+#   geom_point(stat = 'identity', size = 4) +
+#   # geom_bar_pattern(stat = 'identity', position = position_dodge(preserve = 'single')) + 
+#   geom_errorbar(aes(ymax = xic + std, ymin = xic - std)) +
+#   facet_wrap(~superclass_consensus, scales = 'free_y') +
+#   scale_color_manual(values = org_colors_no_water) +
+#   labs(y = 'Ion intensity (XIC)', color = 'Organism', lineType = 'Diel Cycle') +
+#   gen_theme()
+
 org_tic%>%
+  summarize_if(is.numeric, mean)%>%
   ggplot(aes(Organism, xic, fill = DayNight)) + 
   geom_bar(stat = 'identity', position = 'dodge2') + 
   geom_errorbar(aes(ymax = xic + std, ymin = xic - std), position = 'dodge2') +
@@ -1295,6 +1355,25 @@ org_lability_test <- org_lability_stats%>%
                       select(p.value)))%>%
   unnest(data)%>%
   mutate(FDR = p.adjust(p.value, method = 'BH'))
+
+# org_lability_org <- org_lability_stats%>%
+#   filter(!superclass_consensus %like any% c('Lignan%', 'Alkaloid%', 'Phenyl%'))%>%
+#   mutate(xic = case_when(is.na(xic) ~ 0,
+#                          TRUE ~ xic),
+#          log10 = log10(xic + 1))%>%
+#   group_by(superclass_consensus, DayNight)%>%
+#   nest()%>%
+#   mutate(aov = map(data, ~ aov(log10 ~ Organism, data = .x)%>%
+#                       tidy()%>%
+#                       filter(term == 'Organism')%>%
+#                       select(p.value)),
+#          tukey = map(data, ~aov(log10 ~ Organism, data = .x)%>%
+#                        TukeyHSD()%>%
+#                        tidy()%>%
+#                        select(comparison, adj.p.value)))%>%
+#   unnest(c(aov, tukey))
+#   # unnest(data)%>%
+  # mutate(FDR = p.adjust(p.value, method = 'BH'))
 
 # VIZUALIZATIONS -- Metabolite pool XIC change ----------------------------
 metabolitePool_xic_change <- feature_stats_wdf%>%
@@ -1387,7 +1466,8 @@ metabolitePool_xic_change%>%
         strip.background = element_blank()) +
   guides(color = guide_legend(nrow=2, byrow=TRUE),
          shape = guide_legend(nrow=2, byrow=TRUE)) +
- xlim(0, 3.5e10)
+  xlim(0, 3.5e10) +
+  scale_x_log10()
 dev.off()
 
 # STATS -- labile pool xic mean change -------------------------------
@@ -1402,13 +1482,43 @@ xic_change_ttest <- metabolitePool_xic_change%>%
   ungroup()%>%
   group_by(Organism)%>%
   nest()%>%
-  mutate(p = map(data, ~ lm(difference ~ DayNight, .x)%>%
+  mutate(p = map(data, ~ lm(log10Difference ~ DayNight, .x)%>%
                               lmp()))%>%
   # select(-data)%>%
   # unnest(c(DayDepletion, NightDepletion))%>%
   # gather(test, p, 2:3)%>%
   mutate(fdr = p.adjust(p, method = 'BH'))
 
+# xic_T0_ttest <- metabolitePool_xic_change%>%
+#   filter(activity == 'labile')%>%
+#   select(-c(network:ra))%>%
+#   filter(Timepoint == 'T0')%>%
+#   mutate(log10 = log10(xic))%>%
+#   group_by(Organism)%>%
+#   nest()%>%
+#   mutate(p = map(data, ~ lm(log10 ~ DayNight, .x)%>%
+#                    lmp()))%>%
+#   # select(-data)%>%
+#   # unnest(c(DayDepletion, NightDepletion))%>%
+#   # gather(test, p, 2:3)%>%
+#   mutate(fdr = p.adjust(p, method = 'BH'))
+# 
+# 
+xic_tukey <- metabolitePool_xic_change%>%
+  filter(activity == 'labile')%>%
+  select(-c(network:ra))%>%
+  spread(Timepoint, xic)%>%
+  group_by(Organism, DayNight)%>%
+  mutate(T0 = mean(T0, na.rm = TRUE),
+         difference = TF-T0,
+         log10Difference = log10(abs(difference)))%>%
+  ungroup()%>%
+  group_by(DayNight)%>%
+  nest()%>%
+  mutate(data = map(data, ~ aov(log10Difference ~ Organism, .x)%>%
+                   TukeyHSD()%>%
+                   tidy()))%>%
+  unnest(data)
 
 # VIZUALIZATIONS -- FCM ---------------------------------------------------
 fcm_graphing <- fcm_wdf%>%
@@ -1578,6 +1688,47 @@ fcd_intercept <- fcm_labile_lm$coefficients["(Intercept)"]
 
 fcd_r2 <- summary(fcm_labile_lm)$adj.r.squared
 
+#Day Corals
+fcm_labileCorals_lm <- fcm_23%>%
+  filter(DayNight == 'Day',
+         Organism %like any% c('Porites%', 'Poci%'))%>%
+  lm(cells_ul ~ log10, data = .)
+
+fcdCoral_p <- (fcm_labileCorals_lm%>% 
+            tidy()%>% 
+            filter(term == 'log10'))$p.value
+
+fcdCoral_f <- (fcm_labileCorals_lm%>% 
+            tidy()%>% 
+            filter(term == 'log10'))$statistic
+
+fcdCoral_slope <- fcm_labileCorals_lm$coefficients["log10"]
+fcdCoral_intercept <- fcm_labileCorals_lm$coefficients["(Intercept)"]
+
+
+fcdCoral_r2 <- summary(fcm_labileCorals_lm)$adj.r.squared
+
+#Day algae
+fcm_labileAlgae_lm <- fcm_23%>%
+  filter(DayNight == 'Day',
+         Organism %like any% c('Dict%', 'Turf'))%>%
+  lm(cells_ul ~ log10, data = .)
+
+fcdAlgae_p <- (fcm_labileAlgae_lm%>% 
+                 tidy()%>% 
+                 filter(term == 'log10'))$p.value
+
+fcdAlgae_f <- (fcm_labileAlgae_lm%>% 
+                 tidy()%>% 
+                 filter(term == 'log10'))$statistic
+
+fcdAlgae_slope <- fcm_labileAlgae_lm$coefficients["log10"]
+fcdAlgae_intercept <- fcm_labileAlgae_lm$coefficients["(Intercept)"]
+
+
+fcdAlgae_r2 <- summary(fcm_labileAlgae_lm)$adj.r.squared
+
+
 # Night lm
 fcm_labile_lm_night <- fcm_23%>%
   filter(DayNight == 'Night')%>%
@@ -1600,6 +1751,20 @@ fcn_r2 <- summary(fcm_labile_lm_night)$adj.r.squared
 
 # Plotting
 # Day
+fcm23DayCorals <- fcm_23%>%
+  filter(DayNight == 'Day',
+         Organism %like any% c('Porites%', 'Pocil%'),
+         Organism != 'Influent',
+         Organism != 'Water control',
+         Organism != 'Offshore')
+
+fcm23DayAlgae <- fcm_23%>%
+  filter(DayNight == 'Day',
+         Organism %like any% c('Dict%', 'Turf%'),
+         Organism != 'Influent',
+         Organism != 'Water control',
+         Organism != 'Offshore')
+
 pdf('plots/fcm_sumDepletion.pdf', width = 15, height = 10)
 fcm_23%>%
   filter(DayNight == 'Day',
@@ -1608,7 +1773,8 @@ fcm_23%>%
          Organism != 'Offshore')%>%
   ggplot(aes(log10, cells_ul)) +
   geom_point(aes(color = Organism), size = 7) +
-  geom_smooth(method = 'lm', se = FALSE, linetype = 3) +
+  geom_smooth(data = fcm23DayAlgae, method = 'lm', se = FALSE, linetype = 3, color = org_colors_no_water[[5]]) +
+  geom_smooth(data = fcm23DayCorals, method = 'lm', color = org_colors_no_water[[3]]) +
   ylim(0.036,0.083) +
   scale_color_manual(values = org_colors_no_water) +
   gen_theme() +
@@ -1665,96 +1831,6 @@ microbialGrowth_fdr <- microbialLoad_stats%>%
   bind_rows(sgr_stats)%>%
   mutate(fdr = p.adjust(data, method = "BH"))
 
-
-# VIZUALIZATIONS -- Venn Diagram ------------------------------------------
-# venn <- feature_stats_wdf%>%
-#   left_join(networking%>%
-#               select(feature_number, network), by = 'feature_number')%>%
-#   mutate(net_act = case_when(network == -1 ~ -as.numeric(feature_number),
-#                              TRUE ~ network))%>%
-#   left_join(all_activity, by = c('net_act', 'DayNight'))%>%
-#   ungroup()%>%
-#   filter(activity == 'labile')%>%
-#   select(feature_number, Organism, DayNight)%>%
-#   unique()
-# 
-# total_deplete <- venn%>%
-#   select(feature_number)%>%
-#   unique()%>%
-#   as.vector()
-# 
-# # Day venn
-# day_deplete <- venn%>%
-#   filter(DayNight == 'Day')%>%
-#   select(-DayNight)
-# 
-# day_list <- day_deplete$feature_number%>%
-#   as.vector()
-# 
-# day_split <- split(day_list, day_deplete$Organism)
-# 
-# venn.diagram(day_split, 
-#              'plots/venn_labilesDay.png',
-#              category.names = c('CCA', 'Dic', 'Poc', 'Por', 'T'),
-#              imagetype = 'png',  
-#              height = 1500, 
-#              width = 1800,
-#              resolution = 300,
-#              fill = org_colors_no_water)
-# 
-# 
-# # Night venn
-# night_deplete <- venn%>%
-#   filter(DayNight == 'Night')%>%
-#   select(-DayNight)
-# 
-# night_list <- night_deplete$feature_number%>%
-#   as.vector()
-# 
-# night_split <- split(night_list, night_deplete$Organism)
-# 
-# venn.diagram(night_split, 
-#             'plots/venn_labilesNight.png',
-#             category.names = c('CCA', 'Dic', 'Poc', 'Por', 'T'),
-#             imagetype = 'png',  
-#             height = 1500, 
-#             width = 1800,
-#             resolution = 300,
-#             fill = org_colors_no_water)
-# 
-# # Total venn
-# venn_list <- venn$feature_number%>%
-#   as.vector()
-# 
-# venn_split <- split(venn_list, venn$Organism)
-# 
-# venn.diagram(venn_split, 
-#              './plots/venn_labilesDayNight.png',
-#              category.names = c('CCA', 'Dic', 'Poc', 'Por', 'T'),
-#              imagetype = 'png',  
-#              height = 1500, 
-#              width = 1800,
-#              resolution = 300,
-#              fill = org_colors_no_water)
-# 
-# # Org Venn
-# org_venn <- venn%>%
-#   group_by(Organism)%>%
-#   nest()%>%
-#   mutate(list = map(data, ~ .x$feature_number%>%
-#                       as.vector()),
-#          dayNightList = map(data, ~ .x$DayNight),
-#          splits = map2(list, dayNightList, ~split(.x, .y)),
-#          diagram = map(splits, ~venn.diagram(.x, 
-#                                              paste0('plots/venn_labiles', Organism, '.png'),
-#                                              category.names = c('', ''),
-#                                              imagetype = 'png',  
-#                                              height = 1500, 
-#                                              width = 1800,
-#                                              resolution = 300,
-#                                              cex = 3,
-#                                              fill = c('#FF9300', 'grey'))))
-# 
 
 # VIZUALIZATIONS -- Labile heatmap -----------------------------------
 depletion_hc <- feature_stats_wdf%>%
@@ -1832,6 +1908,8 @@ depletion_hc%>%
   labs(y = bquote(Log[10] ~(XIC)))
 dev.off()
 
+
+
 # pdf('plots/recalcitrantViolinNets.pdf', width = 20, height = 50)
 # depletion_hc%>%
 #   filter(!netEcoNet %like% '%lignan%')%>%
@@ -1857,6 +1935,54 @@ dev.off()
 # dev.off()
 
 write_csv(depletion_hc%>% select(netEcoNet)%>% separate(netEcoNet, c('ecoNetConsensus', 'net_act'), sep = '_', remove = FALSE)%>% separate(ecoNetConsensus, c('Superclass', 'Class', 'Subclass'), sep = ';')%>% unique(), 'analysis/labileViolinColumn.csv')
+
+# VIZUALIZATIONS -- superclass percent pies------------------------------------
+percentSuperclass <- org_lability%>%
+  filter(!is.na(superclass_consensus))%>%
+  group_by(Organism, DayNight)%>%
+  mutate(percent = xic/sum(xic, na.rm = TRUE)*100,
+         percentSd = std/sum(xic, na.rm = TRUE)*100)
+  # filter(DayNight == 'Day')%>%
+  # ungroup()
+  # group_by(Organism)%>%
+  # nest()
+# superclassColors <- c('#332288', '#88CCEE', '#DDCC77', '#CC6677', '#117733', '#44AA99', '#CC0033', 'black', 'grey')
+
+pieChartSetup <- percentSuperclass%>%
+  filter(!superclass_consensus %like any% c('Lignans%', 'Alkaloids%', 'Phenylpropanoids%'))%>%
+  mutate(colors = case_when(superclass_consensus == 'Benzenoids' ~ '#332288',
+                            superclass_consensus %like% 'Lipids%' ~ '#88CCEE',
+                            superclass_consensus %like% '%acids%' ~ '#DDCC77',
+                            superclass_consensus %like% '%acids%' ~ '#CC6677',
+                            superclass_consensus %like% '%nitrogen%' ~ '#117733',
+                            superclass_consensus %like% '%oxygen%' ~ '#44AA99',
+                            superclass_consensus %like% '%heterocyc%' ~ '#CC0033'))
+
+colorsSuperclass <- pieChartSetup$colors
+names(colorsSuperclass) <- pieChartSetup$superclass_consensus
+
+pieChartSetup%>%
+  unite(title, c('Organism', 'DayNight'), sep= '_')%>%
+  group_by(title)%>%
+  mutate(total = sum(log10(xic+1), na.rm = TRUE))%>%
+  # nest()%>%
+  # mutate(data = map2(data, title, ~ 
+  filter(!is.na(percent))%>%
+  ggplot(aes(x= total*3/4, width = total, y= percent, fill = superclass_consensus)) +
+  geom_bar(size = 1, color = "white", stat = "identity") +
+  facet_wrap(~title) +
+  labs(x= NULL, y= NULL) +
+  scale_fill_manual(values = colorsSuperclass) +
+  coord_polar("y", start = 0) +
+  theme_classic() +
+  theme(axis.line = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+# pdf('plots/OrgPieCharts.pdf', width = 12, height = 10)
+# pieCharts[[2]]
+# dev.off()
+
 
 # VIZUALIZATIONS -- Nitrogen Compounds ----------------------------------------
 library(emojifont)
@@ -2332,14 +2458,18 @@ permanova_df <- feature_stats_wdf%>%
   mutate_all(~replace(., is.na(.), 0))
 
 permanova_organism <- permanova_df%>%
-  mutate(orgGroup = case_when(Organism %like% 'Pocill%' | Organism %like% 'Porites%' ~ 'Coral',
-                              TRUE ~ 'Algae'))%>%
-  group_by(DayNight, orgGroup)%>%
+  # mutate(orgGroup = case_when(Organism %like% 'Pocill%' | Organism %like% 'Porites%' ~ 'Coral',
+  #                             TRUE ~ 'Algae'))%>%
+  group_by(DayNight)%>%
   nest()%>%
   mutate(data = map(data, ~adonis(.x[3:ncol(.x)] ~ Organism, .x, perm = 1000, method = "bray", na.rm = TRUE)))
 
 permanova_DayNight <- permanova_df%>%
-  adonis(.[4:ncol(.)] ~ Organism*DayNight, ., perm = 1000, method = "bray", na.rm = TRUE)
+  group_by(Organism)%>%
+  nest()%>%
+  mutate(data = map(data, ~adonis(.x[3:ncol(.x)] ~ DayNight, .x, method = "bray", na.rm = TRUE)))
+
+
 
 # VIZUALIZATION -- allCompounds View --------------------------------------
 eclipseDfDeplete <- netViews%>%

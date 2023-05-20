@@ -474,6 +474,16 @@ asvDiversity <- microbe_combined%>%
   unnest(c(shannon, specN))%>%
   mutate(eveness = shannon/log(specN))
 
+asvDiversity%>% 
+  select(-data)%>% 
+  mutate(orgName = case_when(Organism %like% 'Poc%' ~ 'Coral',
+                             Organism %like% 'Por%' ~ 'Coral',
+                             Organism %like% 'Dic%' ~ 'FAlgae',
+                             Organism %like% 'Turf%' ~ 'FAlgae'))%>%
+  group_by(orgName, DayNight)%>% 
+  mutate(sd = sd(eveness))%>%
+  summarize_if(is.numeric, mean)
+
 waterMeans <- microbe_combined%>%
   filter(Timepoint == 'TF', 
          OTU %in% different_microbes)%>%
