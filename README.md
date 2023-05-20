@@ -1,4 +1,5 @@
 # DORCIERR
+[![DOI](https://zenodo.org/badge/226174249.svg)](https://zenodo.org/badge/latestdoi/226174249)
 
 *****
 # Contents:
