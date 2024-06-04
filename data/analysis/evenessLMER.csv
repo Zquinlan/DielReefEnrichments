@@ -1,0 +1,4 @@
+var,Pr(>Chisq),test
+group,0.06435007386411189,eveness
+DayNight,3.4916343051219197e-7,eveness
+group:DayNight,6.256492371049971e-17,eveness

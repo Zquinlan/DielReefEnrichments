@@ -1,0 +1,37 @@
+superclass_consensus,test,var,Pr(>Chisq),DayNight,Day,Night
+Benzenoids,superclass,group,0.11214444375933800,NA,NA,NA
+Benzenoids,superclass,DayNight,0.43839991218674800,NA,NA,NA
+Benzenoids,superclass,group:DayNight,0.5630857267257250,NA,NA,NA
+Lipids and lipid-like molecules,superclass,group,0.5239786379190150,NA,NA,NA
+Lipids and lipid-like molecules,superclass,DayNight,1.68393490759217E-10,Night,NA,NA
+Lipids and lipid-like molecules,superclass,group:DayNight,0.011418088580783400,NA,coral,coral
+Organic acids and derivatives,superclass,group,0.5267072238436600,NA,NA,NA
+Organic acids and derivatives,superclass,DayNight,0.19696944251107900,NA,NA,NA
+Organic acids and derivatives,superclass,group:DayNight,0.10407952857682800,NA,NA,NA
+Organic nitrogen compounds,superclass,group,0.2666651386012640,NA,NA,NA
+Organic nitrogen compounds,superclass,DayNight,0.005237387699118060,Night,NA,NA
+Organic nitrogen compounds,superclass,group:DayNight,0.7947981167827150,NA,NA,NA
+Organic oxygen compounds,superclass,group,0.6387149816760680,NA,NA,NA
+Organic oxygen compounds,superclass,DayNight,0.12398327482009900,NA,NA,NA
+Organic oxygen compounds,superclass,group:DayNight,0.8340982378868090,NA,NA,NA
+Organoheterocyclic compounds,superclass,group,0.3883725514711170,NA,NA,NA
+Organoheterocyclic compounds,superclass,DayNight,7.95848972721683E-16,Day,NA,NA
+Organoheterocyclic compounds,superclass,group:DayNight,0.006367692489180400,NA,Fleshy algae,coral
+NA,TIC,group,0.7381295659151210,NA,NA,NA
+NA,TIC,DayNight,0.8349901113830660,NA,NA,NA
+NA,TIC,group:DayNight,4.58688661041371E-10,NA,coral,coral
+NA,load,group,0.49728352406498800,NA,NA,NA
+NA,load,DayNight,0.004086422765196380,Day,NA,NA
+NA,load,group:DayNight,2.88629665498683E-13,NA,Fleshy algae,coral
+NA,growth,group,0.6814537431248160,NA,NA,NA
+NA,growth,DayNight,1.55829414008633E-15,Day,NA,NA
+NA,growth,group:DayNight,1.70173021340182E-33,NA,Fleshy algae,coral
+NA,depletion,group,0.1813829300688160,NA,NA,NA
+NA,depletion,DayNight,0.6031637412220800,NA,NA,NA
+NA,depletion,group:DayNight,0.04515959670243410,NA,coral,coral
+NA,proportionalDepletion,group,3.75118444824338E-06,NA,NA,NA
+NA,proportionalDepletion,DayNight,0.37127460931813200,Day,NA,NA
+NA,proportionalDepletion,group:DayNight,0.720412790301103,NA,NA,NA
+NA,Eveness,group,0.06435007386411190,NA,NA,NA
+NA,Eveness,DayNight,3.49163430512192E-07,Day,NA,NA
+NA,Eveness,group:DayNight,6.25649237104997E-17,NA,coral,Fleshy algae

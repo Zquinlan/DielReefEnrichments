@@ -457,6 +457,32 @@ asvSummarySigs%>%
 dev.off()
 
 
+# ANALYSIS -- sigmicrobes Table -------------------------------------------
+sigMicrobeTable <- microbe_combined%>%
+  filter(Timepoint == 'TF', 
+         OTU %in% different_microbes)%>%
+  select(-c(sample_code, Experiment, abundant))%>%
+  group_by(OTU, Organism, DayNight)%>%
+  summarize_if(is.numeric, mean)%>%
+  ungroup()%>%
+  unite(sample, c(DayNight, Organism), sep = '_')%>%
+  group_by(OTU)%>%
+  mutate(max = max(ra))%>%
+  ungroup()%>%
+  filter(max >= 0.01)%>%
+  select(-max)%>%
+  spread(sample, ra)
+
+
+fullSigMicrobeTable <- anova_microbe_pvalues%>%
+  select(-3)%>%
+  spread(term, FDR)%>%
+  right_join(sigMicrobeTable, by = 'OTU')%>%
+  separate(OTU, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "OTU_id"), sep = ";")%>%
+  select(-c(Kingdom, Phylum, Class))
+
+write_csv(fullSigMicrobeTable, '~/Documents/GitHub/DORCIERR/data/analysis/microbeSigs.csv')
+
 # STATS -- Diversity and Richness -----------------------------------------
 asvDiversity <- microbe_combined%>%
   filter(Timepoint == 'TF', 
@@ -524,6 +550,9 @@ asvDiversity%>%
   scale_color_manual(values = org_colors_no_water)
 dev.off()
 
+
+
+
 asvMean%>%
   separate(OTU, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "OTU_id"), sep = ";", remove = FALSE)%>%
   unite(microbe, c('Genus', 'OTU_id'), sep = ' ')%>%
@@ -542,8 +571,68 @@ evenessStats <- asvDiversity%>%
                       tidy()%>%
                       filter(!term %like% '%Intercept%')))%>%
   unnest(data)
- 
 
+evenessOrgs <- asvDiversity%>%
+  group_by(DayNight)%>%
+  nest()%>%
+  mutate(anova = map(data, ~ aov(eveness~Organism, data = .x)%>%
+                      tidy()),
+         tukey = map(data, ~aov(eveness~Organism, data = .x)%>%
+                       TukeyHSD()))
+                      # filter(!term %like% '%Intercept%')))%>%
+  unnest(data)
+
+# Figure 6 -- eveness -----------------------------------------------------
+figSixFills <- c('#EEB481', '#EF8C36', '#8DCA7D', '#67C94D')
+figSixColors <- c('#EF8C36', '#C86C1D', '#67C94D', '#398A23')
+ 
+groupEveness <- asvDiversity%>%
+  filter(Organism != 'CCA')%>%
+  mutate(group = ifelse(Organism %like% c('Poc%', 'Por%'), 'Coral', 'Fleshy algae'))%>%
+  group_by(group, DayNight)%>%
+  mutate(n = 1,
+         n = sum(n),
+         sterr = sd(eveness)/sqrt(n))%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  ungroup()%>%
+  unite(colorFill, c('group', 'DayNight'), sep = '_', remove = FALSE)
+
+
+pdf('~/Documents/GitHub/DORCIERR/data/plots/groupEveness.pdf', width = 15, height = 10)
+groupEveness%>%
+  ggplot(aes(DayNight, eveness, color = colorFill, fill = colorFill)) +
+  geom_bar(stat = 'identity', size = 4) +
+  geom_errorbar(aes(ymin = eveness -sterr, ymax = eveness + sterr), color = 'black', width = 0, size = 2) +
+  geom_point(aes(y = eveness +sterr), color = 'black', size = 4) +
+  geom_point(aes(y = eveness - sterr), color = 'black', size = 4) +
+  geom_line(aes(group = group), color = 'black', size = 2, linetype = 'dashed') +
+  facet_wrap(~group) +
+  scale_color_manual(values = figSixColors) +
+  scale_fill_manual(values = figSixFills) +
+  gen_theme() +
+  # scale_y_continuous(limits = c(9.7, 10.4), oob = rescale_none) +
+  labs(x = 'Diel cycle', y = 'Intensity (log10 XIC)') +
+  theme(legend.position = 'None',
+        strip.background = element_blank(),
+        strip.text.x = element_blank())  
+dev.off()
+  
+
+groupEvenessStats <- asvDiversity%>%
+  filter(Organism != 'CCA')%>%
+  mutate(group = ifelse(Organism %like% c('Poc%', 'Por%'), 'Coral', 'Fleshy algae'))%>%
+  lmer(eveness~group*DayNight + (1|Organism), data =., control =  lmerControl(check.nlev.gtr.1 = "ignore",
+                                                                                      check.conv.singular = 'ignore',
+                                                                                      check.nobs.vs.nRE = 'ignore'))%>%
+  car::Anova()%>%
+  rownames_to_column(var = 'var')%>%
+  select(var, `Pr(>Chisq)`)%>%
+  as.data.frame()%>%
+  mutate(test = 'eveness')
+
+write_csv(groupEvenessStats, '~/Documents/GitHub/DORCIERR/data/analysis/evenessLMER.csv')
+  
+  
 # VIZUALIZATIONS -- Hierarchical cluster matrix and asv table----------------------------------------
 hc_microbe <- microbe_combined%>%
   # select(-c(sample_code, reads, numOtus))%>%
