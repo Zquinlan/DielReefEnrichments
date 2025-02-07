@@ -109,6 +109,37 @@ ms_sample_codes <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolomics/M
   rename('run_code' = 'Sample ID',
          'sample_code' = 'Sample Name')
 
+ms_sample_metadata <- ms_sample_codes%>%
+  mutate(sample_code = gsub('-', '_', sample_code),
+         mzml = '.mzXML Peak area')%>%
+  unite(run_code, c('run_code', 'mzml'), sep ='')%>%
+  separate(sample_code, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_", remove = FALSE)%>%
+  filter(!Experiment %like% "%Blank%",
+         !Organism %like% "%Blank")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                Experiment == "M" ~ "mordor",
+                                Experiment == "R" ~ "RR3",
+                                TRUE ~ as.character(Experiment)),
+         Organism = case_when(Organism == "CC" ~ "CCA",
+                              Organism == "DT" ~ "Dictyota",
+                              Organism == "PL" ~ "Porites lobata",
+                              Organism == "PV" ~ "Pocillopora verrucosa",
+                              Organism == "TR" ~ "Turf",
+                              Organism == "WA" ~ "Water control",
+                              TRUE ~ as.character(Organism)))%>%
+  separate(Timepoint, c('TimepointBad', 'DayNight'), sep = 2, remove = FALSE)%>%
+  select(-TimepointBad)%>%
+  mutate(Timepoint = case_when(Timepoint %like% 'T0%' ~ 'T0',
+                              Timepoint %like% 'TF%' ~ 'TF',
+                              TRUE ~ Timepoint),
+         DayNight = ifelse(DayNight == 'D', 'Day', 'Night'))%>%
+  rename(OrganismOrSite = Organism)%>%
+  left_join(spiffy_gps, by = c('OrganismOrSite' = 'Site'))%>%
+  mutate(Lat = ifelse(Experiment == 'LoRDI', NA_real_, Lat),
+         Lon = ifelse(Experiment == 'LoRDI', NA_real_, Lon))
+
+write_csv(ms_sample_metadata, '~/Documents/SDSU_Scripps/Moorea_2017/MetadataSheetWIP.csv')
+
 # EcoNet
 ecoNet <- read_csv('~/Documents/Github/DORCIERR/data/raw/metabolomics/ecoNetConsensus.csv')%>%
   select(-1)
@@ -150,6 +181,7 @@ extraction_efficiency <- read_csv("~/Documents/GitHub/DORCIERR/data/raw/metabolo
 # write_csv(net199, '~/Downloads/net199DeeperLook.csv')
 
 # CLEANING -- SIRIUS_Zodiac elemental composition of molecular formulas -------------------------------------------
+## We are extracting the elemental stoichiometry here and calculating the NOSC, dG 
 networking_elements <- sirius_zodiac_anotations%>%
   filter(!ZodiacMF == "not_explainable")%>%
   group_by(feature_number)%>% 
@@ -177,6 +209,7 @@ super_computer_annotations <- canopusSirius4%>%
 
 # CLEANING -- METADATA and filter out bad samples --------------------------
 ## join library hits, analog hits and super computer predictions
+## This a full metadata file that can be used to look at each feature individually
 metadata <- node_info%>%
   full_join(super_computer_annotations, by = "feature_number")%>%
   full_join(feature_table_raw[1:4], by = 'feature_number')%>%
@@ -203,7 +236,7 @@ metadata <- node_info%>%
 
 
 metadata$feature_number <- as.character(metadata$feature_number)
-
+## Networking includesa the metadata and networking information
 networking <- metadata%>%
   select(c(feature_number, network,combined_ID, binary_ID,  SmilesLibrary_, SmilesAnalog_,
            subclass:superclass, ZodiacMF, `characterization scores`,
@@ -240,6 +273,7 @@ feature_table_temp$run_code <- feature_table_temp$run_code%>%
   gsub(".mzXML Peak area", "", .)%>%
   gsub("_MSMS", "", .)
 
+## We wanted to include the other experiments that used PPLs for the blank removal
 feature_table_dirty <- left_join(ms_sample_codes, feature_table_temp, by = "run_code")%>%
   dplyr::select(-run_code)%>%
   filter(sample_code %like any% c("%Blank%","R_%", "D_%", "M_%", "SPIFFy_%"))%>%
@@ -249,6 +283,7 @@ feature_table_dirty <- left_join(ms_sample_codes, feature_table_temp, by = "run_
 
 
 # CLEANING -- FCM ---------------------------------------------------------
+# Cleaning the flow cytometry data and making sure we identified the climax TF for each treatment
 fcm_wdf <- dorc_fcm_fdom%>%
   dplyr::select(c(1:8,34:ncol(.)))
 
@@ -275,7 +310,7 @@ fcm_T0_5 <- dorc_fcm_fdom%>%
          cells_ul = (log(final_cells) - log(T0))/(hour))%>%
   select(-c(T0:TF, hour))
 
-# DEFINING -- Samples and blanks ------------------------------------------
+# CLEANING  -- Samples and blanks ------------------------------------------
 ## defining what columns the samples are in
 ions_samples <- 10:259
 
@@ -283,7 +318,7 @@ ions_samples <- 10:259
 ions_blanks <- c(2:8, 260)
 
 
-# FLAGGING -- BACKGROUND FEATURES flagging and removing ------------------------------------------------
+# CLEANING  Filters -- BACKGROUND FEATURES flagging and removing ------------------------------------------------
 # Background features are defined as features where max(blanks) >= 0.5*mean(samples)
 ions <- feature_table_dirty
 
@@ -300,7 +335,7 @@ no_background <-ions%>%
                                   TRUE ~ "background"))%>%
   rename("background" = "mean_samples")
 
-# FLAGGING -- TRANSIENT FEATURES flagging and removing ---------------------------------------------
+# CLEANING  Filters -- TRANSIENT FEATURES flagging and removing ---------------------------------------------
 # Transient features are defined as features who's area under the curve is not more than 2E5 in at least 3 samples
 # This was determined by comparing gap filled and non-gap filled data and selecting for the lowest peak area in non-gap filled data
 # This gives the assumption that anything lower than 2E5 is noise. See supplemental figure
@@ -327,7 +362,8 @@ feature_table_no_background_trans_finder <- feature_table_dirty%>%
 feature_table_no_back_trans_filter <- full_join(feature_table_no_background_trans_finder, no_background, by = "feature_number")%>%
   dplyr::select(feature_number, background, everything())
 
-# FILTERING -- out background and transient features ----------------------
+# CLEANING  Filters -- out background and transient features ----------------------
+# Removing any features that were labeled as background e.g. "not real"
 dorcierr_real_features <- as.vector(feature_table_no_back_trans_filter%>%
                                       filter(background == "real")%>%
                                       filter(Dorcierr_transient == "real"))$feature_number
@@ -342,7 +378,10 @@ feature_table_no_back_trans <- feature_table_dirty%>%
 
 # fwrite(list(dorcierr_real_features), file = '~/Documents/SDSU_Scripps/DORCIERR/Datasets/SIRIUS4/shortFeatures.txt')
 
-# FILTERING -- LOG2 change vals --------------------------------------------
+# CLEANING  Filters -- LOG2 change vals --------------------------------------------
+## Here we are building our first data filter which looked at the log2 data 
+## We wanted to see if there was a fold change between TF and T0 for each treatment
+## T0 only has 2 replicates while TF has four so we had to find the average T0
 log2_change_vals <- feature_table_no_back_trans%>%
   gather(sample_name, xic, 2:ncol(.))%>%
   ungroup()%>%
@@ -375,7 +414,11 @@ log2_change_vals <- feature_table_no_back_trans%>%
 
 
 
-# FILTERING -- Log2 Exometabolites ----------------------------------------
+# CLEANING  Filters -- Log2 Exometabolites ----------------------------------------
+## THis is the second filter, the exometabolite filter
+## Here we want to make sure the metabolites were analyzing are produced by the organisms and not found in the water
+## It follows the same logic as the timepoint fold change but here we want an order of magnitude higher intensity 
+## between the organism treatment and the water control
 exometabolite_features <- feature_table_no_back_trans%>%
   gather(sample_name, xic, 2:ncol(.))%>%
   ungroup()%>%
@@ -450,7 +493,9 @@ benthic_produced_exometabolites[is.na(benthic_produced_exometabolites)] <- 'no'
 write_csv(benthic_produced_exometabolites, './analysis/dorcierr_day_benthic_exometabolite_features.csv')
 
 
-# FILTERING -- raw XIC minimum --------------------------------------------
+# CLEANING  Filters -- raw XIC minimum --------------------------------------------
+# This is the last filter we employed
+## Here we just set a minimum value that each feature needs to exceed in at least one sample (max(xic))
 min_filter_pre <- feature_table_no_back_trans%>%
   gather(sample_name, xic, 2:ncol(.))%>%
   ungroup()%>%
@@ -482,7 +527,8 @@ min_filter <- min_filter_pre%>%
   left_join(networking%>%
               select(network, feature_number), by = 'feature_number')
 
-# FILTERING -- Effect of all three filters --------------------------------
+# CLEANING  Filters -- Effect of all three filters --------------------------------
+## This is where we calculate how many features are removed by each filter alone and in sequence.
 min_filter_feature_tag <- min_filter%>%
   ungroup()%>%
   filter(DayNight == 'Day',
@@ -605,6 +651,7 @@ numberClassifiedExometabolites <- no_min_filter%>%
 
 
 # DORCIERR feature_table --------------------------------------------------
+## Now we can finally start making the feature table we will use for some of the first analyses
 feature_table_relnorm <- feature_table_no_back_trans%>%
   gather(sample_name, xic, 2:ncol(.))%>%
   ungroup()%>%
@@ -669,7 +716,10 @@ dorc_wdf <- dorcierr_features_wdf%>%
   mutate(DayNight = case_when(DayNight == "D" ~ "Day",
                               TRUE ~ "Night"))
 
-# PRE-STATS CLEANING -- DOM-stats - RELATIVIZATION AND NORMALIZATION -- xic_log10 -----------------------------------------
+# MAIN DATAFRAMES USED IN THE ANALYSIS -- calculating log10 transformed xic values -----------------------------------------
+## This has two MAIN dataframes that we analyze.
+## dom_stats_wdf is used to classify reactivity of each subnetwork
+## As such we only include the minimum abundance filter 
 dom_stats_wdf<- dorc_wdf%>%
   filter(!Organism == "Influent",
          !Organism == "Offshore",
@@ -686,6 +736,7 @@ dom_stats_wdf<- dorc_wdf%>%
          ra = xic/sum(xic),
          asin = asin(ra))
 
+## This is the main dataframe we add the exometabolite filter into our analysis
 feature_stats_wdf <- dom_stats_wdf%>%
   inner_join(org_exometabolites, by = c('feature_number', 'Organism', 'DayNight'))%>%
   group_by(Organism, Replicate, Timepoint, DayNight)%>%
@@ -697,7 +748,9 @@ feature_stats_wdf <- dom_stats_wdf%>%
 set.seed(2005)
 
 
-# STATS  -- LMER -- subnetwork level ------------------------------------------
+# Subnetwork Reactivity Linear Mixed Model ------------------------------------------
+## First we have to define the average direction the intensity moves from T0 to TF
+## e.g. decreases or increases
 decreaseNetworks <- dom_stats_wdf%>%
   left_join(networking%>%
               select(feature_number, network), by = "feature_number")%>%
@@ -725,7 +778,7 @@ increaseNetworks <- dom_stats_wdf%>%
 decreaseNetworkVector <- decreaseNetworks$net_act
 increaseNetworkVector <- increaseNetworks$net_act
 
-
+# Here is the network reactivity linear mixed model that we use to test whether a subnetwork is labile or not
 lmer_test <- dom_stats_wdf%>%
   left_join(networking%>%
               select(feature_number, network), by = "feature_number")%>%
@@ -842,6 +895,7 @@ affinity%>%
 
 
 # STATS -- Microbial load -------------------------------------------------
+## Testing if the max microbial load differs between organisms either day or night
 loadAnova <- fcm_T0_5%>%
   filter(Organism != 'Offshore',
          Organism != 'Influent')%>%
@@ -1688,6 +1742,89 @@ OrganismalLabileFeatues <- feature_stats_wdf%>%
   # ungroup()
   
 
+
+# STATS -- DOC  -----------------------------------------------------------
+docView <- moorea_doc%>%
+  filter(sample_name != "D_OF_1_T0N",
+         sample_name != "D_IN_2_T0N",
+         sample_name != "D_PL_3_TFN",
+         sample_name != "D_TR_1_T0N",
+         sample_name != "D_WA_2_T0D",
+         sample_name != "D_WA_1_T0D",
+         sample_name != "D_CC_1_T0D",
+         sample_name != "D_CC_2_T0D")%>%
+  separate(sample_name, c("Experiment", "Organism", "Replicate", "Timepoint"), sep = "_")%>%
+  filter(!Experiment %like% "%Blank%",
+         !Organism %like% "%Blank")%>%
+  mutate(Experiment = case_when(Experiment == "D" ~ "dorcierr",
+                                Experiment == "M" ~ "mordor",
+                                Experiment == "R" ~ "RR3",
+                                TRUE ~ as.character(Experiment)),
+         Organism = case_when(Organism == "CC" ~ "CCA",
+                              Organism == "DT" ~ "Dictyota",
+                              Organism == "PL" ~ "Porites lobata",
+                              Organism == "PV" ~ "Pocillopora verrucosa",
+                              Organism == "TR" ~ "Turf",
+                              Organism == "WA" ~ "Water control",
+                              Organism == "IN" ~ "Influent",
+                              Organism == "OF" ~ "Offshore",
+                              TRUE ~ as.character(Organism)),
+         Organism = as.factor(Organism),
+         Organism = fct_relevel(Organism, c('Influent', 'Offshore', 'Water control', 'CCA', 'Turf', 'Dictyota', 'Pocillopora verrucosa', 'Porites lobata')))%>%
+  separate(Timepoint, c("Timepoint", "DayNight"), sep = 2)%>%
+  mutate(DayNight = case_when(DayNight == "D" ~ "Day",
+                              TRUE ~ "Night"))
+# filter(Organism != 'Offshore',
+# Organism != 'Water control',
+# Organism != 'Influent'
+# )
+
+docAov <- docView%>%
+  aov(DOC~Organism*Timepoint, data = .)%>%
+  tidy()
+
+
+docTukey <- docView%>%
+  aov(DOC~Organism, data = .)%>%
+  TukeyHSD()%>%
+  tidy()
+
+# Supllemental Figure 1-- DOC  ---------------------------------------------------
+docMix <- docView%>%
+  filter(Organism %in%  c('Water control', 'Influent'),
+         Timepoint == 'T0')%>%
+  group_by(Organism, Timepoint)%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  ungroup()%>%
+  pivot_wider(names_from = 'Organism', values_from = 'DOC')%>%
+  mutate(ambientMix = Influent*2/3+`Water control`*1/3)
+
+
+
+pdf('~/Downloads/DorcDOCNoContaminationRemoved.pdf', width = 15, height = 10)
+docView%>%
+  group_by(Organism, Timepoint)%>%
+  mutate(sd = sd(DOC))%>%
+  summarize_if(is.numeric, mean, na.rm = TRUE)%>%
+  ungroup()%>%
+  add_row(Organism = 'Influent', Timepoint = 'TF', DOC = 0)%>%
+  add_row(Organism = 'Offshore', Timepoint = 'TF', DOC = 0)%>%
+  # filter(Timepoint == 'T0')%>%
+  ggplot(aes(Organism, DOC, fill = Timepoint)) +
+  geom_hline(data = docMix, aes(yintercept = ambientMix)) +
+  geom_bar(stat = 'identity', position = 'dodge2', alpha = 0.8) +
+  geom_errorbar(aes(ymin = DOC - sd, ymax = DOC + sd), position = 'dodge2') +
+  # geom_boxplot() +
+  # scale_color_manual(values = org_colors_no_water <- c('#65D7F0','#65D7F0','#65D7F0', "#A30029", "#33CC33", "#669900", "#FF850A", "#9900FF")) +
+  scale_fill_manual(values = c('grey', 'black')) +
+  gen_theme() +
+  # facet_wrap(~DayNight, nrow = 1) +
+  labs(y ='Bulk dissolved organic carbon (µM C)') +
+  scale_y_continuous(limits = c(60, 100), oob = rescale_none)
+dev.off()
+
+
+
 # STATS -- Org proportional lability between superclasses -----------------
 org_proportional_lability_superclass <- feature_stats_wdf%>%
   left_join(networking%>%
@@ -2179,7 +2316,7 @@ org_lability_aov <- org_lability_stats%>%
   mutate(aovFDR = p.adjust(p.value, method = 'BH'))
   filter(aovFDR < 0.05)
 
-# VIZUALIZATIONS -- Metabolite pool XIC change ----------------------------
+# Figure 3 -- Metabolite pool XIC change ----------------------------
 metabolitePool_xic_change <- feature_stats_wdf%>%
   left_join(networking%>%
               select(feature_number, network), by = 'feature_number')%>%
@@ -2956,7 +3093,7 @@ pieCharts%>%
 dev.off()
 
 
-# FIGURE xxxx -- superclass Cluster dendogram --------------------------------------------
+# Supllemental figure 5 -- superclass Cluster dendogram --------------------------------------------
 superclassDendo <- feature_stats_wdf%>%
   filter(Timepoint == 'T0')%>%
   left_join(networking%>%
@@ -4716,5 +4853,7 @@ checkNet <- function(x) {
   paste0(x, ' is ', class, ' from ', source, '  ', level, '  ', num, ' nodes  ', score)
   
 }
+
+
 
 

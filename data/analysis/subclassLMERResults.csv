@@ -1,19 +1,2 @@
-superclass_consensus,class_consensus,subclass_consensus,test,var,Pr(>Chisq)
-Lipids and lipid-like molecules,Fatty Acyls,NA,subclass,group,0.5623159059181058
-Lipids and lipid-like molecules,Fatty Acyls,NA,subclass,DayNight,3.450643024702747e-6
-Lipids and lipid-like molecules,Fatty Acyls,NA,subclass,group:DayNight,0.40305073836208777
-Lipids and lipid-like molecules,Fatty Acyls,Fatty acid esters,subclass,group,0.007321525379382367
-Lipids and lipid-like molecules,Fatty Acyls,Fatty acid esters,subclass,DayNight,0.0012008745877412144
-Lipids and lipid-like molecules,Fatty Acyls,Fatty acid esters,subclass,group:DayNight,0.1608305147707477
-Lipids and lipid-like molecules,Fatty Acyls,Fatty amides,subclass,group,0.616125960196636
-Lipids and lipid-like molecules,Fatty Acyls,Fatty amides,subclass,DayNight,0.11947957071912509
-Lipids and lipid-like molecules,Fatty Acyls,Fatty amides,subclass,group:DayNight,0.2280071261215925
-Organic acids and derivatives,Carboxylic acids and derivatives,NA,subclass,group,0.04897242998245008
-Organic acids and derivatives,Carboxylic acids and derivatives,NA,subclass,DayNight,0.24553326789088362
-Organic acids and derivatives,Carboxylic acids and derivatives,NA,subclass,group:DayNight,0.275186573806358
-Organic oxygen compounds,Organooxygen compounds,Carbohydrates and carbohydrate conjugates,subclass,group,0.43418253969779697
-Organic oxygen compounds,Organooxygen compounds,Carbohydrates and carbohydrate conjugates,subclass,DayNight,0.05886040464787986
-Organic oxygen compounds,Organooxygen compounds,Carbohydrates and carbohydrate conjugates,subclass,group:DayNight,0.7211801490152598
-Organoheterocyclic compounds,Triazines,"1,3,5-triazines",subclass,group,0.9334827769693145
-Organoheterocyclic compounds,Triazines,"1,3,5-triazines",subclass,DayNight,2.8043072179168735e-8
-Organoheterocyclic compounds,Triazines,"1,3,5-triazines",subclass,group:DayNight,0.7021205749665048
+superclass_consensus,class_consensus,subclass_consensus,test,data
+Lipids and lipid-like molecules,Fatty Acyls,NA,subclass,
